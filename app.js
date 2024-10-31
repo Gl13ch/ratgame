@@ -39,6 +39,6 @@ console.log(ratty)
 //flow
 //buy rat > male or female > choose name > the rest randomly generated
 
-
+const buyRat = $('#buyRat')
 
 })

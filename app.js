@@ -1,21 +1,28 @@
-// $(() => {
-// console.log('hello')
+$(() => {
 
 class Rat {
-    constructor(){
-        this.sex = randomSex
-        this.personality = 'gloomy'
-        this.mood = 'sad'
+    constructor(name,sex,personality,mood){
+        this.name = name
+        this.sex = sex
+        this.personality = personality
+        this.mood = mood
     }
 }
 
 const sex = ['Male', 'Female']
+const personality = ['gloomy','timid','cheerful','quiet']
+const mood = ['happy','sad','angry','normal']
 
-const random = Math.floor(Math.random() * arrayNumber(sex))
+// const sexIndex = Math.floor(Math.random() * arrayLength(sex))
+// const randomSex = sex[sexIndex]
 
-const randomSex = sex[random]
+const personalityIndex = Math.floor(Math.random() * arrayLength(personality))
+const randomPersonality = personality[personalityIndex]
 
-function arrayNumber(array) {
+const moodIndex = Math.floor(Math.random() * arrayLength(sex))
+const randomMood = mood[moodIndex]
+
+function arrayLength(array) {
     let length  = 0
     for (let i = 0; i < array.length; i++) {
         length = i + 1  
@@ -23,10 +30,15 @@ function arrayNumber(array) {
     return length
 }
 
-const ratty = new Rat()
+const ratty = new Rat(/*input*/randomPersonality,randomMood)
 console.log(ratty)
 
-// const ratty = new Rat()
-// console.log(ratty)
+//on click create rat
+//generate stats
 
-// })
+//flow
+//buy rat > male or female > choose name > the rest randomly generated
+
+
+
+})

@@ -2,8 +2,6 @@
 
 ## Base
 
-* Create class for rats
-* Instatiate rat
 * Display rat on screen
 * Display stats:
     * Hunger
@@ -11,10 +9,10 @@
     * Boredom
     * Age
 * Add functions to do things with your rat. (i.e. feed or play with)
-* Be able to name rat
-* css
 * Increase rat's stats as needed
-* rat should die or leave if stats get too low and becomes unhappy
+* rat should leave if stats get too low and becomes unhappy
+
+* css
 * animate rat
 
 ## Extras

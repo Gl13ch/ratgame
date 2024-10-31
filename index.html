@@ -9,20 +9,32 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div>Buy a Rat
+    <div class="shop">
+        <label> Shop <br>
+            <select name="items">
+                <option>Rat</option>
+                <option>Treats</option>
+                <option>Toys</option>
+                <option>Cages</option>
+            </select>
+        </label>
+        <h3>Buy a rat</h3>
         <form method="post">  
-            <input type="radio" id="male">
+            <input type="radio" required="true" name="sex" value="male">
             <label for="male">Male</label>
     
-            <input type="radio" id="female">
-            <label for="male">Female</label><br>
+            <input type="radio" required="true" name="sex" value="female">
+            <label for="female">Female</label><br>
     
-            <input type="text" id="name" placeholder="Give rat a name"><br>
+            <input type="text" required="true" id="name" placeholder="Give rat a name"><br>
     
             <input type="submit" id="name">
         </form>
     </div>
-    <!-- after click should prompt male or female, than ask for name -->
-
+    <br>
+    <br>
+    <br>
+    <div class="cage">Cage
+    </div>
 </body>
 </html>

@@ -206,7 +206,13 @@ $(() => {
 
         JSON.parse(localStorage.getItem('ratArray'))
 
-        cage.push(new Rat(nameInput, sexInput, randomPersonality, breedInput))
+
+        if (nameInput = 'gwenk'){
+            cage.push(new Rat(nameInput, 'male', 'stinky', 'rex'))
+        } else {
+            cage.push(new Rat(nameInput, sexInput, randomPersonality, breedInput))
+        }
+        
 
         localStorage.setItem('ratArray', JSON.stringify(cage))
 

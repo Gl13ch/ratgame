@@ -1,44 +1,129 @@
 $(() => {
     //object of rat
     class Rat {
-        constructor(name,sex,personality,mood,hunger){
+        constructor(name,sex,personality,breed){
             this.name = name
+            this.age = `${1} month`
             this.sex = sex
             this.personality = personality
-            this.mood = mood
-            this.hunger = hunger || 10
-        }
-        feed(){
-           if (this.hunger === 10) {
-             console.log('all full')
-           } else if (this.hunger < 10) {
-            for (let i = 0; i < 10; i++) {
-                this.hunger + 1
+            /*
+            this.mother = ''
+            this.father = ''
+            this.cage = []
+            */
+            this.food = {
+                amount: '',
+                type: ''
             }
-           } 
+            //this.tricks = []
+            this.affection = 'neutral'
+            this.mood = 'neutral'
+            this.weight = 'normal'
+            this.health = 'normal'
+            /*
+            this.endurance = endurance
+            this.quickness = quickness
+            this.jump = jump
+            this.grooming = grooming
+            this.appearance = appearance
+            this.charm = charm
+            this.toilet = toilet
+            this.bed = bed
+            this.eating = eating
+            this.wheel = wheel
+            this.nibbling = nibbling
+            */
+            this.breed = breed
+            /*
+            this.competitionRank = competitionRank || 1
+            this.competitionEntered = []
+            */
         }
     }
 
-    //feed one at a time until 10 or feed up to 10 on feed?
-
-    //could make hunger get incrementally more as it approaches 0, if reach 0 rat leaves
-
-    //or could have weight system and have food always available, player able to choose how much food is available at all times, weight is affected by how many rats to ratio food available, few, normal, many amount.
-
-    //feeding until 10
-
-    //one feed up to 10
-
-    //or allow above 10 which will make rat gain weight and lead to health problems, chonky rat
-
-    //or a feed once a day thing, if fed that day = true, then all happy. if feed = false, then not happy... too many days without feeding - rat leaves
-
     //variables
-    const sex = ['Male', 'Female']
-    const personality = ['legoobreeious','timid','cheerful','quiet', 'optimistic']
-    const mood = ['happy','sad','angry','content']
 
-    let cage = []
+    //name - user input
+    // age by months
+    //father
+    //mother
+    // cage = []
+    //trick page = []
+
+    //sex - user input
+    const sex = ['Male', 'Female']
+
+    //personality
+    const personalityArr = ['agile','anxious','attentive','bold', 'cautious','communicative','cconfident','curious','determined','docile','dominant','easy going','easy to handle','enthusiastic','friendly','cheerful','irritable','lively','shy','solitary','tame','tempermental','trusting']
+
+    //food
+    const foodTypeArr = ['cheap','normal','expensive']
+    const foodAmountArr = ['few','normal','many']
+
+    //affection
+    //should maybe start at unsure or cautious then move torwards direction based on actions
+    const affectionArr = ['hate','dislike','whatever','like','love','adore']
+
+    //mood
+    const moodArr = ['happy','sad','angry','content']
+
+    //weight
+    const weightArr = ['skinny','slim','normal','tubby','fat']
+
+    //health
+    const healthArr = ['sick','normal','tip-top']
+
+    //stats will be calculated based on breed and incremented based on activites the rat does in cage
+    //endurance
+    //quickness
+    //jump
+    //grooming
+    //appearance
+    //charm
+
+    //training:
+    const trainedLevel = ['untrained', 'barely trained', 'decently trained', 'trained', 'perfectly trained']
+    //toilet
+    //bed
+    //eating
+    //items
+    //nibbling
+
+    //breed - user input
+    const breeds = ['standard/fancy', 'rex', 'railless', 'hairless','satin','dumbo','bristle coat']
+
+    //competition rank starts at 1
+
+    //competition entered
+    const competitions = ['eating contest','poleclimb', '10m dash', '100m dash', 'monkey bars', 'beauty contest', 'talent show']
+
+    //cage activites
+    const activites = ['wheel','bed','potty','food','water']
+    //wheel
+    //bed
+    //potty
+    //food
+    //water
+
+    //user actions in cage
+    //back
+    //bath
+    //view stats
+    //pet
+    //grab
+    //poke
+    //treat
+    //brush
+
+    //user actions outside of cage
+    //skip time
+    //store
+    //enter competition
+
+    //day night cycle
+    //morning - sleepy
+    //evening - semi active/sleepy
+    //night - very active
 
     //randomizers
     const arrayLength  = (array) => {
@@ -49,20 +134,27 @@ $(() => {
         return length
     }
 
-    const personalityIndex = Math.floor(Math.random() * arrayLength(personality))
-    const randomPersonality = personality[personalityIndex]
+    const personalityIndex = Math.floor(Math.random() * arrayLength(personalityArr))
+    const randomPersonality = personalityArr[personalityIndex]
 
-    const moodIndex = Math.floor(Math.random() * arrayLength(mood))
-    const randomMood = mood[moodIndex]
+    const moodIndex = Math.floor(Math.random() * arrayLength(moodArr))
+    const randomMood = moodArr[moodIndex]
 
+    //localstorage
+    let cage = []
+
+    if (localStorage.length === 0) {
+        localStorage.setItem('ratArray', JSON.stringify(cage))
+    }
+
+    //cursed
     // localStorage.removeItem('ratArray')
 
-    //local storage does not keep the objects instantiated, therefore have to re instantiate them 
+    //local storage does not keep the objects instantiated, therefore have to reinstantiate them 
     const storedRats = []
     const onStartUp = () => {
         //make sure cage is populated with local storage
         cage = (JSON.parse(localStorage.getItem('ratArray')))
-
         if (cage.length != 0) {
             for (let i = 0; i < cage.length; i++) {
                 storedRats.push(new Rat(...Object.values(cage[i])))
@@ -78,13 +170,21 @@ $(() => {
         for (let i = 0; i < cage.length; i++) {
             $('<p>').addClass('ratName').text(`name: ${cage[i].name}`).appendTo($ratContainer)
 
+            $('<p>').addClass('ratAge').text(`age: ${cage[i].age}`).appendTo($ratContainer)
+
             $('<p>').addClass('ratSex').text(`sex: ${cage[i].sex}`).appendTo($ratContainer)
+
+            $('<p>').addClass('ratBreed').text(`breed: ${cage[i].breed}`).appendTo($ratContainer)
 
             $('<p>').addClass('ratPersonality').text(`personality: ${cage[i].personality}`).appendTo($ratContainer)
 
+            $('<p>').addClass('ratAffection').text(`affection: ${cage[i].affection}`).appendTo($ratContainer)
+
             $('<p>').addClass('ratMood').text(`mood: ${cage[i].mood}`).appendTo($ratContainer)
 
-            $('<p>').addClass('ratName').text(`hunger: ${cage[i].hunger}`).appendTo($ratContainer)
+            $('<p>').addClass('ratWeight').text(`weight: ${cage[i].weight}`).appendTo($ratContainer)
+
+            $('<p>').addClass('health').text(`health: ${cage[i].health}`).appendTo($ratContainer)
         }
     }
 
@@ -92,26 +192,25 @@ $(() => {
     $('form').on('submit', event => {
         event.preventDefault()
 
-        const $radioInput = $('input[name="sex"]')
-        let sexInput = ''
+        const $sexInput = $('input[name="sex"]')
+        let sexInput = $('input[name="sex"]:checked').val()
+
+        const $breedInput = $('input[name="breed"]')
+        let breedInput = $('input[name="breed"]:checked').val()
 
         let nameInput = $('#name').val()
 
-        if ($('input[name="sex"]:checked').val() === 'male') {
-            sexInput = 'male'
-        } 
-        else {
-            sexInput = 'female'
-        }
-
         $('#name').val('')
-        $radioInput.prop('checked', false)
+        $sexInput.prop('checked', false)
+        $breedInput.prop('checked', false)
 
         JSON.parse(localStorage.getItem('ratArray'))
 
-        cage.push(new Rat(nameInput, sexInput, randomPersonality, randomMood))
+        cage.push(new Rat(nameInput, sexInput, randomPersonality, breedInput))
 
         localStorage.setItem('ratArray', JSON.stringify(cage))
+
+        console.log(cage)
 
         $('.ratContainer').remove() 
 
@@ -120,16 +219,5 @@ $(() => {
     if (cage.length != 0) {
         showRat()
     }
-    
-    // hunger
-    // let hungerAmount = cage[0].hunger 
-
-    // const interval = setInterval(() => {
-    //     hungerAmount -= 1
-    //     if (hungerAmount === 0) {
-    //         console.log('starved')
-    //         clearInterval(interval) 
-    //     }
-    // }, 2000);
 
 })

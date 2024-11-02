@@ -1,20 +1,19 @@
 $(() => {
     //object of rat
     class Rat {
-        constructor(id,name,sex,personality,breed,){
+        constructor(id,name,sex,personality,breed){
             this.id = id
             this.name = name
             this.sex = sex
             this.personality = personality
             this.breed = breed
-            this.mother = ''
-            this.father = ''
-            this.cage = []
-            this.tricks = []
+            this.happiness = 50
             this.affection = 'neutral'
             this.mood = 'neutral'
             this.weight = 'normal'
             this.health = 'normal'
+            this.cage = []
+            this.tricks = []
             this.endurance = 10
             this.quickness = 10
             this.jump = 10
@@ -28,7 +27,15 @@ $(() => {
             this.nibbling = 'untrained'
             this.competitionRank = 1
             this.competitionEntered = []
-            this.age = `${1} month`
+            this.age = '1 month'
+            this.mother = ''
+            this.father = ''
+        }
+         baby (femaleBreed, female, male){
+            const baby = new Rat(idCounter,'baby',randomSex,randomPersonality,femaleBreed)
+            baby.mother = female
+            baby.father = male
+            console.log(baby)
         }
     }
 
@@ -46,6 +53,8 @@ $(() => {
         }
     }
 
+    //next work on cages and be able to switch rat between cages
+
     const cage1 = new Cage('standard')
     // console.log(cage1)
     cage1.changeFood(1,2)
@@ -54,7 +63,7 @@ $(() => {
     //VARIABLES
 
     //user input
-    const sex = ['Male', 'Female']
+    const sexArr = ['Male', 'Female']
 
     //randomized
     const personalityArr = ['agile','anxious','attentive','bold', 'cautious','communicative','cconfident','curious','determined','docile','dominant','easy going','easy to handle','enthusiastic','friendly','cheerful','irritable','lively','shy','solitary','tame','tempermental','trusting']
@@ -124,11 +133,14 @@ $(() => {
         return length
     }
 
-    const personalityi = Math.floor(Math.random() * arrayLength(personalityArr))
-    const randomPersonality = personalityArr[personalityi]
+    const sexIndex = Math.floor(Math.random() * arrayLength(sexArr))
+    const randomSex = sexArr[sexIndex]
 
-    const moodi = Math.floor(Math.random() * arrayLength(moodArr))
-    const randomMood = moodArr[moodi]
+    const personalityIndex = Math.floor(Math.random() * arrayLength(personalityArr))
+    const randomPersonality = personalityArr[personalityIndex]
+
+    const moodIndex = Math.floor(Math.random() * arrayLength(moodArr))
+    const randomMood = moodArr[moodIndex]
 
     //localstorage
     let rats = []
@@ -136,10 +148,6 @@ $(() => {
     if (localStorage.length === 0) {
         localStorage.setItem('ratArray', JSON.stringify(rats))
     }
-
-    //cursed -- should be fixed. uncomment > refresh > comment out again.
-
-    //can make into start over function
 
     // localStorage.removeItem('ratArray')
 
@@ -174,7 +182,18 @@ $(() => {
     }
 
     onStartUp()
+
+
+    let idCounter = 0
+    if (rats.length !==0) {
+        idCounter = rats[rats.length - 1].id + 1
+    }
     
+
+    //BABY RAT - sets mother and father
+    // rats[0].baby(rats[0].breed, rats[0].name, rats[1].name)
+
+
     // MODAL
     const $modal = $('#modal')
     const $close = $('#close')
@@ -222,9 +241,11 @@ $(() => {
 
                 $('<p>').addClass('ratFather').text(`Father: ${rats[i].father}`).appendTo($ratInfo)
 
-                $('<p>').addClass('ratCage').text(`Cage: ${rats[i].cage}`).appendTo($ratInfo)
+                $('<p>').addClass('ratCage').text(`Cage: ${cage1.type}`).appendTo($ratInfo)
 
-                $('<p>').addClass('ratFood').text(`Food: ${rats[i].food}`).appendTo($ratInfo)
+                $('<p>').addClass('ratFood').text(`Food amount: ${cage1.food.amount}`).appendTo($ratInfo)
+
+                $('<p>').addClass('ratFood').text(`Food type: ${cage1.food.type}`).appendTo($ratInfo)
 
                 // rat tricks
                 $('<p>').addClass('ratTricks').text(`Tricks: ${rats[i].tricks}`).appendTo($ratTricks)
@@ -284,11 +305,6 @@ $(() => {
         let breedInput = $('input[name="breed"]:checked').val()
 
         let nameInput = $('#name').val()
-
-        let idCounter = 0
-        if (rats.length !== 0) {
-            idCounter = rats[rats.length - 1].id + 1
-        }
 
         //clears after submit
         $('#name').val('')

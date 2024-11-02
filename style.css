@@ -3,3 +3,13 @@ body{
     text-align: center;
     margin-top: 50px;
 }
+
+.allRatInfo {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+#modal {
+    display: none;
+}

@@ -1,8 +1,8 @@
 $(() => {
     //object of rat
-    //static,enter,optional
     class Rat {
-        constructor(name,sex,personality,breed,id,age){
+        constructor(id,name,sex,personality,breed,){
+            this.id = id
             this.name = name
             this.sex = sex
             this.personality = personality
@@ -10,10 +10,6 @@ $(() => {
             this.mother = ''
             this.father = ''
             this.cage = []
-            this.food = {
-                amount: '',
-                type: ''
-            }
             this.tricks = []
             this.affection = 'neutral'
             this.mood = 'neutral'
@@ -32,10 +28,28 @@ $(() => {
             this.nibbling = 'untrained'
             this.competitionRank = 1
             this.competitionEntered = []
-            this.id = id || 0
-            this.age = age || `${1} month`
+            this.age = `${1} month`
         }
     }
+
+    class Cage{
+        constructor(type){
+            this.type = type
+            this.food = {
+                amount: ['few','normal','many'],
+                type: ['cheap','standard','expensive']
+            }
+        }
+        changeFood (foodAmount, foodType){
+            this.food.amount = this.food.amount[foodAmount]
+            this.food.type = this.food.type[foodType]
+        }
+    }
+
+    const cage1 = new Cage('standard')
+    // console.log(cage1)
+    cage1.changeFood(1,2)
+    // console.log(cage1)
 
     //VARIABLES
 
@@ -117,10 +131,10 @@ $(() => {
     const randomMood = moodArr[moodi]
 
     //localstorage
-    let cage = []
+    let rats = []
 
     if (localStorage.length === 0) {
-        localStorage.setItem('ratArray', JSON.stringify(cage))
+        localStorage.setItem('ratArray', JSON.stringify(rats))
     }
 
     //cursed -- should be fixed. uncomment > refresh > comment out again.
@@ -131,23 +145,31 @@ $(() => {
 
     //local storage startup stuff
     const onStartUp = () => {
-        //make sure cage is populated with local storage
-        cage = (JSON.parse(localStorage.getItem('ratArray')))
+        //make sure rats is populated with local storage
+        rats = (JSON.parse(localStorage.getItem('ratArray')))
 
         //reinstantiate objects to be apart of Rat local storage does not keep typing since it turns them into a string
+        const tempRats = []
+        for (let i = 0; i < rats.length; i++) {
+            tempRats.push(new Rat(...Object.values(rats[i])))
+        }
 
-        // when need to use a method will have to remake rat object from class
+        rats.length = 0
+
+        for (let i = 0; i < tempRats.length; i++) {
+            rats.push(tempRats[i])
+        }
 
         showRat()
     }
 
     //show rat info
     const showRat = () => {
-        for (let i = 0; i < cage.length; i++) {
+        for (let i = 0; i < rats.length; i++) {
 
-            const $rats = $('<div>').addClass('rat').attr('id', cage[i].name).appendTo($('.cage'))
+            const $rats = $('<div>').addClass('rat').attr('id', rats[i].name).appendTo($('.cage'))
 
-            $('<button>').attr('id', cage[i].name).val(`${cage[i].name}`).text(`${cage[i].name}:${cage[i].id}`).addClass('ratInfo').appendTo($rats)
+            $('<button>').attr('id', rats[i].name).val(`${rats[i].name}`).text(`${rats[i].name}:${rats[i].id}`).addClass('ratInfo').appendTo($rats)
         } 
     }
 
@@ -171,8 +193,8 @@ $(() => {
 
         const name = $(event.target).val()
 
-        for (let i = 0; i < cage.length; i++) {
-            if (cage[i].name === name) {
+        for (let i = 0; i < rats.length; i++) {
+            if (rats[i].name === name) {
                 //get the array
                 let ratId = i
 
@@ -188,65 +210,65 @@ $(() => {
                 const $ratCompetition =  $('<div>').addClass('ratCompetition').appendTo($moreInfo)
 
                 // rat info
-                $('<p>').addClass('ratAge').text(`name: ${cage[ratId].name}`).appendTo($ratInfo)
+                $('<p>').addClass('ratAge').text(`name: ${rats[ratId].name}`).appendTo($ratInfo)
 
-                $('<p>').addClass('ratAge').text(`age: ${cage[ratId].age}`).appendTo($ratInfo)
+                $('<p>').addClass('ratAge').text(`age: ${rats[ratId].age}`).appendTo($ratInfo)
 
-                $('<p>').addClass('ratSex').text(`sex: ${cage[i].sex}`).appendTo($ratInfo)
+                $('<p>').addClass('ratSex').text(`sex: ${rats[i].sex}`).appendTo($ratInfo)
 
-                $('<p>').addClass('ratPersonality').text(`personality: ${cage[i].personality}`).appendTo($ratInfo)
+                $('<p>').addClass('ratPersonality').text(`personality: ${rats[i].personality}`).appendTo($ratInfo)
 
-                $('<p>').addClass('ratMother').text(`Mother: ${cage[i].mother}`).appendTo($ratInfo)
+                $('<p>').addClass('ratMother').text(`Mother: ${rats[i].mother}`).appendTo($ratInfo)
 
-                $('<p>').addClass('ratFather').text(`Father: ${cage[i].father}`).appendTo($ratInfo)
+                $('<p>').addClass('ratFather').text(`Father: ${rats[i].father}`).appendTo($ratInfo)
 
-                $('<p>').addClass('ratCage').text(`Cage: ${cage[i].cage}`).appendTo($ratInfo)
+                $('<p>').addClass('ratCage').text(`Cage: ${rats[i].cage}`).appendTo($ratInfo)
 
-                $('<p>').addClass('ratFood').text(`Food: ${cage[i].food}`).appendTo($ratInfo)
+                $('<p>').addClass('ratFood').text(`Food: ${rats[i].food}`).appendTo($ratInfo)
 
                 // rat tricks
-                $('<p>').addClass('ratTricks').text(`Tricks: ${cage[i].tricks}`).appendTo($ratTricks)
+                $('<p>').addClass('ratTricks').text(`Tricks: ${rats[i].tricks}`).appendTo($ratTricks)
 
                 // rat condition
-                $('<p>').addClass('ratAffection').text(`affection: ${cage[i].affection}`).appendTo($ratCondition)
+                $('<p>').addClass('ratAffection').text(`affection: ${rats[i].affection}`).appendTo($ratCondition)
 
-                $('<p>').addClass('ratMood').text(`mood: ${cage[i].mood}`).appendTo($ratCondition)
+                $('<p>').addClass('ratMood').text(`mood: ${rats[i].mood}`).appendTo($ratCondition)
 
-                $('<p>').addClass('ratWeight').text(`weight: ${cage[i].weight}`).appendTo($ratCondition)
+                $('<p>').addClass('ratWeight').text(`weight: ${rats[i].weight}`).appendTo($ratCondition)
 
-                $('<p>').addClass('ratHealth').text(`health: ${cage[i].health}`).appendTo($ratCondition)
+                $('<p>').addClass('ratHealth').text(`health: ${rats[i].health}`).appendTo($ratCondition)
 
                 // rat stats
-                $('<p>').addClass('ratEndurance').text(`Endurance: ${cage[i].endurance}`).appendTo($ratStats)
+                $('<p>').addClass('ratEndurance').text(`Endurance: ${rats[i].endurance}`).appendTo($ratStats)
 
-                $('<p>').addClass('ratQuickness').text(`Quickness: ${cage[i].quickness}`).appendTo($ratStats)
+                $('<p>').addClass('ratQuickness').text(`Quickness: ${rats[i].quickness}`).appendTo($ratStats)
 
-                $('<p>').addClass('ratJump').text(`Jump: ${cage[i].jump}`).appendTo($ratStats)
+                $('<p>').addClass('ratJump').text(`Jump: ${rats[i].jump}`).appendTo($ratStats)
 
-                $('<p>').addClass('ratGrooming').text(`Groomin: ${cage[i].grooming}`).appendTo($ratStats)
+                $('<p>').addClass('ratGrooming').text(`Groomin: ${rats[i].grooming}`).appendTo($ratStats)
 
-                $('<p>').addClass('ratAppearance').text(`Appearance: ${cage[i].appearance}`).appendTo($ratStats)
+                $('<p>').addClass('ratAppearance').text(`Appearance: ${rats[i].appearance}`).appendTo($ratStats)
 
-                $('<p>').addClass('ratCharm').text(`Charm: ${cage[i].charm}`).appendTo($ratStats)
+                $('<p>').addClass('ratCharm').text(`Charm: ${rats[i].charm}`).appendTo($ratStats)
 
                 // rat training
-                $('<p>').addClass('ratToilet').text(`Toilet: ${cage[i].toilet}`).appendTo($ratTraining)
+                $('<p>').addClass('ratToilet').text(`Toilet: ${rats[i].toilet}`).appendTo($ratTraining)
 
-                $('<p>').addClass('ratBed').text(`Bed: ${cage[i].bed}`).appendTo($ratTraining)
+                $('<p>').addClass('ratBed').text(`Bed: ${rats[i].bed}`).appendTo($ratTraining)
 
-                $('<p>').addClass('ratEating').text(`Eating: ${cage[i].eating}`).appendTo($ratTraining)
+                $('<p>').addClass('ratEating').text(`Eating: ${rats[i].eating}`).appendTo($ratTraining)
 
-                $('<p>').addClass('ratWheel').text(`Wheel: ${cage[i].wheel}`).appendTo($ratTraining)
+                $('<p>').addClass('ratWheel').text(`Wheel: ${rats[i].wheel}`).appendTo($ratTraining)
 
-                $('<p>').addClass('ratNibbling').text(`Nibbling: ${cage[i].nibbling}`).appendTo($ratTraining)
+                $('<p>').addClass('ratNibbling').text(`Nibbling: ${rats[i].nibbling}`).appendTo($ratTraining)
 
                 // rat breed
-                $('<p>').addClass('ratBreed').text(`breed: ${cage[i].breed}`).appendTo($ratBreed)
+                $('<p>').addClass('ratBreed').text(`breed: ${rats[i].breed}`).appendTo($ratBreed)
 
                 //rat competition
-                $('<p>').addClass('ratCompetitionRank').text(`rank: ${cage[i].competitionRank}`).appendTo($ratCompetition)
+                $('<p>').addClass('ratCompetitionRank').text(`rank: ${rats[i].competitionRank}`).appendTo($ratCompetition)
 
-                $('<p>').addClass('ratCompetitionEntered').text(`Entered: ${cage[i].competitionEntered}`).appendTo($ratCompetition)
+                $('<p>').addClass('ratCompetitionEntered').text(`Entered: ${rats[i].competitionEntered}`).appendTo($ratCompetition)
             }
         }
     })
@@ -264,8 +286,8 @@ $(() => {
         let nameInput = $('#name').val()
 
         let idCounter = 0
-        if (cage.length !== 0) {
-            idCounter = cage[cage.length - 1].id + 1
+        if (rats.length !== 0) {
+            idCounter = rats[rats.length - 1].id + 1
         }
 
         //clears after submit
@@ -277,13 +299,13 @@ $(() => {
         JSON.parse(localStorage.getItem('ratArray'))
 
         if (nameInput === 'gwenk'){
-            cage.push(new Rat(nameInput, 'male', 'stinky', 'rex'))
+            rats.push(new Rat(nameInput, 'male', 'stinky', 'rex'))
         } else {
-            cage.push(new Rat(nameInput, sexInput, randomPersonality, breedInput,idCounter))
+            rats.push(new Rat(idCounter, nameInput, sexInput, randomPersonality, breedInput))
         }
         
         //local storage add new rat to cage
-        localStorage.setItem('ratArray', JSON.stringify(cage))
+        localStorage.setItem('ratArray', JSON.stringify(rats))
     })
 
 })

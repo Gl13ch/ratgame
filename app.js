@@ -1,11 +1,12 @@
 $(() => {
     //object of rat
+    //static,enter,optional
     class Rat {
-        constructor(name,sex,personality,breed){
+        constructor(name,sex,personality,breed,id,age){
             this.name = name
-            this.age = `${1} month`
             this.sex = sex
             this.personality = personality
+            this.breed = breed
             this.mother = ''
             this.father = ''
             this.cage = []
@@ -29,9 +30,10 @@ $(() => {
             this.eating = 'untrained'
             this.wheel = 'untrained'
             this.nibbling = 'untrained'
-            this.breed = breed
             this.competitionRank = 1
             this.competitionEntered = []
+            this.id = id || 0
+            this.age = age || `${1} month`
         }
     }
 
@@ -127,30 +129,28 @@ $(() => {
 
     // localStorage.removeItem('ratArray')
 
-    const storedRats = []
     //local storage startup stuff
     const onStartUp = () => {
         //make sure cage is populated with local storage
         cage = (JSON.parse(localStorage.getItem('ratArray')))
+
         //reinstantiate objects to be apart of Rat local storage does not keep typing since it turns them into a string
-        if (cage.length != 0) {
-            for (let i = 0; i < cage.length; i++) {
-                storedRats.push(new Rat(...Object.values(cage[i])))
-            }
-        }
+
+        // when need to use a method will have to remake rat object from class
 
         showRat()
     }
-   
+
     //show rat info
     const showRat = () => {
         for (let i = 0; i < cage.length; i++) {
 
             const $rats = $('<div>').addClass('rat').attr('id', cage[i].name).appendTo($('.cage'))
 
-            $('<button>').attr('id', cage[i].name).val(`${cage[i].name}`).text(`${cage[i].name}`).addClass('ratInfo').appendTo($rats)
+            $('<button>').attr('id', cage[i].name).val(`${cage[i].name}`).text(`${cage[i].name}:${cage[i].id}`).addClass('ratInfo').appendTo($rats)
         } 
     }
+
     onStartUp()
     
     // MODAL
@@ -263,6 +263,11 @@ $(() => {
 
         let nameInput = $('#name').val()
 
+        let idCounter = 0
+        if (cage.length !== 0) {
+            idCounter = cage[cage.length - 1].id + 1
+        }
+
         //clears after submit
         $('#name').val('')
         $sexInput.prop('checked', false)
@@ -274,7 +279,7 @@ $(() => {
         if (nameInput === 'gwenk'){
             cage.push(new Rat(nameInput, 'male', 'stinky', 'rex'))
         } else {
-            cage.push(new Rat(nameInput, sexInput, randomPersonality, breedInput))
+            cage.push(new Rat(nameInput, sexInput, randomPersonality, breedInput,idCounter))
         }
         
         //local storage add new rat to cage

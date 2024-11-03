@@ -7,12 +7,12 @@ $(() => {
             this.sex = sex
             this.personality = personality
             this.breed = breed
+            this.cage = 'cage'
             this.happiness = 50
             this.affection = 'neutral'
             this.mood = 'neutral'
             this.weight = 'normal'
             this.health = 'normal'
-            this.cage = 'small cage'
             this.tricks = []
             this.endurance = 10
             this.quickness = 10
@@ -37,21 +37,23 @@ $(() => {
             baby.father = male
             console.log(baby)
         }
-        moveCage(cageIndex){
+        moveCage(cageIndex, cageIndexHeldRats,rat){
             this.cage = cageIndex
+            cageIndexHeldRats.push(rat)
         }
     }
 
     class Cage{
-        constructor(cageName,capacity,cost){
+        constructor(tag, cageName, capacity, cost){
+            this.tag = tag
+            this.cageName = cageName
+            this.capacity = capacity
+            this.cost = cost
             this.food = {
                 amount: ['few','normal','many'],
                 type: ['cheap','standard','expensive']
             }
             this.heldRats = []
-            this.cageName = cageName
-            this.capacity = capacity
-            this.cost = cost
         }
         changeFood (foodAmount, foodType){
             this.food.amount = this.food.amount[foodAmount]
@@ -59,13 +61,30 @@ $(() => {
         }
     }
 
+    //need to think about how cages and rats and users interact
+    //maybe for now just set up a user inventory, that starts with small cage, can go to shop and buy a new cage, then can move rat between cages
+    
+    //maybe don't even need class for this, just make an array
+    //add User class, just start with cagesOwned = ['small cage']
+    //buycage(will end up being user input from choosing from cageStock)
+
+    //maybe rename to cageStock
+    //maybe only allow user to buy specialty cages once(i.e athletic and beauty)
+    //specialty cages might be better as an extention of Cage
+
+    //cage ui a drop down, when buying new rat if only cagesOwned.length =< 2 && cage.capacity != max ask which cage to put in
+
+    //need, probaly a drop down also, for changing hamster between owned cages, can appear in modal
+
+    
+
     const cageContainer = []
 
-    const smallCage = new Cage('small cage', 2,'$100')
-    const largeCage = new Cage('large cage', 3, '$200')
-    const twoStoryCage = new Cage('2-story cage', 4,'$300')
-    const athleticCage = new Cage('sporty cage', 2,'$400')
-    const beautyCage = new Cage('beauty cage', 2,'$400')
+    const smallCage = new Cage('smallCage','small cage', 2,'$100')
+    const largeCage = new Cage('largeCage','large cage', 3, '$200')
+    const twoStoryCage = new Cage('twoStoryCage','2-story cage', 4,'$300')
+    const athleticCage = new Cage('athleticCage','sporty cage', 2,'$400')
+    const beautyCage = new Cage('beautyCage','beauty cage', 2,'$400')
 
     cageContainer.push(smallCage)
     cageContainer.push(largeCage)
@@ -81,6 +100,9 @@ $(() => {
     //randomized
     const personalityArr = ['agile','anxious','attentive','bold', 'cautious','communicative','cconfident','curious','determined','docile','dominant','easy going','easy to handle','enthusiastic','friendly','cheerful','irritable','lively','shy','solitary','tame','tempermental','trusting']
 
+    //starts at neutral
+    const moodArr = ['happy','sad','angry','content']
+
     //user input
     const foodTypeArr = ['cheap','normal','expensive']
     const foodAmountArr = ['few','normal','many']
@@ -88,9 +110,6 @@ $(() => {
     //starts at neutral
     //should maybe start at unsure or cautious then move torwards direction based on actions
     const affectionArr = ['hate','dislike','whatever','like','love','adore']
-
-    //starts at neutral
-    const moodArr = ['happy','sad','angry','content']
 
     //weight - dependant on food, amount/type
     const weightArr = ['skinny','slim','normal','tubby','fat']
@@ -129,13 +148,12 @@ $(() => {
     //skip time
     //store
     //enter competition
+    //save
 
     //day night cycle
     //morning - sleepy rats
     //evening - semi active/sleepy
     //night - very active
-
-    const $ratContainer =  $('.ratContainer')
 
     //randomizers
     const arrayLength  = (array) => {
@@ -152,33 +170,54 @@ $(() => {
     const personalityIndex = Math.floor(Math.random() * arrayLength(personalityArr))
     const randomPersonality = personalityArr[personalityIndex]
 
-    const moodIndex = Math.floor(Math.random() * arrayLength(moodArr))
-    const randomMood = moodArr[moodIndex]
+    // const moodIndex = Math.floor(Math.random() * arrayLength(moodArr))
+    // const randomMood = moodArr[moodIndex]
 
     //localstorage
     let rats = []
+    let userCages =[smallCage]
 
     if (localStorage.length === 0) {
         localStorage.setItem('ratArray', JSON.stringify(rats))
+
+        localStorage.setItem('cageArray', JSON.stringify(userCages))
     }
 
     // localStorage.removeItem('ratArray')
+    // localStorage.removeItem('cageArray')
 
     //local storage startup stuff
     const onStartUp = () => {
         //make sure rats is populated with local storage
         rats = (JSON.parse(localStorage.getItem('ratArray')))
 
-        //reinstantiate objects to be apart of Rat local storage does not keep typing since it turns them into a string
+        userCages = (JSON.parse(localStorage.getItem('cageArray')))
+
+        //reinstantiate rats
         const tempRats = []
         for (let i = 0; i < rats.length; i++) {
             tempRats.push(new Rat(...Object.values(rats[i])))
         }
+        
 
         rats.length = 0
 
         for (let i = 0; i < tempRats.length; i++) {
             rats.push(tempRats[i])
+        }
+
+        //reinstantiate userCages
+        const tempCages = []
+        for (let i = 0; i < userCages.length; i++) {
+            tempCages.push(new Cage(...Object.values(userCages[i])))
+        }
+        
+        
+
+        userCages.length = 0
+
+        for (let i = 0; i < tempCages.length; i++) {
+            userCages.push(tempCages[i])
         }
 
         showRat()
@@ -202,11 +241,26 @@ $(() => {
     }
 
     //change cage rat is in
-    // rats[0].moveCage(cageContainer[3].cageName)
+    // console.log(cageContainer[0].cageName)
+    // console.log(cageContainer[0].heldRats)
     // console.log(rats[0])
+    rats[0].moveCage(cageContainer[0].cageName, cageContainer[0].heldRats, rats[0])
+    console.log(rats[0])
+    console.log(smallCage)
 
     //BABY RAT - sets mother and father
     // rats[0].baby(rats[0].breed, rats[0].name, rats[1].name)
+
+
+    // console.log(userCages)
+    // if (userCages.length > 0) {
+    //     for (let i = 0; i < userCages.length; i++) {
+    //         console.log(userCages[i].capacity)
+    //         if (userCages.) {
+                
+    //         }
+    //     }
+    // }
 
 
     // MODAL
@@ -309,13 +363,7 @@ $(() => {
         }
     })
 
-    //show shop items
-    // console.log($('option').val() === "rat")
-
-    // const checkShop = () => {
-       
-    // }
-
+    //show shop items depending on what player wants to look at 
     $('.shopItems').on('change', event => {
         if ($('.shopItems').val() === 'rat'){
             $('#ifCage').hide()
@@ -330,7 +378,7 @@ $(() => {
     })
 
     //buy a rat
-    $('form').on('submit', () => {
+    $('.ratForm').on('submit', event => {
         // event.preventDefault()
 
         const $sexInput = $('input[name="sex"]')
@@ -346,7 +394,7 @@ $(() => {
         $sexInput.prop('checked', false)
         $breedInput.prop('checked', false)
 
-        //local storage get cage arr
+        //local storage get rats
         JSON.parse(localStorage.getItem('ratArray'))
 
         if (nameInput === 'gwenk'){
@@ -357,6 +405,31 @@ $(() => {
         
         //local storage add new rat to cage
         localStorage.setItem('ratArray', JSON.stringify(rats))
+
+        showRat()
     })
 
+    // Buy a cage
+    $('.cageForm').on('submit', event => {
+        event.preventDefault()
+
+        const $cageInput = $('input[name="cage"]')
+        let cageInput = $('input[name="cage"]:checked').val()
+
+        //clears after submit
+        $cageInput.prop('checked', false)
+
+        //local storage get rats
+        JSON.parse(localStorage.getItem('cageArray'))
+
+        //push specified cage into userCage
+        for (let i = 0; i < cageContainer.length; i++) {
+            if (cageContainer[i].tag === cageInput) {
+                userCages.push(cageContainer[i])
+            }
+        }
+
+        //local storage add new rat to cage
+        localStorage.setItem('cageArray', JSON.stringify(userCages))
+    })
 })

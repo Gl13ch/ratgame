@@ -19,27 +19,27 @@
         </label>
         <div id="ifRat">
             <h3>Buy a rat</h3>
-            <form method="post">  
+            <form class="ratForm">  
                 <!-- sex -->
                 <input type="radio" required="true" name="sex" value="male">
-                <label for="male">Male</label>
+                <label for="sex">Male</label>
                 <input type="radio" required="true" name="sex" value="female">
-                <label for="female">Female</label><br>
+                <label for="sex">Female</label><br>
                 <!-- breed -->
                 <input type="radio" required="true" name="breed" value="standard">
-                <label for="standard">Standard</label>
+                <label for="breed">Standard</label>
                 <input type="radio" required="true" name="breed" value="rex">
-                <label for="rex">Rex</label>
+                <label for="breed">Rex</label>
                 <input type="radio" required="true" name="breed" value="tailless">
-                <label for="tailless">Tailless</label>
+                <label for="breed">Tailless</label>
                 <input type="radio" required="true" name="breed" value="hairless">
-                <label for="hairless">Hairless</label>
+                <label for="breed">Hairless</label>
                 <input type="radio" required="true" name="breed" value="satin">
-                <label for="satin">Satin</label>
+                <label for="breed">Satin</label>
                 <input type="radio" required="true" name="breed" value="dumbo">
-                <label for="dumbo">Dumbo</label>
+                <label for="breed">Dumbo</label>
                 <input type="radio" required="true" name="breed" value="bristle coat">
-                <label for="bristle coat">Bristle Coat</label>
+                <label for="breed">Bristle Coat</label>
                 <br>
                 <!-- name -->
                 <input type="text" required="true" id="name" placeholder="Give rat a name"><br>
@@ -49,13 +49,31 @@
         </div>
         <div id="ifCage">
             <h3>Buy a Cage</h3>
+            <form class="cageForm">
+                <input type="radio" required="true" name="cage" value="smallCage">
+                <label for="cage">small cage</label>
+
+                <input type="radio" required="true" name="cage" value="largeCage">
+                <label for="cage">large cage</label>
+
+                <input type="radio" required="true" name="cage" value="twoStoryCage">
+                <label for="cage">two-story cage</label>
+                <input type="radio" required="true" name="cage" value="athleticCage">
+                <label for="cage">atheletic cage</label>
+                <input type="radio" required="true" name="cage" value="beautyCage">
+                <label for="cage">beauty cage</label>
+                <br>
+                <input type="submit" id="cage">
+            </form>
         </div>
     </div>
     <br>
     <br>
-    <br>
-    <div class="cage">
-        <h2><u>Cage</u></h2>
+    <div class="home">
+        <h2><u>Home</u></h2>
+        <div class="cage">
+
+        </div>
     </div>
 
     <div class="ratContainer"></div>

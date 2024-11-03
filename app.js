@@ -44,16 +44,16 @@ $(() => {
     }
 
     class Cage{
-        constructor(tag, cageName, capacity, cost){
+        constructor(tag, cageName, capacity, cost, heldRats){
             this.tag = tag
             this.cageName = cageName
             this.capacity = capacity
             this.cost = cost
+            this.heldRats = heldRats || []
             this.food = {
                 amount: ['few','normal','many'],
                 type: ['cheap','standard','expensive']
-            }
-            this.heldRats = []
+            } 
         }
         changeFood (foodAmount, foodType){
             this.food.amount = this.food.amount[foodAmount]
@@ -77,12 +77,16 @@ $(() => {
     //need, probaly a drop down also, for changing hamster between owned cages, can appear in modal
 
     const cageContainer = []
+    
 
     const smallCage = new Cage('smallCage','small cage', 1,'$100')
     const largeCage = new Cage('largeCage','large cage', 3, '$200')
     const twoStoryCage = new Cage('twoStoryCage','2-story cage', 4,'$300')
     const athleticCage = new Cage('athleticCage','sporty cage', 2,'$400')
     const beautyCage = new Cage('beautyCage','beauty cage', 2,'$400')
+
+    // userCages.push(smallCage)
+    // smallCage.heldRats =[]
 
     cageContainer.push(smallCage)
     cageContainer.push(largeCage)
@@ -174,6 +178,7 @@ $(() => {
     //localstorage
     let rats = []
     let userCages =[smallCage]
+    
 
     if (localStorage.length === 0) {
         localStorage.setItem('ratArray', JSON.stringify(rats))
@@ -239,34 +244,53 @@ $(() => {
     //BABY RAT - sets mother and father
     // rats[0].baby(rats[0].breed, rats[0].name, rats[1].name)
 
-
-    //this will fail will need to check capacity and only make the correct ones
-    if (userCages.length > 1) {
-        for (let i = 0; i < userCages.length; i++) {
-            if (userCages[i].capacity !== userCages[i].heldRats.length) {
-                const $cageRadio = $(`<input type="radio" name="cage" required="true" value='${userCages[i].cageName}'>`)
-                const $cageLabel = $(`<label for="cage">${userCages[i].cageName}</label>`)
-
-                $('#ratSubmit').before($cageRadio,$cageLabel)
-            }
-        }
-    }
-
-    // console.log(userCages)
-
+    const tempArray = []
+    // let globalCapacity = ''
+    //creates cage options to put rats in when buying a rat
     const checkCageCapacity = () => {
-        if (userCages.length > 1) {
-            for (let i = 0; i < userCages.length; i++) {
-                if (userCages[i].capacity !== userCages[i].heldRats.length) {
-                    return true
-                } else {
-                    return false
+        tempArray.length = 0
+        // if (userCages.length > 1) {
+        for (let i = 0; i < userCages.length; i++) {
+            if (userCages[i].capacity === userCages[i].heldRats.length + 1) {
+                console.log("skipped")
+            } else {
+                tempArray.push(userCages[i])
+
+                if (tempArray.length > 1) {
+                    for (let j = 0; j < tempArray.length; j++) {
+                        const $cageRadio = $(`<input type="radio" name="cage" required="true" value='${tempArray[j].cageName}'>`)
+                        const $cageLabel = $(`<label for="cage">${tempArray[j].cageName}</label>`)
+
+                        $('#ratSubmit').before($cageRadio,$cageLabel)
+                    }
                 }
             }
-        } else {
-            return false
         }
     }
+
+    // checkCageCapacity()
+
+    // console.log(userCages)
+    
+
+    // console.log(tempArray)
+
+    // const checkCageCapacity = () => {
+    //     if (userCages.length > 1) {
+    //         for (let i = 0; i < userCages.length; i++) {
+    //             if (userCages[i].capacity !== userCages[i].heldRats.length) {
+    //                 return true
+    //             } else {
+    //                 return false
+    //             }
+    //         }
+    //     } else {
+    //         return false
+    //     }
+    // }
+
+    
+    
     // checkCageCapacity()
     // console.log(checkCageCapacity())
 
@@ -370,11 +394,16 @@ $(() => {
         }
     })
 
+
+    // console.log(globalCapacity())
     //show shop items depending on what player wants to look at 
-    $('.shopItems').on('change', event => {
+    $('.shopItems').on('click', event => {
         if ($('.shopItems').val() === 'rat'){
-            $('#ifCage').hide()
-            $('#ifRat').show()
+            // if (globalCapacity() === false) {
+                $('#ifCage').hide()
+                $('#ifRat').show()
+            // }
+            
         } else if ($('.shopItems').val() === 'cage'){
             $('#ifRat').hide()
             $('#ifCage').show()
@@ -384,71 +413,108 @@ $(() => {
         }
     })
 
+
+    // let availableCapacity = ''
+    // const globalCapacity = () => {
+    //     for (let i = 0; i < userCages.length; i++) {
+    //         if (userCages[i].capacity >= userCages[i].heldRats.length) {
+    //             availableCapacity = true
+    //         } else {
+    //             availableCapacity = false
+    //         }
+    //     }
+    // }
+    // globalCapacity()
+    console.log(userCages)
+    for (let i = 0; i < userCages.length; i++) {
+        console.log(userCages[i].capacity)
+        console.log(userCages[i].heldRats.length)
+        console.log(!(userCages[i].capacity <= userCages[i].heldRats.length))
+    }
+
     //buy a rat
-
-    // $('.ratForm').on('click', event =>{
-
-    // })
     $('.ratForm').on('submit', event => {
-        // event.preventDefault()
+        for (let i = 0; i < userCages.length; i++) {
+            if (!(userCages[i].capacity <= userCages[i].heldRats.length)) {
+                // event.preventDefault()
 
-        const $sexInput = $('input[name="sex"]')
-        let sexInput = $('input[name="sex"]:checked').val()
+                const $sexInput = $('input[name="sex"]')
+                let sexInput = $('input[name="sex"]:checked').val()
 
-        const $breedInput = $('input[name="breed"]')
-        let breedInput = $('input[name="breed"]:checked').val()
+                const $breedInput = $('input[name="breed"]')
+                let breedInput = $('input[name="breed"]:checked').val()
 
-        let nameInput = $('#name').val()
+                let nameInput = $('#name').val()
 
-        //check cage capacity if there is room and there is more than one cage to be put in then ask which cage they would like to be put in
+                // if (availableCapacity === true) {
+                    //Cages
+                    let cageInput = userCages[0].cageName
+                    let cageIndex = 0
 
-        //should automatically go into userCages[0].cageName if there is only one cage and it has room, if it does not have room should not be able to buy a rat until new cage is purchased
+                    // if (globalCapacity !== false) {
+                    //     cageInput = $('input[name="cage"]:checked').val()
 
-        let cageInput = userCages[0].cageName
-        let cageIndex = 0
+                    //     for (let i = 0; i < userCages.length; i++) {
+                    //         if (cageInput === userCages[i].cageName) {
+                    //             cageIndex = i
+                    //         }
+                    //     }
+                    // }
 
-        if (checkCageCapacity() !== false) {
-            cageInput = $('input[name="cage"]:checked').val()
+                    //clears after submit
+                    $('#name').val('')
+                    $sexInput.prop('checked', false)
+                    $breedInput.prop('checked', false)
 
-            for (let i = 0; i < userCages.length; i++) {
-                if (cageInput === userCages[i].cageName) {
-                    cageIndex = i
-                }
+                    let newRattyIndex = 0
+                    for (let i = 0; i < rats.length; i++) {
+                        newRattyIndex = i
+                    }
+
+                    //local storage get rats
+                    JSON.parse(localStorage.getItem('ratArray'))
+                    JSON.parse(localStorage.getItem('cageArray'))
+
+                    if (nameInput === 'gwenk'){
+                        rats.push(new Rat(nameInput, 'male', 'stinky', 'rex',cageInput))
+
+                        rats[newRattyIndex].moveCage(userCages[cageIndex].cageName,userCages[cageIndex].heldRats, rats[newRattyIndex])
+                    } else {
+                        rats.push(new Rat(idCounter, nameInput, sexInput, randomPersonality, breedInput, cageInput))
+                        
+                        rats[newRattyIndex].moveCage(userCages[cageIndex].cageName,userCages[cageIndex].heldRats, rats[newRattyIndex])
+                    }
+
+                    // rats[0].moveCage(userCages[0].cageName, userCages[0].heldRats, rats[0])
+                    // console.log(rats[newRatty])
+                    // console.log(userCages[cageIndex])
+                    
+                    //local storage add new rat to cage
+                    localStorage.setItem('ratArray', JSON.stringify(rats))
+
+                    localStorage.setItem('cageArray', JSON.stringify(userCages))
+
+                    // console.log(rats)
+
+                    // showRat()
+            } else {
+                alert('you do not have enough room')
             }
         }
-
-        //clears after submit
-        $('#name').val('')
-        $sexInput.prop('checked', false)
-        $breedInput.prop('checked', false)
-
-        const newRatty = rats.length-1
-
-        //local storage get rats
-        JSON.parse(localStorage.getItem('ratArray'))
-        JSON.parse(localStorage.getItem('cageArray'))
-
-        if (nameInput === 'gwenk'){
-            rats.push(new Rat(nameInput, 'male', 'stinky', 'rex'))
-
-            rats[newRatty].moveCage(userCages[cageIndex].cageName,userCages[cageIndex].heldRats, rats[newRatty])
-        } else {
-            rats.push(new Rat(idCounter, nameInput, sexInput, randomPersonality, breedInput, cageInput))
-            
-            rats[newRatty].moveCage(userCages[cageIndex].cageName,userCages[cageIndex].heldRats, rats[newRatty])
-        }
-
-        // rats[0].moveCage(userCages[0].cageName, userCages[0].heldRats, rats[0])
-        console.log(rats[newRatty])
-        console.log(userCages[cageIndex])
         
-        //local storage add new rat to cage
-        localStorage.setItem('ratArray', JSON.stringify(rats))
 
-        localStorage.setItem('cageArray', JSON.stringify(userCages))
-
-        showRat()
+        // } else {
+        //     globalCapacity()
+        //     console.log(globalCapacity())
+        //     //clears after submit
+        //     $('#name').val('')
+        //     $sexInput.prop('checked', false)
+        //     $breedInput.prop('checked', false)
+        //     alert('you do not have enough room')
+        // }
     })
+        
+    
 
     // console.log(rats[rats.length-1])
     // console.log(userCages[cageIndex])

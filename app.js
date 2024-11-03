@@ -12,7 +12,7 @@ $(() => {
             this.mood = 'neutral'
             this.weight = 'normal'
             this.health = 'normal'
-            this.cage = []
+            this.cage = 'small cage'
             this.tricks = []
             this.endurance = 10
             this.quickness = 10
@@ -37,15 +37,21 @@ $(() => {
             baby.father = male
             console.log(baby)
         }
+        moveCage(cageIndex){
+            this.cage = cageIndex
+        }
     }
 
     class Cage{
-        constructor(type){
-            this.type = type
+        constructor(cageName,capacity,cost){
             this.food = {
                 amount: ['few','normal','many'],
                 type: ['cheap','standard','expensive']
             }
+            this.heldRats = []
+            this.cageName = cageName
+            this.capacity = capacity
+            this.cost = cost
         }
         changeFood (foodAmount, foodType){
             this.food.amount = this.food.amount[foodAmount]
@@ -53,12 +59,19 @@ $(() => {
         }
     }
 
-    //next work on cages and be able to switch rat between cages
+    const cageContainer = []
 
-    const cage1 = new Cage('standard')
-    // console.log(cage1)
-    cage1.changeFood(1,2)
-    // console.log(cage1)
+    const smallCage = new Cage('small cage', 2,'$100')
+    const largeCage = new Cage('large cage', 3, '$200')
+    const twoStoryCage = new Cage('2-story cage', 4,'$300')
+    const athleticCage = new Cage('sporty cage', 2,'$400')
+    const beautyCage = new Cage('beauty cage', 2,'$400')
+
+    cageContainer.push(smallCage)
+    cageContainer.push(largeCage)
+    cageContainer.push(twoStoryCage)
+    cageContainer.push(athleticCage)
+    cageContainer.push(beautyCage)
 
     //VARIABLES
 
@@ -183,12 +196,14 @@ $(() => {
 
     onStartUp()
 
-
     let idCounter = 0
     if (rats.length !==0) {
         idCounter = rats[rats.length - 1].id + 1
     }
-    
+
+    //change cage rat is in
+    // rats[0].moveCage(cageContainer[3].cageName)
+    // console.log(rats[0])
 
     //BABY RAT - sets mother and father
     // rats[0].baby(rats[0].breed, rats[0].name, rats[1].name)
@@ -241,11 +256,11 @@ $(() => {
 
                 $('<p>').addClass('ratFather').text(`Father: ${rats[i].father}`).appendTo($ratInfo)
 
-                $('<p>').addClass('ratCage').text(`Cage: ${cage1.type}`).appendTo($ratInfo)
+                $('<p>').addClass('ratCage').text(`Cage: ${rats[i].cage}`).appendTo($ratInfo)
 
-                $('<p>').addClass('ratFood').text(`Food amount: ${cage1.food.amount}`).appendTo($ratInfo)
+                // $('<p>').addClass('ratFood').text(`Food amount: ${cageContaier[i].food.amount}`).appendTo($ratInfo)
 
-                $('<p>').addClass('ratFood').text(`Food type: ${cage1.food.type}`).appendTo($ratInfo)
+                // $('<p>').addClass('ratFood').text(`Food type: ${cageContaier[i].food.type}`).appendTo($ratInfo)
 
                 // rat tricks
                 $('<p>').addClass('ratTricks').text(`Tricks: ${rats[i].tricks}`).appendTo($ratTricks)
@@ -294,8 +309,28 @@ $(() => {
         }
     })
 
+    //show shop items
+    // console.log($('option').val() === "rat")
+
+    // const checkShop = () => {
+       
+    // }
+
+    $('.shopItems').on('change', event => {
+        if ($('.shopItems').val() === 'rat'){
+            $('#ifCage').hide()
+            $('#ifRat').show()
+        } else if ($('.shopItems').val() === 'cage'){
+            $('#ifRat').hide()
+            $('#ifCage').show()
+        } else {
+            $('#ifRat').hide()
+            $('#ifCage').hide()
+        }
+    })
+
     //buy a rat
-    $('form').on('submit', event => {
+    $('form').on('submit', () => {
         // event.preventDefault()
 
         const $sexInput = $('input[name="sex"]')

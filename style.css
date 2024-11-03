@@ -13,3 +13,11 @@ body{
 #modal {
     display: none;
 }
+
+#ifRat{
+    display:none;
+}
+
+#ifCage{
+    display:none;
+}

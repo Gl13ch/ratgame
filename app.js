@@ -1,13 +1,13 @@
 $(() => {
     //object of rat
     class Rat {
-        constructor(id,name,sex,personality,breed){
+        constructor(id,name,sex,personality,breed,cage){
             this.id = id
             this.name = name
             this.sex = sex
             this.personality = personality
             this.breed = breed
-            this.cage = 'cage'
+            this.cage = cage
             this.happiness = 50
             this.affection = 'neutral'
             this.mood = 'neutral'
@@ -76,11 +76,9 @@ $(() => {
 
     //need, probaly a drop down also, for changing hamster between owned cages, can appear in modal
 
-    
-
     const cageContainer = []
 
-    const smallCage = new Cage('smallCage','small cage', 2,'$100')
+    const smallCage = new Cage('smallCage','small cage', 1,'$100')
     const largeCage = new Cage('largeCage','large cage', 3, '$200')
     const twoStoryCage = new Cage('twoStoryCage','2-story cage', 4,'$300')
     const athleticCage = new Cage('athleticCage','sporty cage', 2,'$400')
@@ -198,10 +196,7 @@ $(() => {
         for (let i = 0; i < rats.length; i++) {
             tempRats.push(new Rat(...Object.values(rats[i])))
         }
-        
-
         rats.length = 0
-
         for (let i = 0; i < tempRats.length; i++) {
             rats.push(tempRats[i])
         }
@@ -211,11 +206,7 @@ $(() => {
         for (let i = 0; i < userCages.length; i++) {
             tempCages.push(new Cage(...Object.values(userCages[i])))
         }
-        
-        
-
         userCages.length = 0
-
         for (let i = 0; i < tempCages.length; i++) {
             userCages.push(tempCages[i])
         }
@@ -241,27 +232,43 @@ $(() => {
     }
 
     //change cage rat is in
-    // console.log(cageContainer[0].cageName)
-    // console.log(cageContainer[0].heldRats)
-    // console.log(rats[0])
-    rats[0].moveCage(cageContainer[0].cageName, cageContainer[0].heldRats, rats[0])
-    console.log(rats[0])
-    console.log(smallCage)
+    // rats[0].moveCage(userCages[0].cageName, userCages[0].heldRats, rats[0])
+    // // console.log(rats[0])
+    // console.log(smallCage)
 
     //BABY RAT - sets mother and father
     // rats[0].baby(rats[0].breed, rats[0].name, rats[1].name)
 
 
-    // console.log(userCages)
-    // if (userCages.length > 0) {
-    //     for (let i = 0; i < userCages.length; i++) {
-    //         console.log(userCages[i].capacity)
-    //         if (userCages.) {
-                
-    //         }
-    //     }
-    // }
+    //this will fail will need to check capacity and only make the correct ones
+    if (userCages.length > 1) {
+        for (let i = 0; i < userCages.length; i++) {
+            if (userCages[i].capacity !== userCages[i].heldRats.length) {
+                const $cageRadio = $(`<input type="radio" name="cage" required="true" value='${userCages[i].cageName}'>`)
+                const $cageLabel = $(`<label for="cage">${userCages[i].cageName}</label>`)
 
+                $('#ratSubmit').before($cageRadio,$cageLabel)
+            }
+        }
+    }
+
+    // console.log(userCages)
+
+    const checkCageCapacity = () => {
+        if (userCages.length > 1) {
+            for (let i = 0; i < userCages.length; i++) {
+                if (userCages[i].capacity !== userCages[i].heldRats.length) {
+                    return true
+                } else {
+                    return false
+                }
+            }
+        } else {
+            return false
+        }
+    }
+    // checkCageCapacity()
+    // console.log(checkCageCapacity())
 
     // MODAL
     const $modal = $('#modal')
@@ -378,6 +385,10 @@ $(() => {
     })
 
     //buy a rat
+
+    // $('.ratForm').on('click', event =>{
+
+    // })
     $('.ratForm').on('submit', event => {
         // event.preventDefault()
 
@@ -389,29 +400,62 @@ $(() => {
 
         let nameInput = $('#name').val()
 
+        //check cage capacity if there is room and there is more than one cage to be put in then ask which cage they would like to be put in
+
+        //should automatically go into userCages[0].cageName if there is only one cage and it has room, if it does not have room should not be able to buy a rat until new cage is purchased
+
+        let cageInput = userCages[0].cageName
+        let cageIndex = 0
+
+        if (checkCageCapacity() !== false) {
+            cageInput = $('input[name="cage"]:checked').val()
+
+            for (let i = 0; i < userCages.length; i++) {
+                if (cageInput === userCages[i].cageName) {
+                    cageIndex = i
+                }
+            }
+        }
+
         //clears after submit
         $('#name').val('')
         $sexInput.prop('checked', false)
         $breedInput.prop('checked', false)
 
+        const newRatty = rats.length-1
+
         //local storage get rats
         JSON.parse(localStorage.getItem('ratArray'))
+        JSON.parse(localStorage.getItem('cageArray'))
 
         if (nameInput === 'gwenk'){
             rats.push(new Rat(nameInput, 'male', 'stinky', 'rex'))
+
+            rats[newRatty].moveCage(userCages[cageIndex].cageName,userCages[cageIndex].heldRats, rats[newRatty])
         } else {
-            rats.push(new Rat(idCounter, nameInput, sexInput, randomPersonality, breedInput))
+            rats.push(new Rat(idCounter, nameInput, sexInput, randomPersonality, breedInput, cageInput))
+            
+            rats[newRatty].moveCage(userCages[cageIndex].cageName,userCages[cageIndex].heldRats, rats[newRatty])
         }
+
+        // rats[0].moveCage(userCages[0].cageName, userCages[0].heldRats, rats[0])
+        console.log(rats[newRatty])
+        console.log(userCages[cageIndex])
         
         //local storage add new rat to cage
         localStorage.setItem('ratArray', JSON.stringify(rats))
 
+        localStorage.setItem('cageArray', JSON.stringify(userCages))
+
         showRat()
     })
 
+    // console.log(rats[rats.length-1])
+    // console.log(userCages[cageIndex])
+
     // Buy a cage
     $('.cageForm').on('submit', event => {
-        event.preventDefault()
+        // event.preventDefault()
 
         const $cageInput = $('input[name="cage"]')
         let cageInput = $('input[name="cage"]:checked').val()

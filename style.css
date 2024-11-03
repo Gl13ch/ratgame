@@ -21,3 +21,10 @@ body{
 #ifCage{
     display:none;
 }
+
+.cageContainer{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+

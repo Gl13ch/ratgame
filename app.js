@@ -89,7 +89,7 @@ $(() => {
     const personalityArr = ['agile','anxious','attentive','bold', 'cautious','communicative','cconfident','curious','determined','docile','dominant','easy going','easy to handle','enthusiastic','friendly','cheerful','irritable','lively','shy','solitary','tame','tempermental','trusting']
 
     //starts at neutral
-    const moodArr = ['happy','sad','angry','content', 'thrilled', 'whatever']
+    const moodArr = ['happy','sad','angry','content', 'thrilled', 'whatever', 'stressed']
 
     //user input
     const foodTypeArr = ['cheap','normal','expensive']
@@ -246,43 +246,237 @@ $(() => {
 
     //creates cage options to put rats in when buying a rat
     let onlyAvailableCage = []
+    let ifRatInCage = []
 
     const $moveText = $('<p>').text('Would you like to move your rat to another cage?')
     $moveText.prependTo($('#modalText'))
+
+    // const isRatInCage = () => {
+    //     for (let j = 0; j < onlyAvailableCage.length; j++) {
+    //         for (let k = 0; k < onlyAvailableCage[j].heldRats.length; k++) {
+    //             if (onlyAvailableCage[j].heldRats[k].id === Number(currentRatId[0])) {
+    //                 console.log('should skip')
+    //                 return false
+    //             } else {
+    //                 console.log('should push')
+    //                 return true
+    //             }
+    //             // console.log(onlyAvailableCage[j].heldRats[k].id)
+    //             // console.log(currentRatId[0])
+    //         }
+    //     }
+    // }
     
     const checkCageCapacity = () => {
+        //resets on function call
         onlyAvailableCage.length = 0
+        ifRatInCage.length = 0
+
+        //resets values
         $('input[name="shopCage"]').remove()
         $('label[for="shopCage"]').remove()
         $('input[name="ratInfoCage"]').remove()
         $('label[for="ratInfoCage"]').remove()
+
+        //if capacity is available push into array
         for (let i = 0; i < userCages.length; i++) {
             if (userCages[i].capacity <= userCages[i].heldRats.length) {
-                console.log("skipped")
+                // console.log("skipped")
             } else {
                 // console.log('pushed to temp array')
                 onlyAvailableCage.push(userCages[i])
             }
         }
 
+        // console.log(onlyAvailableCage)
+        //if rat is in cage put that cage into array to be checked against
+        
+        for (let i = 0; i < userCages.length; i++) {
+            // console.log(onlyAvailableCage[0].heldRats.length > 0)
+            
+            // if (onlyAvailableCage[0].heldRats.length > 0) {
+            //     for (let k = 0; k < onlyAvailableCage[i].heldRats.length; k++) {
+            //         console.log('i:', i)
+            //         console.log('k:', k)
+            //         if (onlyAvailableCage[i].heldRats[k].id !== Number(currentRatId[0])) {
+            //             console.log('should skip')
+            //         } else {
+            //             console.log('should push')
+            //             ifRatInCage.push(userCages[i])
+            //         }
+            //     }
+            // } else {
+                
+            // }
+            userCages[i].heldRats.forEach(element => {
+                if (element.id !== Number(currentRatId[0])) {
+                    console.log('should skip')
+                } else {
+                    console.log('should push')
+                    ifRatInCage.push(userCages[i])
+                }
+            });
+        }
+        console.log(ifRatInCage)
+
+        for (let j = 0; j < onlyAvailableCage.length; j++) {
+
+        if (ifRatInCage.length > 0) {
+            if (ifRatInCage[0].tag === onlyAvailableCage[j].tag) {
+                
+            } else {
+                //users rats
+                    const $ratInfoCageRadio = $(`<input type="radio" name="ratInfoCage" required="true" value='${onlyAvailableCage[j].cageName}'>`)
+                    const $ratInfoCageLabel = $(`<label for="ratInfoCage">${onlyAvailableCage[j].cageName}</label>`)
+
+                    const $inRatInfo = $('.moveRat').prepend($ratInfoCageRadio,$ratInfoCageLabel)
+            }
+            }
+        }
+       
+        //if there is only one cage in the array no need to display
         if (onlyAvailableCage.length > 1) {
             // console.log('2 or more cages')
+            let availableCageRatId = []
 
+            //loop through available cages with capacity to display them to user
             for (let j = 0; j < onlyAvailableCage.length; j++) {
+
+                //shop
                 const $shopCageRadio = $(`<input type="radio" name="shopCage" required="true" value='${onlyAvailableCage[j].cageName}'>`)
                 const $shopCageLabel = $(`<label for="shopCage">${onlyAvailableCage[j].cageName}</label>`)
-
-                const $ratInfoCageRadio = $(`<input type="radio" name="ratInfoCage" required="true" value='${onlyAvailableCage[j].cageName}'>`)
-                const $ratInfoCageLabel = $(`<label for="ratInfoCage">${onlyAvailableCage[j].cageName}</label>`)
-
+                
+                //shop can show all
                 const $inShop = $('#ratSubmit').before($shopCageRadio,$shopCageLabel)
 
-                const $inRatInfo = $('.moveRat').prepend($ratInfoCageRadio,$ratInfoCageLabel)
+                console.log(onlyAvailableCage)
+                console.log(ifRatInCage)
+
+                //rats in cage?
+            //     if (ifRatInCage.length > 0) {
+            //         if (ifRatInCage[0].tag === onlyAvailableCage[j].tag) {
+                        
+            //         } else {
+            //             //users rats
+            //                 const $ratInfoCageRadio = $(`<input type="radio" name="ratInfoCage" required="true" value='${onlyAvailableCage[j].cageName}'>`)
+            //                 const $ratInfoCageLabel = $(`<label for="ratInfoCage">${onlyAvailableCage[j].cageName}</label>`)
+
+            //                 const $inRatInfo = $('.moveRat').prepend($ratInfoCageRadio,$ratInfoCageLabel)
+            //         }
+            //    }
+                
+
+                // for (let k = 0; k < onlyAvailableCage[j].heldRats.length; k++) {
+                //     if (onlyAvailableCage[j].heldRats[k].id === Number(currentRatId[0])) {
+                //         console.log('should skip')
+                //         return false
+                //     } else {
+                //         console.log('should push')
+                //         return true
+                //     }
+                //     // console.log(onlyAvailableCage[j].heldRats[k].id)
+                //     // console.log(currentRatId[0])
+                // }
+
+
+
+                // userCages[j].heldRats.forEach(element => {
+                //     console.log(element)
+                //     if (element.id === Number(currentRatId[0])) {
+                //         console.log('skipped',onlyAvailableCage[j].cageName)
+                //     } else {
+                //         //users rats
+                //         const $ratInfoCageRadio = $(`<input type="radio" name="ratInfoCage" required="true" value='${onlyAvailableCage[j].cageName}'>`)
+                //         const $ratInfoCageLabel = $(`<label for="ratInfoCage">${onlyAvailableCage[j].cageName}</label>`)
+
+                //         const $inRatInfo = $('.moveRat').prepend($ratInfoCageRadio,$ratInfoCageLabel)
+                //     }
+                // });
+
+                // console.log(isRatInCage())
+                // if (isRatInCage() === true) {
+                    //users rats
+                    // const $ratInfoCageRadio = $(`<input type="radio" name="ratInfoCage" required="true" value='${onlyAvailableCage[j].cageName}'>`)
+                    // const $ratInfoCageLabel = $(`<label for="ratInfoCage">${onlyAvailableCage[j].cageName}</label>`)
+
+                    // const $inRatInfo = $('.moveRat').prepend($ratInfoCageRadio,$ratInfoCageLabel)
+                // }
+                
+
+                //this is most certainly going to display elements twice
+
+                // can maybe do this out side of loop the return true/false then if true make if false skip
+                // for (let k = 0; k < onlyAvailableCage[j].heldRats.length; k++) {
+                //     // availableCageRatId.push(onlyAvailableCage[j].heldRats[k].id)
+
+                //     //this works, but how to break out of nested loop
+                //     if (onlyAvailableCage[j].heldRats[k].id === Number(currentRatId[0])) {
+                //         console.log('skipped',onlyAvailableCage[j].cageName)
+                //     } else {
+
+                //         //users rats
+                //         const $ratInfoCageRadio = $(`<input type="radio" name="ratInfoCage" required="true" value='${onlyAvailableCage[j].cageName}'>`)
+                //         const $ratInfoCageLabel = $(`<label for="ratInfoCage">${onlyAvailableCage[j].cageName}</label>`)
+
+                //         console.log('test')
+                //         const $inRatInfo = $('.moveRat').prepend($ratInfoCageRadio,$ratInfoCageLabel)
+                //     }
+                //     // console.log(onlyAvailableCage[j].heldRats[k].id)
+                //     // console.log(currentRatId[0])
+                // }
+
+                // if (availableCageRatId === Number(currentRatId[0])) {
+                    
+                // }
+
+
+                
             }
+            // userCages.forEach(e => {
+            //     e.heldRats.forEach(element => {
+            //         console.log(element)
+            //         if (element.id === Number(currentRatId[0])) {
+            //             console.log('skipped',e.cageName)
+            //         } else {
+            //             //users rats
+            //             const $ratInfoCageRadio = $(`<input type="radio" name="ratInfoCage" required="true" value='${e.cageName}'>`)
+            //             const $ratInfoCageLabel = $(`<label for="ratInfoCage">${e.cageName}</label>`)
+    
+            //             const $inRatInfo = $('.moveRat').prepend($ratInfoCageRadio,$ratInfoCageLabel)
+            //         }
+            //     });
+            // });
+            
+            // for (let j = 0; j < onlyAvailableCage.length; j++) {
+            //     for (let k = 0; k < onlyAvailableCage[j].heldRats.length; k++) {
+            //         if (onlyAvailableCage[j].heldRats[k].id === Number(currentRatId[0])) {
+            //             console.log('should skip')
+            //         } else {
+            //             //users rats
+            //             const $ratInfoCageRadio = $(`<input type="radio" name="ratInfoCage" required="true" value='${onlyAvailableCage[k].cageName}'>`)
+            //             const $ratInfoCageLabel = $(`<label for="ratInfoCage">${onlyAvailableCage[k].cageName}</label>`)
+
+            //             const $inRatInfo = $('.moveRat').prepend($ratInfoCageRadio,$ratInfoCageLabel)
+            //         }
+            //     }
+            // }
+                    // console.log(onlyAvailableCage[j].heldRats[k].id)
+                    // console.log(currentRatId[0])
+                // }
+            // }
+            // console.log(availableCageRatId)
         } else{
             console.log(onlyAvailableCage)
-        }
+        } 
     }
+    
+    // if rat is in a cage should not be able to move to the cage it is already in
+    // const checkifRatInCage = () => {
+    //     if (currentSelectedRat === cage.heldrats[].rat) {
+            // then skip over or maybe slice that cage from the array, if skip over, can I even access it from loop, will it run more than once?
+            // slice or splice might work
+    //     }
+    // }
 
     // MODAL
     const $modal = $('#modal')
@@ -294,17 +488,20 @@ $(() => {
         $modal.hide()
     }
     $close.on('click',closeModal)
+
+    let currentRatId = []
     
     //open modal
-    const currentRatId = []
     $open.on('click', (event) => {
         $('.allRatInfo').remove()
         currentRatId.length = 0
         $modal.show()
 
+
         let eventID = $(event.target).val()
 
         currentRatId.push(eventID)
+        // console.log(currentRatId[0]);
 
         for (let i = 0; i < rats.length; i++) {
             if (rats[i].id == eventID) {

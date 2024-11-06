@@ -28,3 +28,357 @@ body{
     gap: 20px;
 }
 
+
+
+/* CSS RATS */
+/* Canvas */
+.ratProperties{
+    display: none;
+}
+
+.canvas{
+    position: relative;
+    margin-bottom: 5%;
+    display: block;
+    width: 145px;
+    height:135px;
+    float: left;
+}
+
+/* Body */
+.body{
+    position: absolute;
+    background: darkgray;
+    top: 16px;
+    left: 27px;
+    width: 91px;
+    height: 103px;
+    clip-path:polygon(
+        25% 0%, 
+        75% 0%, 
+        100% 30%, 
+        100% 100%, 
+        0% 100%, 
+        0% 30%
+    );
+    border-radius: 80% 80% 50% 50%;
+}
+
+.hairlessBody {
+    background: #b9949a;
+}
+
+.shinySpots{
+    position: absolute;
+    background: white;
+    opacity: 75%;
+    top: 25px;
+    left: 50px;
+    width: 5px;
+    height: 9px;
+    border-radius: 100%;
+    rotate: 50deg;
+}
+
+.shinySpots::after{
+    content: '';
+    position: absolute;
+    /* opacity: 80%; */
+    background: white;
+    top: -10px;
+    left: 1px;
+    width: 4px;
+    height: 8px;
+    border-radius: 100%;
+    rotate: 22deg;
+}
+
+/* Ears */
+.ear {
+    position: absolute;
+    top: 10px;
+    width: 20px;
+    height: 30px;
+    background: darkgray;
+    border-radius: 0% 100% 100% 100%;
+}
+ 
+.ear::after {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    width: 16px;
+    height: 26px;
+    background: #edb6be;
+    border-radius: 0% 100% 100% 100%;
+}
+
+.leftEar {
+    left: 30px;
+    transform: rotate(220deg);
+}
+  
+  .rightEar {
+    left: 94px;
+    transform: rotate(-220deg) scaleX(-1);
+  }
+
+  /* Hairless Ears */
+  .hairlessEar {
+    background: #b9949a;
+  }
+  
+  /* Dumbo Rat Ears */
+  .dumboEar {
+    position: absolute;
+    top: 25px;
+    width: 28px;
+    height: 30px;
+    background: darkgray;
+    border-radius: 0% 100% 100% 100%;
+  }
+
+  .dumboEar::after {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    width: 24px;
+    height: 26px;
+    background: #edb6be;
+    border-radius: 0% 100% 100% 100%;
+  }
+
+  .dumboLeftEar {
+    left: 19px;
+    transform: rotate(195deg);
+  }
+  
+  .dumboRightEar {
+    left: 99px;
+    transform: rotate(-195deg) scaleX(-1);
+  }
+
+  /* Bristle Coat Fur */
+  .bristleFur {
+    position: absolute;
+    left: 77px;
+    top: 8px;
+    width: 5px;
+    height: 15px;
+    background: darkgray;
+    border-radius: 100%;
+    clip-path: polygon(100% 0, 0% 100%, 100% 100%);
+    rotate: 44deg;
+  }
+
+  .bristleFur2 {
+    position: absolute;
+    left: 72px;
+    top: 9px;
+    width: 5px;
+    height: 15px;
+    background: darkgray;
+    border-radius: 100%;
+    clip-path: polygon(100% 0, 0% 100%, 100% 100%);
+    rotate: 49deg;
+  }
+
+  .bristleFur3 {
+    position: absolute;
+    left: 78px;
+    top: 10px;
+    width: 5px;
+    height: 15px;
+    background: darkgray;
+    border-radius: 100%;
+    clip-path: polygon(100% 0, 0% 100%, 100% 100%);
+    rotate: 44deg;
+  }
+
+  /* Rex Fur */
+  .rexFur{
+    position: absolute;
+    height: 10px;
+    width: 10px;
+    left: 60px;
+    top: 12px;
+    border-radius: 100%;
+    box-shadow: inset 0px 2px 0px 0px darkgray;
+    rotate: 100deg;
+  }
+
+  .rexFur2{
+    position: absolute;
+    height: 10px;
+    width: 10px;
+    left: 59px;
+    top: 15px;
+    border-radius: 100%;
+    box-shadow: inset 0px 2px 0px 0px darkgray;
+    rotate: 80deg;
+  }
+
+  .rexFur3{
+    position: absolute;
+    height: 10px;
+    width: 10px;
+    left: 80px;
+    top: 15px;
+    border-radius: 100%;
+    box-shadow: inset 0px 2px 0px 0px darkgray;
+    rotate: 270deg;
+  }
+
+  /* Toes */
+  .toes {
+    position: absolute;
+    background-color: #edb6be;
+    border-radius: 100%;
+    width: 18px;
+    height: 18px;
+    top: 105px;
+  }
+
+  .toesLeft {
+    left: 32px;
+  }
+
+  .toesRight {
+    left: 94px; 
+  }
+
+  /* Hands */
+  .hands {
+    position: absolute;
+    background-color: #edb6be;
+    border-radius: 100%;
+    width: 15px;
+    height: 15px;
+    top: 88px;
+  }
+
+  .handsLeft {
+    left: 50px;
+  }
+
+  .handsRight {
+    left: 80px; 
+  }
+
+  /* Nose */
+  .nose {
+    position: absolute;
+    background-color: #edb6be;
+    width: 14px;
+    height: 9px;
+    top: 59px;
+    left: 66px;
+    clip-path: polygon(20% 100%, 80% 100%, 100% 0, 0 0);
+    border-radius: 80%;
+  }
+
+  /* whiskers */
+  .whiskers {
+    position: absolute;
+    height: 1px;
+    width: 35px;
+    background: rgb(77, 76, 76);
+    top: 62px;
+  }
+
+  .whiskersLeft{
+    left: 20px;
+  }
+
+  .whiskersLeft::after{
+    content: '';
+    position: absolute;
+    top: 9px;
+    left: 0px;
+    height: 1px;
+    width: 35px;
+    background: rgb(77, 76, 76);
+    rotate: -10deg;
+  }
+
+  .whiskersRight{
+    left: 90px;
+  }
+
+  .whiskersRight::after{
+    content: '';
+    position: absolute;
+    top: 9px;
+    height: 1px;
+    left: 0px;
+    width: 35px;
+    background: rgb(77, 76, 76);
+    rotate: 10deg;
+  }
+
+  /* Eyes */
+  .eyes {
+    position: absolute;
+    background-color: black;
+    border-radius: 100%;
+    width: 13px;
+    height: 13px;
+    top: 43px;
+  }
+
+  .eyes::after{
+    content: '';
+    position: absolute;
+    opacity: 85%;
+    border-radius: 100%;
+    width: 7px;
+    height: 7px;   
+    top: 4.5px;
+    left: 4px;
+    box-shadow: inset 0px 2px 0.5px 0px white;
+    rotate: 130deg;
+  }
+
+  .eyesLeft {
+    left: 49px;
+  }
+
+  .eyesRight {
+    left: 85px; 
+  }
+
+  /* Tail */
+  .tail{
+    position: absolute;
+    top: 99px;
+    left: 99px;
+    height: 30px;
+    width: 30px;
+    border: solid 5px #b9949a;
+    border-color: #b9949a #b9949a #b9949a transparent;
+    border-radius: 0 90% 60% 0;
+  }
+
+  .tail::after {
+    content: '';
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    height: 5px;
+    width: 10px;
+    background: #b9949a;
+    border-radius: 90% 0 0 60%;
+  }
+
+  /* Hairless Tail */
+  .hairlessTail {
+    border: solid 5px #edb6be;
+    border-color: #edb6be #edb6be #edb6be transparent;
+  }
+
+  .hairlessTail::after{
+    background: #edb6be;
+  }
+

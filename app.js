@@ -65,6 +65,7 @@ $(() => {
         }
     }
 
+    //Cages
     const cageContainer = []
 
     const smallCage = new Cage('smallCage','small cage', 2,'$100')
@@ -79,8 +80,19 @@ $(() => {
     cageContainer.push(athleticCage)
     cageContainer.push(beautyCage)
 
-    //VARIABLES
+    //VARIABLES---------------------------------
 
+    //CSS Rats
+    // const $canvas = $('.canvas')
+    // const $standardCss = $('div.canvas.standard')
+    // const $satinCss = $('div.canvas.satin')
+    // const $dumboCss = $('div.canvas.dumbo')
+    // const $bristleCoatCss = $('div.canvas.bristleCoat')
+    // const $taillessCss = $('div.canvas.tailless')
+    // const $hairlessCss = $('div.canvas.hairless')
+    // const $rexCss = $('div.canvas.rex')
+
+    //Rat Variables:
     //user input
     const sexArr = ['Male', 'Female']
 
@@ -134,6 +146,26 @@ $(() => {
     //morning - sleepy rats
     //evening - semi active/sleepy
     //night - very active
+
+    // Tests---------------------------------------
+
+    //Works, test to make sure you can append a div and all it's children
+    // const divChildrenTest = () =>{
+    //     let $canvas = $('div.canvas.standard')
+    //     // console.log($canvas.attr('class'))
+    //     $canvas.appendTo(".test")
+    //     $canvas.children().appendTo($canvas)
+    // }
+    // divChildrenTest()
+
+    // Hover Test
+    // $('.hoverme').on( "mouseenter", () =>{
+    //     $('.showme').show()
+    // }).on( "mouseleave", () =>{
+    //     $('.showme').hide()
+    // });
+
+    // -------------------------------------------
 
     //randomizers
     const randomizeArray  = (array) => {
@@ -204,18 +236,51 @@ $(() => {
 
     //show cages owned with rats owned into specific cage
     const showCages = () => {
+        let $canvas = ''
+        // let $clone = ''
         for (let i = 0; i < cages.length; i++) {
+
             const $cages = $('<div>').addClass('cage').attr('id', cages[i].tag).appendTo($('.cageContainer'))
 
             const $cageName = $('<h3>').text(`${cages[i].cageName}`).appendTo($(`#${cages[i].tag}`))
 
-            for (let j = 0; j < cages[i].heldRats.length; j++) {
-                $('<button>').attr('id', cages[i].heldRats[j].id).val(`${cages[i].heldRats[j].id}`).text(`${cages[i].heldRats[j].name}:${cages[i].heldRats[j].id}`).addClass('ratInfo').appendTo($(`#${cages[i].tag}`))
-            }
+            cages[i].heldRats.forEach(element => {
+
+                let $rat = $('<div>').attr('id', element.id).addClass(`${element.breed} canvas`).appendTo($(`#${cages[i].tag}`))
+
+                $(`div.${element.breed}.canvas`).children().clone().prependTo($rat)
+            })
+        }
+    }   
+
+    load()
+    // After load()---------------------------------
+
+
+    //check capacity of all user cages, if room in any cage return true
+    const globalCapacity = () => {
+        for (let i = 0; i < cages.length; i++) {
+            if (!(cages[i].capacity <= cages[i].heldRats.length)) {
+                return true
+            } 
         }
     }
 
-    load()
+    //show name above rat
+    $('.canvas').on( "mouseenter", event =>{
+        const currentRat = event.currentTarget
+        for (let i = 0; i < rats.length; i++) {
+
+            if (rats[i].id == currentRat.id) {
+                 let ratId = i
+
+                 $('<p>').addClass('ratName').text(`${rats[ratId].name}`).appendTo(currentRat)
+            }
+        }
+    }).on( "mouseleave", () =>{
+        
+        $('.ratName').remove()
+    });
 
     //BABY RAT - sets mother and father
     // Will be matchmaking in shop
@@ -294,20 +359,15 @@ $(() => {
                 const $shopCageLabel = $(`<label for="shopCage">${onlyAvailableCage[j].cageName}</label>`)
                 
                 //shop can show all
-                const $inShop = $('#ratSubmit').before($shopCageRadio,$shopCageLabel)
-
-                // console.log(onlyAvailableCage)
-                // console.log(ifRatInCage)       
+                const $inShop = $('#ratSubmit').before($shopCageRadio,$shopCageLabel)      
             }
-        } else{
-            // console.log("currentRatCage:",onlyAvailableCage)
-        } 
+        }
     }
 
     // MODAL
     const $modal = $('#modal')
     const $close = $('#close')
-    const $open = $('.ratInfo')
+    const $open = $('.canvas')//click on rat
 
     //close modal
     const closeModal = () => {
@@ -325,13 +385,14 @@ $(() => {
 
         $modal.show()
 
-        let eventID = $(event.target).val()
+        // let eventID = event.currentTarget
+        let eventID = event.currentTarget.getAttribute('id')
 
         currentRatId.push(eventID)
         
         for (let i = 0; i < rats.length; i++) {
 
-            if (rats[i].id == eventID) {
+            if ((rats[i].id) == eventID) {
 
                 //get the array
                  let ratId = i
@@ -417,6 +478,8 @@ $(() => {
         }
     })
 
+    
+
     //move rat to another cage
     //should not show the cage the rat is currently in 
     $('.moveRat').on('submit', event => {
@@ -464,15 +527,6 @@ $(() => {
         localStorage.setItem('ratArray', JSON.stringify(rats))
         localStorage.setItem('cageArray', JSON.stringify(cages))
     })
-
-    //check capacity of all user cages, if room in any cage return true
-    const globalCapacity = () => {
-        for (let i = 0; i < cages.length; i++) {
-            if (!(cages[i].capacity <= cages[i].heldRats.length)) {
-                return true
-            } 
-        }
-    }
 
     //show shop items depending on what player wants to look at 
     $('.shopItems').on('click', event => {

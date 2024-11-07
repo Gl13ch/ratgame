@@ -1,13 +1,19 @@
 $(() => {
+
+    // STEPS TO ADDING NEW VARIABLES TO RAT
+    // Pass variable in all 3 places in rat(this.val = val) constructor(val)
+    // pass in onsubmit event
+    // reset local storage
     class Rat {
-        constructor(id,name,sex,personality,breed,cage){
+        constructor(id,name,sex,personality,breed,cage,fur, hasRedEyes){
             this.id = id
             this.name = name
             this.sex = sex
             this.personality = personality
             this.breed = breed
             this.cage = cage
-            this.fur = ''
+            this.fur = fur
+            this.hasRedEyes = hasRedEyes
             this.happiness = 50
             this.affection = 'neutral'
             this.mood = 'neutral'
@@ -26,7 +32,7 @@ $(() => {
             this.wheel = 'untrained'
             this.nibbling = 'untrained'
             this.competitionRank = 1
-            this.competitionEntered = []
+            this.competitionEntered = ''
             this.age = '1 month'
             this.mother = ''
             this.father = ''
@@ -48,12 +54,13 @@ $(() => {
     }
 
     class ShopRats {
-        constructor(shopId, breed, sex, personality, fur) {
+        constructor(shopId, breed, sex, personality, fur, hasRedEyes) {
             this.shopId = shopId
             this.breed = breed
             this.sex = sex
             this.personality = personality
             this.fur = fur
+            this.hasRedEyes = hasRedEyes
         }
     }
 
@@ -180,6 +187,12 @@ $(() => {
     //     $('.showme').hide()
     // });  
 
+    //BABY RAT - sets mother and father
+    // Will be matchmaking in shop
+    // Should be a chance
+    // will probably need rat relationships to increase chances
+    // rats[0].baby(rats[0].breed, rats[0].name, rats[1].name)
+
     // -------------------------------------------
 
     //randomizers
@@ -227,6 +240,7 @@ $(() => {
 
         //reinstantiate rats
         for (let i = 0; i < rats.length; i++) {
+            // console.log()
             tempRats.push(new Rat(...Object.values(rats[i])))
         }
         rats.length = 0
@@ -260,10 +274,21 @@ $(() => {
             const $cageName = $('<h3>').text(`${cages[i].cageName}`).appendTo($(`#${cages[i].tag}`))
 
             cages[i].heldRats.forEach(element => {
-
+                // console.log(element)
                 let $rat = $('<div>').attr('id', element.id).addClass(`${element.breed} canvas`).css('cursor','pointer').appendTo($(`#${cages[i].tag}`))
 
                 $(`#${element.breed.toUpperCase()}`).children().clone().prependTo($rat)
+
+                if (element.breed != 'hairless') {
+                    let $body = $(`#${element.id}`).children('.ratBody').addClass(`${element.fur}`)
+                    let $ear = $(`#${element.id}`).children('.ear').addClass(`${element.fur}`)
+                    let $fur = $(`#${element.id}`).children('.fur').addClass(`${element.fur}`)
+        
+                    let $rexFur = $(`#${element.id}`).children('.rexFur').addClass(`rexFur-${element.fur}`).css('background', 'transparent')
+                }
+                if (element.hasRedEyes === true) { 
+                    let $eyes = $(`#${element.id}`).children('.eyes').addClass(`red`)
+                }
             })
         }
     }
@@ -271,12 +296,9 @@ $(() => {
     load()
     // After load()-------------------------------
 
-    // when choose to buy rats on shop open ask which breed would like to buy then randomly generate 3 colors to choose from, should I also generate gender and personality and show, or just show gender, or be able to always choose male or female.
-    //eventully rat breeds will unlock later, so starting rat maybe choose standard rat and always be able to choose between male and female.
-    // choosing between male and female should probably always be choice, so maybe only show color
-    // "these are the color choices I have available:"
-    // show rat or show just an example of the color
+    // console.log(rats)
 
+    //create array of 3 random fur colors
     const createShopFurs = () => {
         const shopFurColors = []
         for (let i = 0; i < 3; i++) {
@@ -286,6 +308,7 @@ $(() => {
         return shopFurColors
     }
 
+    // create array of 3 random sexes
     const createAvailableSexes = () => {
         const shopSexes = []
         for (let i = 0; i < 3; i++) {
@@ -295,57 +318,42 @@ $(() => {
         return shopSexes
     }
 
+    // check if array(shopFurColors) has any dupes, if it does rerun array(shopFurColors)
     const checkForDupes = (array) => {
         const uniqueFur = new Set(array)
-        // console.log(uniqueFur)
-        // console.log(array)
         if (uniqueFur.size !== array.length) {
-            // console.log('dupes')
-            // console.log(false)
             createShopFurs()
             return false
         } else {
-            // console.log('no dupes')
             return array
         }
     }
 
+    // check if all the values in the array(shopSexes) are the same, if all values are the same reroll
     const allSame = (array) => {
         if (array.every(val => val === array[0])) {
-            // console.log(array)
-            // console.log('they are all the same')
-            // console.log(false)
             createAvailableSexes()
             return false
         } else {
-            // console.log(array)
-            // console.log('they are not all the same')
             return array
         }
     }
 
+    // random number between 0-20
     const redEyesChance = () => {
         const random = Math.floor(Math.random() * 20)
-        // console.log(random)
-        return random
+        if (random === 1) {
+            // console.log('has red eyes')
+            return true
+        }else{
+            // console.log('has black eyes')
+            return false
+        }
     }
 
-    // $('#0 div:nth-child(7)').addClass('black')
-    // console.log($('.ratBody'))
 
-
-    // const test = $(`#STANDARD`).children()
-    // console.log(test)
-
-    let shopRats = []
-
-    //generate daily shop
-    $('input[type="radio"][name="breed"]').on('change', event => {
-        shopRats.length = 0
-        $('#a').remove()
-        $('#b').remove()
-        $('#c').remove()
-
+    const generateShopRats = () => {
+        let shopRats = []
         let currentBreed = $(event.target).val()
         let shopFurColors = []
         let shopSexesAvailable = []
@@ -362,11 +370,11 @@ $(() => {
         for (let i = 0; i < 3; i++) {
             const randomPersonality = personalityArr[randomizeArray(personalityArr)]
 
-            shopRats.push(new ShopRats(shopRatIds[i], currentBreed, shopSexesAvailable[i], randomPersonality, shopFurColors[i]))
+            shopRats.push(new ShopRats(shopRatIds[i], currentBreed, shopSexesAvailable[i], randomPersonality, shopFurColors[i], redEyesChance()))
         }
+        // console.log(shopRats)
 
         shopRats.forEach(element => {
-            // console.log('ran')
             let $shopRats = $('<div>').attr('id', element.shopId).addClass(`${element.breed} canvas shopRats`).css('cursor','pointer').appendTo($('.shopRatsContainer'))
 
             $(`#${element.breed.toUpperCase()}`).children().clone().prependTo($shopRats)
@@ -378,15 +386,31 @@ $(() => {
     
                 let $rexFur = $(`#${element.shopId}`).children('.rexFur').addClass(`rexFur-${element.fur}`).css('background', 'transparent')
             }
-            if (redEyesChance() === 1) { 
+            if (element.hasRedEyes === true) { 
                 let $eyes = $(`#${element.shopId}`).children('.eyes').addClass(`red`)
             }
         })
+        return shopRats
+    } 
+
+    let currentShopRats = ''
+    
+    //on choosing breed - generate shop rats
+    $('input[name="breed"]').on('change', event => {
+        // reset values
+        $('#a').remove()
+        $('#b').remove()
+        $('#c').remove()
+        $('.wantToBuy').remove()
+
+        currentShopRats = generateShopRats()
+        
+        // mouseenter works wierd with delegating, but works fine nested.
         $('.shopRats').on("mouseenter", event => {
             const currentRat = event.currentTarget
-            for (let i = 0; i < shopRats.length; i++) {
-                if (shopRats[i].shopId == currentRat.id) {
-                    $('<p>').addClass('ratSexes').text(`${shopRats[i].sex}`).appendTo(currentRat)
+            for (let i = 0; i < currentShopRats.length; i++) {
+                if (currentShopRats[i].shopId == currentRat.id) {
+                    $('<p>').addClass('ratSexes').text(`${currentShopRats[i].sex}`).appendTo(currentRat)
                 }
             }
         }).on("mouseleave", () =>{
@@ -394,7 +418,52 @@ $(() => {
         });
     })
 
-    // console.log(shopRats)
+    const ratToBuy = []
+
+    let ifAlreadyClicked = true
+
+    $('.shopRatsContainer').on("click",".shopRats", event => {
+        if (ifAlreadyClicked === true) {
+            
+            // remove values
+            $('.wantToBuy').remove()
+
+            const $currentRat = event.currentTarget
+            // console.log($currentRat)
+            currentShopRats.forEach(element => {
+                if ($currentRat.id !== element.shopId) {
+                    $(`#${element.shopId}`).hide()
+                } else {
+                    ratToBuy.push(element)
+                    const $wantToBuy = $('<div>').addClass('wantToBuy').appendTo('.tempItems')
+                    $(`#${$currentRat.id}`).after($('.wantToBuy'))
+                    $('<p>').text('Would you like to buy this rat?').appendTo('.wantToBuy')
+                    $('<button>').addClass('yesButton').val('yes').text('Yes').appendTo($('.wantToBuy'))
+                    $('<button>').addClass('noButton').val('no').text('No').appendTo($('.wantToBuy'))
+                    ifAlreadyClicked = false
+                }
+            })
+        }
+    })
+
+    $('.shopRatsContainer').on('click',".yesButton", event => {
+        $('.wantToBuy').remove()
+        console.log(ratToBuy)
+
+        $('.shopName').show()
+        $('.shopSubmit').show()
+
+        // move onto submit
+    })
+
+    $('.shopRatsContainer').on('click',".noButton", event => {
+        // $('.shopRatsContainer').on("click",".shopRats")
+        $('.wantToBuy').remove()
+        $('.shopRats').show()
+        ratToBuy.length = 0
+        ifAlreadyClicked = true
+    })
+
     //check capacity of all user cages, if room in any cage return true
     const globalCapacity = () => {
         for (let i = 0; i < cages.length; i++) {
@@ -403,8 +472,6 @@ $(() => {
             } 
         }
     }
-
-    // console.log(shopRats)
 
     //show name above rat
     $('.canvas').on( "mouseenter", event => {
@@ -422,12 +489,6 @@ $(() => {
         
         $('.ratName').remove()
     });
-
-    //BABY RAT - sets mother and father
-    // Will be matchmaking in shop
-    // Should be a chance
-    // will probably need rat relationships to increase chances
-    // rats[0].baby(rats[0].breed, rats[0].name, rats[1].name)
 
     //creates cage options to put rats in when buying a rat
     let onlyAvailableCage = []
@@ -706,22 +767,24 @@ $(() => {
 
             let nameInput = $('#name').val()
 
-            const $sexInput = $('input[name="sex"]')
-            let sexInput = $('input[name="sex"]:checked').val()
+            let sexInput = ratToBuy[0].sex
 
-            const $breedInput = $('input[name="breed"]')
-            let breedInput = $('input[name="breed"]:checked').val()
+            let breedInput = ratToBuy[0].breed
+
+            let furInput = ratToBuy[0].fur
+
+            let hasRedEyesInput = ratToBuy[0].hasRedEyes
 
             const $cageInput = $('input[name="shopCage"]')
             let cageInput = $('input[name="shopCage"]:checked').val()
 
             //clears after submit
             $('#name').val('')
-            $sexInput.prop('checked', false)
-            $breedInput.prop('checked', false)
+            // $sexInput.prop('checked', false)
+            // $breedInput.prop('checked', false)
             $cageInput.prop('checked', false)
 
-            
+            // Cage logic
             if (onlyAvailableCage.length === 1){
                 cageInput = onlyAvailableCage[0].cageName
             }
@@ -737,7 +800,7 @@ $(() => {
         
             if (rats.length > 0) {
                 newRattyIndex = rats.length
-            }        
+            }      
 
             //local storage get rats
             JSON.parse(localStorage.getItem('ratArray'))
@@ -748,10 +811,12 @@ $(() => {
 
                 rats[newRattyIndex].startingCage(cages[cageIndex].cageName, rats[newRattyIndex], cages[cageIndex].heldRats)
             } else {
-                rats.push(new Rat(idCounter, nameInput, sexInput, randomPersonality, breedInput, cageInput))
+                rats.push(new Rat(idCounter, nameInput, sexInput, randomPersonality, breedInput, cageInput, furInput, hasRedEyesInput))
                 
                 rats[newRattyIndex].startingCage(cages[cageIndex].cageName, rats[newRattyIndex], cages[cageIndex].heldRats)
             }
+
+            console.log(rats)
             
             //local storage add new rat to cage
             localStorage.setItem('ratArray', JSON.stringify(rats))

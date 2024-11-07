@@ -4,7 +4,7 @@ body{
     margin-top: 50px;
 }
 
-.shopSexes, .shopName, .shopSubmit{
+.shopSexes, .shopName, .shopSubmit, .tempItems{
   display: none;
 }
 

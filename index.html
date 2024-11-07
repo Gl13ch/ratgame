@@ -22,19 +22,17 @@
             <p>Which breed would you like to view?</p>
             <form class="ratForm">  
                 <!-- sex -->
-                <input type="radio" required="true" name="sex" value="male">
-                <label for="sex">Male</label>
-                <input type="radio" required="true" name="sex" value="female">
-                <label for="sex">Female</label><br>
+                <input class="shopSexes" type="radio" required="true" name="sex" value="male">
+                <label class="shopSexes" for="sex">Male</label>
+                <input class="shopSexes" type="radio" required="true" name="sex" value="female">
+                <label class="shopSexes" for="sex">Female</label><br>
                 <!-- breed -->
-                <input type="radio" required="true" name="breed" value="standard">
+                <input class="shopBreed" type="radio" required="true" name="breed" value="standard">
                 <label for="breed">Standard</label>
                 <input type="radio" required="true" name="breed" value="rex">
                 <label for="breed">Rex</label>
-
                 <input type="radio" required="true" name="breed" value="tailless">
                 <label for="breed">Tailless</label>
-
                 <input type="radio" required="true" name="breed" value="hairless">
                 <label for="breed">Hairless</label>
                 <input type="radio" required="true" name="breed" value="satin">
@@ -45,9 +43,9 @@
                 <label for="breed">Bristle Coat</label>
                 <br>
                 <!-- name -->
-                <input type="text" required="true" id="name" placeholder="Give rat a name"><br>
+                <input class="shopName" type="text" required="true" id="name" placeholder="Give rat a name"><br>
                 <!-- submit -->
-                <input type="submit" id="ratSubmit">
+                <input class="shopSubmit" type="submit" id="ratSubmit">
             </form>
             <div class="shopRatsContainer"></div>
         </div>
@@ -177,9 +175,9 @@
             <div class="leftEar ear"></div>
             <div class="rightEar ear"></div>
             <div class="tail"></div>
-            <div class="bristleFur"></div>
-            <div class="bristleFur2"></div>
-            <div class="bristleFur3"></div>
+            <div class="bristleFur fur"></div>
+            <div class="bristleFur2 fur"></div>
+            <div class="bristleFur3 fur"></div>
             <div class="ratBody"></div>
             <div class="toesLeft toes"></div>
             <div class="toesRight toes"></div>
@@ -196,9 +194,9 @@
             <div class="leftEar ear"></div>
             <div class="rightEar ear"></div>
             <div class="tail"></div>
-            <div class="rexFur"></div>
-            <div class="rexFur2"></div>
-            <div class="rexFur3"></div>
+            <div class="rexFur1 rexFur"></div>
+            <div class="rexFur2 rexFur"></div>
+            <div class="rexFur3 rexFur"></div>
             <div class="ratBody"></div>
             <div class="toesLeft toes"></div>
             <div class="toesRight toes"></div>

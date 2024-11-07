@@ -4,39 +4,35 @@ body{
     margin-top: 50px;
 }
 
-.showme{
-    display: none;
+.shopSexes, .shopName, .shopSubmit{
+  display: none;
 }
 
-.allRatInfo {
+#modal, #ifRat, #ifCage {
+  display: none;
+}
+
+.allRatInfo, .cageContainer, .shopRatsContainer{
     display: flex;
     justify-content: center;
     gap: 20px;
 }
 
-#modal {
-    display: none;
+.shopRatsContainer{
+  margin-top: 2%;
 }
 
-#ifRat{
-    display:none;
-}
-
-#ifCage{
-    display:none;
-}
-
-.cageContainer{
-    display: flex;
-    justify-content: center;
-    gap: 20px;
+.ratName, .ratSexes{
+  position: relative;
+  justify-content: center;
+  top: -30px;
 }
 
 /* CSS RATS */
+/* container */
 .ratProperties{
     display: none;
 }
-
 /* Canvas */
 .canvas{
     position: relative;
@@ -44,13 +40,6 @@ body{
     width: 145px;
     height:135px;
     float: left;
-}
-
-
-.ratName{
-    position: relative;
-    justify-content: center;
-    top: -30px;
 }
 
 /* Body */
@@ -206,14 +195,13 @@ body{
   }
 
   /* Rex Fur */
-  .rexFur{
+  .rexFur1{
     position: absolute;
     height: 10px;
     width: 10px;
     left: 60px;
     top: 12px;
     border-radius: 100%;
-    box-shadow: inset 0px 2px 0px 0px darkgray;
     rotate: 100deg;
   }
 
@@ -224,7 +212,6 @@ body{
     left: 59px;
     top: 15px;
     border-radius: 100%;
-    box-shadow: inset 0px 2px 0px 0px darkgray;
     rotate: 80deg;
   }
 
@@ -235,7 +222,6 @@ body{
     left: 80px;
     top: 15px;
     border-radius: 100%;
-    box-shadow: inset 0px 2px 0px 0px darkgray;
     rotate: 270deg;
   }
 
@@ -392,68 +378,138 @@ body{
 
 /* COLORS */
 .beige{
-    background: #bfae94;
-  }
+  background: #bfae94;
+}
   
-  .black{
-    background: #282828;
-  }
-  
-  .blue{
-    background: #676360;
-  }
-  
-  .blueBeige{
-    background: #c2c5be;
-  }
-  
-  .champagne{
-    background: #d1b8a4;
-  }
-  
-  .chocolate{
-    background: #493828;
-  }
-  
-  .cocoa{
-    background: #7d684d;
-  }
-  
-  .lilac{
-    background: #ad9f96;
-  }
-  
-  .mink{
-    background: #6d6057;
-  }
-  
-  .platinum{
-    background: #c3c0bb;
-  }
-  
-  .powderBlue{
-    background: #b2b1af;
-  }
-  
-  .russianBlue{
-    background: #645d57;
-  }
-  
-  .russianDove{
-    background: #ac9e93;
-  }
-  
-  .skyBlue{
-    background: #84857f;
-  }
-  
-  .white{
-    background: #edecf1;
-  }
-  
-  .red{
-    background: #cc6053;
-  }
+.black{
+  background: #282828;
+}
+
+.blue{
+  background: #676360;
+}
+
+.blueBeige{
+  background: #c2c5be;
+}
+
+.champagne{
+  background: #d1b8a4;
+}
+
+.chocolate{
+  background: #493828;
+}
+
+.cocoa{
+  background: #7d684d;
+}
+
+.lilac{
+  background: #ad9f96;
+}
+
+.mink{
+  background: #6d6057;
+}
+
+.platinum{
+  background: #c3c0bb;
+}
+
+.powderBlue{
+  background: #b2b1af;
+}
+
+.russianBlue{
+  background: #645d57;
+}
+
+.russianDove{
+  background: #ac9e93;
+}
+
+.skyBlue{
+  background: #84857f;
+}
+
+.white{
+  background: #edecf1;
+}
+
+.red{
+  background: #cc6053;
+}
+
+/* Rex top of head fur */
+.rexFur{
+  box-shadow: inset 0px 2px 0px 0px darkgray;
+}
+
+.rexFur-beige{
+  box-shadow: inset 0px 2px 0px 0px #bfae94;
+}
+
+.rexFur-black{
+  box-shadow: inset 0px 2px 0px 0px #282828;
+}
+
+.rexFur-blue{
+  box-shadow: inset 0px 2px 0px 0px #676360;
+}
+
+.rexFur-blueBeige{
+  box-shadow: inset 0px 2px 0px 0px #c2c5be;
+}
+
+.rexFur-champagne{
+  box-shadow: inset 0px 2px 0px 0px #d1b8a4;
+}
+
+.rexFur-chocolate{
+  box-shadow: inset 0px 2px 0px 0px #493828;
+}
+
+.rexFur-cocoa{
+  box-shadow: inset 0px 2px 0px 0px #7d684d;
+}
+
+.rexFur-lilac{
+  box-shadow: inset 0px 2px 0px 0px #ad9f96;
+}
+
+.rexFur-mink{
+  box-shadow: inset 0px 2px 0px 0px #6d6057;
+}
+
+.rexFur-platinum{
+  box-shadow: inset 0px 2px 0px 0px #c3c0bb;
+}
+
+.rexFur-powderBlue{
+  box-shadow: inset 0px 2px 0px 0px #b2b1af;
+}
+
+.rexFur-russianBlue{
+  box-shadow: inset 0px 2px 0px 0px #645d57;
+}
+
+.rexFur-russianDove{
+  box-shadow: inset 0px 2px 0px 0px #ac9e93;
+}
+
+.rexFur-skyBlue{
+  box-shadow: inset 0px 2px 0px 0px #84857f;
+}
+
+.rexFur-white{
+  box-shadow: inset 0px 2px 0px 0px #edecf1;
+}
+
+.rexFur-red{
+  box-shadow: inset 0px 2px 0px 0px #cc6053;
+}
+
 
 
 

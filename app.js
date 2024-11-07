@@ -8,6 +8,7 @@ $(() => {
             this.personality = personality
             this.breed = breed
             this.cage = cage
+            this.fur = ''
             this.happiness = 50
             this.affection = 'neutral'
             this.mood = 'neutral'
@@ -44,6 +45,16 @@ $(() => {
             this.cage = cageIndex
             newCageIndexHeldRats.push(newRat)
             oldCageIndexHeldRats.splice(removeIndex, 1)
+        }
+    }
+
+    class ShopRats {
+        constructor(shopId, breed, sex, personality, fur) {
+            this.shopId = shopId
+            this.breed = breed
+            this.sex = sex
+            this.personality = personality
+            this.fur = fur
         }
     }
 
@@ -93,6 +104,11 @@ $(() => {
     // const $rexCss = $('div.canvas.rex')
 
     //Rat Variables:
+
+    // COLORS
+    // If white then chance to have red eyes
+    const furColors = ['beige', 'black', 'blue', 'blueBeige', 'champagne', 'chocolate', 'cocoa', 'lilac', 'mink', 'platinum', 'powderBlue', 'russianBlue', 'russianDove', 'skyBlue', 'white']
+
     //user input
     const sexArr = ['Male', 'Female']
 
@@ -163,7 +179,7 @@ $(() => {
     //     $('.showme').show()
     // }).on( "mouseleave", () =>{
     //     $('.showme').hide()
-    // });
+    // });  
 
     // -------------------------------------------
 
@@ -248,14 +264,147 @@ $(() => {
 
                 let $rat = $('<div>').attr('id', element.id).addClass(`${element.breed} canvas`).appendTo($(`#${cages[i].tag}`))
 
-                $(`div.${element.breed}.canvas`).children().clone().prependTo($rat)
+                $(`#${element.breed.toUpperCase()}`).children().clone().prependTo($rat)
             })
         }
     }   
 
-    load()
-    // After load()---------------------------------
 
+
+    load()
+    // After load()-------------------------------
+
+    // when choose to buy rats on shop open ask which breed would like to buy then randomly generate 3 colors to choose from, should I also generate gender and personality and show, or just show gender, or be able to always choose male or female.
+    //eventully rat breeds will unlock later, so starting rat maybe choose standard rat and always be able to choose between male and female.
+    // choosing between male and female should probably always be choice, so maybe only show color
+    // "these are the color choices I have available:"
+    // show rat or show just an example of the color
+
+    const createShopFurs = () => {
+        const shopFurColors = []
+        for (let i = 0; i < 3; i++) {
+        const randomFur = furColors[randomizeArray(furColors)]
+        shopFurColors.push(randomFur)
+        }
+        return shopFurColors
+    }
+
+    const createAvailableSexes = () => {
+        const shopSexes = []
+        for (let i = 0; i < 3; i++) {
+            const randomSex = sexArr[randomizeArray(sexArr)]
+            shopSexes.push(randomSex)
+        }
+        return shopSexes
+    }
+
+    const checkForDupes = (array) => {
+        const uniqueFur = new Set(array)
+        // console.log(uniqueFur)
+        // console.log(array)
+        if (uniqueFur.size !== array.length) {
+            // console.log('dupes')
+            // console.log(false)
+            createShopFurs()
+            return false
+        } else {
+            // console.log('no dupes')
+            return array
+        }
+    }
+
+    const allSame = (array) => {
+        if (array.every(val => val === array[0])) {
+            // console.log(array)
+            // console.log('they are all the same')
+            // console.log(false)
+            createAvailableSexes()
+            return false
+        } else {
+            // console.log(array)
+            // console.log('they are not all the same')
+            return array
+        }
+    }
+
+    // $('#0 div:nth-child(7)').addClass('black')
+    // console.log($('.ratBody'))
+
+
+    // const test = $(`#STANDARD`).children()
+    // console.log(test)
+
+    let shopRats = []
+
+    //generate daily shop
+    $('input[type="radio"][name="breed"]').on('change', event => {
+        shopRats.length = 0
+        $('#a').remove()
+        $('#b').remove()
+        $('#c').remove()
+
+        let currentBreed = $(event.target).val()
+        let shopFurColors = []
+        let shopSexesAvailable = []
+        let shopRatIds = ['a','b','c']
+
+        
+
+        do {
+            shopFurColors = checkForDupes(createShopFurs())
+        } while (shopFurColors === false);
+
+        do {
+            shopSexesAvailable = allSame(createAvailableSexes())
+        } while (shopSexesAvailable === false);
+
+        for (let i = 0; i < 3; i++) {
+            const randomPersonality = personalityArr[randomizeArray(personalityArr)]
+
+            shopRats.push(new ShopRats(shopRatIds[i],currentBreed, shopSexesAvailable[i],randomPersonality,shopFurColors[i]))
+        }
+
+        // for (let i = 0; i < shopRats.length; i++) {
+        //     let $shopRats = $('<div>').attr('id', shopRatIds[i]).addClass(`${shopRats[i].breed} canvas`).appendTo($('.shopRatsContainer'))
+
+        //     $(`div.${shopRats[i].breed}.canvas`).children().clone().prependTo($shopRats)
+        // }
+
+        // cages[i].heldRats.forEach(element => {
+
+        //     let $rat = $('<div>').attr('id', element.id).addClass(`${element.breed} canvas`).appendTo($(`#${cages[i].tag}`))
+
+        //     $(`div.${element.breed}.canvas`).children().clone().prependTo($rat)
+        // })
+
+        shopRats.forEach(element => {
+            // console.log('ran')
+            let $shopRats = $('<div>').attr('id', element.shopId).addClass(`${element.breed} canvas`).appendTo($('.shopRatsContainer'))
+
+            $(`#${element.breed.toUpperCase()}`).children().clone().prependTo($shopRats)
+
+            // let $body = $(`#${element.shopId} div:nth-child(4)`).addClass(`${element.fur}`)
+
+            let $body = $(`#${element.shopId}`).children('.ratBody').addClass(`${element.fur}`)
+            // console.log($body)
+        });
+
+        // let $body = $(`#${element.shopId}`).children('.ratbody').addClass(`${element.fur}`)
+
+        // $(`div.${element.breed}.canvas`).children().clone().prependTo($('#'))
+
+        // let $body = $(`#${shopRatIds[i]} div:nth-child(4)`).addClass(`${shopRats[i].fur}`)
+
+        // console.log(shopRats)
+
+        // $('#0 div:nth-child(7)').addClass('black')
+        // console.log($('.ratBody'))
+
+        // let $rat = $('<div>').attr('id', element.id).addClass(`${element.breed} canvas`).appendTo($('.shopRatsContainer'))
+
+        // $(`div.${element.breed}.canvas`).children().clone().prependTo($rat)
+        
+    })
 
     //check capacity of all user cages, if room in any cage return true
     const globalCapacity = () => {
@@ -292,6 +441,8 @@ $(() => {
     let onlyAvailableCage = []
     let ifRatInCage = []
     
+
+    // can maybe split this into two functions check for rat at home and check for shop
     const checkCageCapacity = () => {
         const $moveText = $('<p>').addClass('move').text('Would you like to move your rat to another cage?')
 
@@ -423,10 +574,6 @@ $(() => {
 
                 $('<p>').addClass('ratCage').text(`Cage: ${rats[i].cage}`).appendTo($ratInfo)
 
-                // $('<p>').addClass('ratFood').text(`Food amount: ${cageContaier[i].food.amount}`).appendTo($ratInfo)
-
-                // $('<p>').addClass('ratFood').text(`Food type: ${cageContaier[i].food.type}`).appendTo($ratInfo)
-
                 // rat tricks
                 $('<p>').addClass('ratTricks').text(`Tricks: ${rats[i].tricks}`).appendTo($ratTricks)
 
@@ -475,10 +622,18 @@ $(() => {
                     checkCageCapacity()
                 }
             }
+
+            //need to run in it's own cage loop
+            // append to('.ratInfo')
+            //will be easier when player has to click into cage so you can get current cage info
+            // $('<p>').addClass('ratFood').text(`Food amount: ${cageContaier[i].food.amount}`).appendTo($ratInfo)
+
+            // $('<p>').addClass('ratFood').text(`Food type: ${cageContaier[i].food.type}`).appendTo($ratInfo)
         }
     })
 
-    
+    // $('#0 div:nth-child(7)').addClass('black')
+    // console.log($('.ratBody'))
 
     //move rat to another cage
     //should not show the cage the rat is currently in 
@@ -533,7 +688,7 @@ $(() => {
         if ($('.shopItems').val() === 'rat'){
             checkCageCapacity()
             globalCapacity()
-            console.log(`globalCapacity: ${globalCapacity()}`)
+            // console.log(`globalCapacity: ${globalCapacity()}`)
             $('#ifCage').hide()
             $('#ifRat').show()
             

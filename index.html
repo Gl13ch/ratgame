@@ -19,6 +19,7 @@
         </label>
         <div id="ifRat">
             <h3>Buy a rat</h3>
+            <p>Which breed would you like to view?</p>
             <form class="ratForm">  
                 <!-- sex -->
                 <input type="radio" required="true" name="sex" value="male">
@@ -40,14 +41,15 @@
                 <label for="breed">Satin</label>
                 <input type="radio" required="true" name="breed" value="dumbo">
                 <label for="breed">Dumbo</label>
-                <input type="radio" required="true" name="breed" value="bristle coat">
+                <input type="radio" required="true" name="breed" value="bristleCoat">
                 <label for="breed">Bristle Coat</label>
                 <br>
                 <!-- name -->
                 <input type="text" required="true" id="name" placeholder="Give rat a name"><br>
-                
+                <!-- submit -->
                 <input type="submit" id="ratSubmit">
             </form>
+            <div class="shopRatsContainer"></div>
         </div>
         <div id="ifCage">
             <h3>Buy a Cage</h3>
@@ -91,8 +93,7 @@
 
     <!-- CSS RATS -->
     <div class="ratProperties">
-        <div class="standard canvas">
-            <p class="test">test</p>
+        <div id="STANDARD" class="standard canvas">
             <div class="leftEar ear"></div>
             <div class="rightEar ear"></div>
             <div class="tail"></div>
@@ -108,7 +109,7 @@
             <div class="eyesRight eyes"></div>
         </div>
     
-        <div class="dumbo canvas">
+        <div id="DUMBO" class="dumbo canvas">
             <div class="dumboLeftEar dumboEar"></div>
             <div class="dumboRightEar dumboEar"></div>
             <div class="tail"></div>
@@ -124,7 +125,7 @@
             <div class="eyesRight eyes"></div>
         </div>
     
-        <div class="satin canvas">
+        <div id="SATIN" class="satin canvas">
             <div class="leftEar ear"></div>
             <div class="rightEar ear"></div>
             <div class="tail"></div>
@@ -141,7 +142,7 @@
             <div class="eyesRight eyes"></div>
         </div>
     
-        <div class="hairless canvas">
+        <div id="HAIRLESS" class="hairless canvas">
             <div class="leftEar ear hairlessEar"></div>
             <div class="rightEar ear hairlessEar"></div>
             <div class="hairlessTail tail"></div>
@@ -157,7 +158,7 @@
             <div class="eyesRight eyes"></div>
         </div>
     
-        <div class="tailless canvas">
+        <div id="TAILLESS" class="tailless canvas">
             <div class="leftEar ear"></div>
             <div class="rightEar ear"></div>
             <div class="ratBody"></div>
@@ -172,7 +173,7 @@
             <div class="eyesRight eyes"></div>
         </div>
     
-        <div class="bristleCoat canvas">
+        <div id="BRISTLECOAT" class="bristleCoat canvas">
             <div class="leftEar ear"></div>
             <div class="rightEar ear"></div>
             <div class="tail"></div>
@@ -191,7 +192,7 @@
             <div class="eyesRight eyes"></div>
         </div>
     
-        <div class="rex canvas">
+        <div id="REX" class="rex canvas">
             <div class="leftEar ear"></div>
             <div class="rightEar ear"></div>
             <div class="tail"></div>

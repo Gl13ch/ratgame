@@ -38,10 +38,12 @@ $(() => {
             this.mother = ''
             this.father = ''
         }
-         baby (femaleBreed, female, male){
-            const baby = new Rat(idCounter,'baby',randomSex,randomPersonality,femaleBreed)
-            baby.mother = female
-            baby.father = male
+        makeBaby (babyId, babyName, babySex, babyPersonality, babyBreed, babyCage, babyFur, babyHasRedEyes, babyMother, babyFather){
+            const baby = new Rat(babyId, babyName, babySex, babyPersonality, babyBreed, babyCage, babyFur, babyHasRedEyes)
+            console.log(baby)
+            baby.mother = babyMother
+            baby.father = babyFather
+            return baby
         }
         startingCage(cageIndex, newRat, newCageIndexHeldRats){
             this.cage = cageIndex
@@ -60,6 +62,13 @@ $(() => {
         }
         resetMonth(){
             this.ageMonth = 0
+        }
+        // for when the object is recreated with local storage
+        setAgeMonth(month){
+            this.ageMonth = month
+        }
+        setAgeYear(year){
+            this.ageYear = year
         }
 
     }
@@ -107,9 +116,8 @@ $(() => {
     // --tricks(after user interactiblity)
     // -stats(start with what different breeds should start with)
 
-    // -day/night cycle
-    // --aging
     // -add "genetics" to breeding
+    // redo breed system so it is percentages
 
 
     //Cages
@@ -139,8 +147,6 @@ $(() => {
     // const $hairlessCss = $('div.canvas.hairless')
     // const $rexCss = $('div.canvas.rex')
 
-    //Rat Variables:
-
     // COLORS
     // If white then chance to have red eyes
     const furColors = ['beige', 'black', 'blue', 'blueBeige', 'champagne', 'chocolate', 'cocoa', 'lilac', 'mink', 'platinum', 'powderBlue', 'russianBlue', 'russianDove', 'skyBlue', 'white']
@@ -149,7 +155,7 @@ $(() => {
     const sexArr = ['Male', 'Female']
 
     //randomized
-    const personalityArr = ['agile','anxious','attentive','bold', 'cautious','communicative','cconfident','curious','determined','docile','dominant','easy going','easy to handle','enthusiastic','friendly','cheerful','irritable','lively','shy','solitary','tame','tempermental','trusting']
+    const personalityArr = ['agile','anxious','attentive','bold', 'cautious','communicative','confident','curious','determined','docile','dominant','easy going','easy to handle','enthusiastic','friendly','cheerful','irritable','lively','shy','solitary','tame','tempermental','trusting']
 
     //starts at neutral
     const moodArr = ['happy','sad','angry','content', 'thrilled', 'whatever', 'stressed']
@@ -203,36 +209,6 @@ $(() => {
     //evening - semi active/sleepy
     //night - very active
 
-    // Tests---------------------------------------
-
-    //Works, test to make sure you can append a div and all it's children
-    // const divChildrenTest = () =>{
-    //     let $canvas = $('div.canvas.standard')
-    //     // console.log($canvas.attr('class'))
-    //     $canvas.appendTo(".test")
-    //     $canvas.children().appendTo($canvas)
-    // }
-    // divChildrenTest()
-
-    // Hover Test
-    // $('.hoverme').on( "mouseenter", () =>{
-    //     $('.showme').show()
-    // }).on( "mouseleave", () =>{
-    //     $('.showme').hide()
-    // });  
-
-    //BABY RAT - sets mother and father
-    // Will be matchmaking in shop
-    // Should be a chance
-    // will probably need rat relationships to increase chances
-    // rats[0].baby(rats[0].breed, rats[0].name, rats[1].name)
-
-
-    // smallCage.changeFood(foodAmount[1],foodType[1])
-    // console.log(smallCage)
-
-    // -------------------------------------------
-
     //randomizers
     const randomizeArray  = (array) => {
         let length  = 0
@@ -243,7 +219,6 @@ $(() => {
         return randomizedIndex
     }
 
-    //for baby rats
     const randomSex = sexArr[randomizeArray(sexArr)]
 
     const randomPersonality = personalityArr[randomizeArray(personalityArr)]
@@ -260,17 +235,8 @@ $(() => {
     }
 
     let nextTimeofDay = 'evening'
-
     const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
     const months = ['January','Febuary','March','April','May','June','July','August','September','October','November','December']
-    
-    //date is going to be month/week
-    // month is 4 weeks
-    // monday - sunday is one week
-    // when morning day changes
-    // when monday week changes
-    // when week 4 ends reset week to 1 and change month
-    // when month turns to 1 or january change year
 
     // ON START NEW GAME
     // if local storage does not exist create local storage
@@ -289,8 +255,8 @@ $(() => {
     // LOAD
     //local storage startup stuff
     const load = () => {
+        //make sure elements are populated with local storage
         currentDate = (JSON.parse(localStorage.getItem('currentDate')))
-        //make sure rats is populated with local storage
         rats = (JSON.parse(localStorage.getItem('ratArray')))
         cages = (JSON.parse(localStorage.getItem('cageArray')))
 
@@ -299,8 +265,9 @@ $(() => {
 
         //reinstantiate rats
         for (let i = 0; i < rats.length; i++) {
-            // console.log()
             tempRats.push(new Rat(...Object.values(rats[i])))
+            tempRats[i].setAgeMonth(rats[i].ageMonth)
+            tempRats[i].setAgeYear(rats[i].ageYear)
         }
         rats.length = 0
         for (let i = 0; i < tempRats.length; i++) {
@@ -355,6 +322,11 @@ $(() => {
     load()
     // After load()-------------------------------
 
+    // console.log(rats[0])
+    // rats[i].setAgeMonth(rats[i].ageMonth)
+    // rats[i].setAgeYear(rats[i].ageYear)
+
+    // DAY NIGHT CYCLE
     const setCurrentTimeOfDay = () => {
         currentDate = (JSON.parse(localStorage.getItem('currentDate')))
         if (currentDate.timeOfDay === 'morning') {
@@ -374,7 +346,9 @@ $(() => {
     }
 
     // eventually wouldl like to look into a way to pause the timer when not viewing the in cage view
-    // maybe a class would work, but unsure
+    // maybe a adding a class to the cage view would work, but unsure
+    // take away when not viewing, re-add when click in again
+    // need to test ^
     const dayNightCycle = () => {
         if (nextTimeofDay === 'morning') {
             goNextDay()
@@ -429,6 +403,8 @@ $(() => {
         console.log('year: ',currentDate.year)
     }
 
+    // AGE UP RATS
+    // need to local storage this change
     const ageUpRats = () => {
         rats.forEach(element => {
             element.ageUpMonth()
@@ -440,9 +416,123 @@ $(() => {
             } else if (element.ageYear !== 0) {
                 $('.ratAge').text(`${element.ageMonth} month, ${element.ageYear} year`)
             }
-        });
+        })
+        localStorage.setItem('ratArray', JSON.stringify(rats))
+    }
+
+    // BREEDING
+    // rats should only be able to breed at 4 months old
+    // rats should not be able to breed with parents and probably siblings(will need to add that)
+
+    // may want to change the whole breed structure and do percentages
+
+    const getRandomFromTwo = (item1, item2) => {
+        const rand = Math.floor(Math.random() * 2)
+        if (rand === 1) {
+            return item1
+        } else {
+            return item2
+        }
+    }
+
+    const redEyes = (eyes1, eyes2) => {
+        console.log('rat1:',eyes1)
+        console.log('rat2:',eyes2)
+        if (eyes1 === true && eyes2 === true) {
+            console.log(`rat1 red: ${eyes1 === true} rat2 red ${eyes2 === true}`)
+            return eyes1
+        } else if (eyes1 === false && eyes2 === false) {
+            console.log(`rat1 red: ${eyes1 === true} rat2 red ${eyes2 === true}`)
+            return eyes1
+        } else {
+            console.log('else')
+            const rand = Math.floor(Math.random() * 2)
+            if (rand === 1) {
+                return true
+            } else {
+                return false
+            }
+        }
     }
     
+    let selectedRat = ''
+    let loopCount = 0
+    // rat 1
+    const generateMatchmaking = () => {
+        
+        rats.forEach(element => {
+            $('#blankRat1').after(`<option value= ${element.name}> ${element.name}</option>`)
+        });
+    }
+
+    // rat 2
+    $('select[name="ratToBreed1"]').on('change', event => {
+        selectedRat = $('select[name="ratToBreed1"]').val()
+        
+        rats.forEach(element => {
+            if (selectedRat !== element.name) {
+                loopCount++
+                $('#blankRat2').after(`<option value= ${element.name}> ${element.name}</option>`)
+            }
+        })
+        $('#rat2').show()
+        // $('#matchmakingSubmit').show()
+        selectedRat = ''
+        if (loopCount === 1) {
+            $('#matchmakingSubmit').show()
+            $('#matchmakingName').show()
+        }
+    })
+
+    $('select[name="ratToBreed2"]').on('change', event => {
+        $('#matchmakingSubmit').show()
+        $('#matchmakingName').show()
+    })
+
+    // can probably seprate males and females before the submit if wanted to
+    $('.matchmakingForm').on('submit', event => {
+        event.preventDefault()
+
+        let rat1 = $('select[name="ratToBreed1"]').val()
+        let rat2 = $('select[name="ratToBreed2"]').val()
+        let nameInput = $('#matchmakingName').val()
+        let idCounter = rats[rats.length - 1].id + 1
+        let mother = ''
+        let father = ''
+
+        rats.forEach(element => {
+          if (rat1 === element.name) {
+            rat1 = element
+          }  
+          if (rat2 === element.name) {
+            rat2 = element
+          }
+        });
+
+        if (rat1.sex === 'Female') {
+            mother = rat1
+            father = rat2
+        } else {
+            mother = rat2
+            father = rat1
+        }
+
+        rats.push(mother.makeBaby(idCounter, nameInput, randomSex, randomPersonality, getRandomFromTwo(mother.breed, father.breed), 'large cage', getRandomFromTwo(mother.fur, father.fur), redEyes(mother.hasRedEyes, father.hasRedEyes), mother.name, father.name))
+
+        // rats.push(newRatty)
+        console.log(rats)
+    })
+
+    // make sure to update function to reflect changes
+    // makeBaby (id, name, sex, personality, breed, fur, hasRedEyes, mother, father){
+    //     const baby = new Rat(idCounter,'baby',randomSex,randomPersonality,breed,fur,hasRedEyes)
+    //     baby.mother = female
+    //     baby.father = male
+    //     // needs fur and hasRedEyes
+    //     // test this first then we can see about making hybrids
+    // }
+
+    // SHOP RATS
     //create array of 3 random fur colors
     const createShopFurs = () => {
         const shopFurColors = []
@@ -563,30 +653,29 @@ $(() => {
     })
 
     const ratToBuy = []
-
     let ifAlreadyClicked = true
-
     $('.shopRatsContainer').on("click",".shopRats", event => {
         if (ifAlreadyClicked === true) {
-            
-            // remove values
-            $('.wantToBuy').remove()
+            if (globalCapacity() === true) {
+                // remove values
+                $('.wantToBuy').remove()
 
-            const $currentRat = event.currentTarget
-            // console.log($currentRat)
-            currentShopRats.forEach(element => {
-                if ($currentRat.id !== element.shopId) {
-                    $(`#${element.shopId}`).hide()
-                } else {
-                    ratToBuy.push(element)
-                    const $wantToBuy = $('<div>').addClass('wantToBuy').appendTo('.tempItems')
-                    $(`#${$currentRat.id}`).after($('.wantToBuy'))
-                    $('<p>').text('Would you like to buy this rat?').appendTo('.wantToBuy')
-                    $('<button>').addClass('yesButton').val('yes').text('Yes').appendTo($('.wantToBuy'))
-                    $('<button>').addClass('noButton').val('no').text('No').appendTo($('.wantToBuy'))
-                    ifAlreadyClicked = false
-                }
-            })
+                const $currentRat = event.currentTarget
+                // console.log($currentRat)
+                currentShopRats.forEach(element => {
+                    if ($currentRat.id !== element.shopId) {
+                        $(`#${element.shopId}`).hide()
+                    } else {
+                        ratToBuy.push(element)
+                        const $wantToBuy = $('<div>').addClass('wantToBuy').appendTo('.tempItems')
+                        $(`#${$currentRat.id}`).after($('.wantToBuy'))
+                        $('<p>').text('Would you like to buy this rat?').appendTo('.wantToBuy')
+                        $('<button>').addClass('yesButton').val('yes').text('Yes').appendTo($('.wantToBuy'))
+                        $('<button>').addClass('noButton').val('no').text('No').appendTo($('.wantToBuy'))
+                        ifAlreadyClicked = false
+                    }
+                })
+            }
         }
     })
 
@@ -905,11 +994,6 @@ $(() => {
         }
     })
 
-    // const test = cages.find(foodAmount)
-    // console.log(test)
-    // $('#0 div:nth-child(7)').addClass('black')
-    // console.log($('.ratBody'))
-
     //move rat to another cage
     //should not show the cage the rat is currently in 
     $('.moveRat').on('submit', event => {
@@ -958,20 +1042,41 @@ $(() => {
         localStorage.setItem('cageArray', JSON.stringify(cages))
     })
 
+    const disableSubmit = () =>{
+        if (globalCapacity() !== true) {
+            $('.shopSubmit').prop('disabled',true)
+        } else {
+            $('.shopSubmit').prop('disabled',false)
+        }
+    }
+
     //show shop items depending on what player wants to look at 
     $('.shopItems').on('click', event => {
         if ($('.shopItems').val() === 'rat'){
+            disableSubmit()
+            $('.hasSpace').remove()
             checkCageCapacity()
-            globalCapacity()
-            // console.log(`globalCapacity: ${globalCapacity()}`)
-            
+            if (globalCapacity() !== true) {
+                $('<p>').addClass('hasSpace').text('you do not have any room to buy a new rat!').appendTo($('.buyarat'))
+            }
+            $('#ifMatchmaking').hide()
             $('#ifCage').hide()
             $('#ifRat').show()
-            
         } else if ($('.shopItems').val() === 'cage'){
+            $('#ifMatchmaking').hide()
             $('#ifRat').hide()
             $('#ifCage').show()
+        } else if ($('.shopItems').val() === 'matchmaking'){
+            $('.hasSpace').remove()
+            if (globalCapacity() !== true) {
+                $('<p>').addClass('hasSpace').text('you do not have any room to hosue a new rat!').appendTo($('.breedrats'))
+            }
+            generateMatchmaking()
+            $('#ifMatchmaking').show()
+            $('#ifRat').hide()
+            $('#ifCage').hide()
         } else {
+            $('#ifMatchmaking').hide()
             $('#ifRat').hide()
             $('#ifCage').hide()
         }

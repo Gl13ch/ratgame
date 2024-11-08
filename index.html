@@ -15,11 +15,12 @@
                 <option>---</option>
                 <option value="rat">Rat</option>
                 <option value="cage">Cage</option>
+                <option value="matchmaking">Matchmaking</option>
             </select>
         </label>
         <div class="tempItems"></div>
         <div id="ifRat">
-            <h3>Buy a rat</h3>
+            <h3 class="buyarat">Buy a rat</h3>
             <p>Which breed would you like to view?</p>
             <form class="ratForm">  
                 <!-- sex -->
@@ -67,6 +68,26 @@
                 <label for="cage">beauty cage</label>
                 <br>
                 <input type="submit" id="cage">
+            </form>
+        </div>
+        <div id="ifMatchmaking">
+            <h3 class="breedrats">Breed your rats</h3>
+            <p>Which two rats would you like to breed?</p>
+            <form class="matchmakingForm">
+                <label> Rat 1
+                    <select name="ratToBreed1" class="breedingRats">
+                        <option id="blankRat1">---</option>
+                    </select>
+                </label>
+                <label id="rat2"> Rat 2
+                    <select name="ratToBreed2" class="breedingRats">
+                        <option id="blankRat2">---</option>
+                    </select>
+                </label>
+                <br>
+                <input type="text" required="true" id="matchmakingName" placeholder="Give new baby ratty a name">
+                <br>
+                <input type="submit" id="matchmakingSubmit">
             </form>
         </div>
     </div>

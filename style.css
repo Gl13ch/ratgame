@@ -8,7 +8,7 @@ body{
   display: none;
 }
 
-#modal, #ifRat, #ifCage {
+#modal, #ifRat, #ifCage, #ifMatchmaking, #rat2, #matchmakingSubmit, #matchmakingName{
   display: none;
 }
 

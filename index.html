@@ -74,9 +74,7 @@
     <br>
     <div class="home">
         <h2><u>Home</u></h2>
-        <div class="cageContainer">
-
-        </div>
+        <div class="cageContainer"></div>
     </div>
 
     <div class="ratContainer"></div>
@@ -86,6 +84,22 @@
             <form class="moveRat">
                 <input type="submit" id="moveSubmit">
             </form>
+            <label for="foodAmount">
+                <select name="foodAmount" class="foodAmount">
+                    <option>---</option>
+                    <option value ="few">Few</option>
+                    <option value="normal">Normal</option>
+                    <option value="many">Many</option>
+                </select>
+            </label>
+            <label for="foodType">
+                <select name="foodType" class="foodType">
+                    <option>---</option>
+                    <option value ="cheap">Cheap</option>
+                    <option value="standard">Standard</option>
+                    <option value="expensive">Expensive</option>
+                </select>
+            </label>
         </div>
         <button type="button" id="close">Close</button>
     </div>

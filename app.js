@@ -65,22 +65,42 @@ $(() => {
     }
 
     class Cage{
-        constructor(tag, cageName, capacity, cost, heldRats = []){
+        constructor(tag, cageName, capacity, cost, heldRats = [],foodAmount = "normal", foodType = "standard"){
             this.tag = tag
             this.cageName = cageName
             this.capacity = capacity
             this.cost = cost
             this.heldRats = heldRats
-            this.food = {
-                amount: ['few','normal','many'],
-                type: ['cheap','standard','expensive']
-            } 
+            this.foodAmount = foodAmount
+            this.foodType = foodType
+        } 
+        changeFoodAmount (amount){
+            this.foodAmount = amount
         }
-        changeFood (foodAmount, foodType){
-            this.food.amount = this.food.amount[foodAmount]
-            this.food.type = this.food.type[foodType]
+        changeFoodType (type){
+            this.foodType = type
         }
     }
+
+    // Next:
+    // clean up ui
+    // - shop ui
+    // - view of cage
+    // - modal view
+    // -find all little ui bugs such as
+    // --would you like to move to a new cage is being displayed multiple times on click of the shop
+    // --reset values of shop if clicked out(this might not matter if eventually the other views will be hidden)
+
+    // choose new functionality to add
+    // -user interactiblity(might be better once I have a cage view)
+    // --tricks(after user interactiblity)
+    // -stats(start with what different breeds should start with)
+
+    // -day/night cycle
+    // --aging
+    // -Food
+    // -add "genetics" to breeding
+
 
     //Cages
     const cageContainer = []
@@ -158,6 +178,10 @@ $(() => {
     //user actions in cage
     const userActions = ['go back', 'bathe', 'view stats', 'pet', 'grab','poke','give treat', 'brush']
 
+    // Food
+    const foodAmount = ['few','normal','many']
+    const foodType = ['cheap','standard','expensive']
+
     //user actions outside of cage
     //skip time
     //store
@@ -192,6 +216,10 @@ $(() => {
     // Should be a chance
     // will probably need rat relationships to increase chances
     // rats[0].baby(rats[0].breed, rats[0].name, rats[1].name)
+
+
+    // smallCage.changeFood(foodAmount[1],foodType[1])
+    // console.log(smallCage)
 
     // -------------------------------------------
 
@@ -350,7 +378,6 @@ $(() => {
             return false
         }
     }
-
 
     const generateShopRats = () => {
         let shopRats = []
@@ -568,6 +595,9 @@ $(() => {
     }
 
     // MODAL
+    const $foodAmount = $('label[for="foodAmount"]')
+    const $foodType = $('label[for="foodType"]')
+
     const $modal = $('#modal')
     const $close = $('#close')
     const $open = $('.canvas')//click on rat
@@ -579,12 +609,14 @@ $(() => {
     $close.on('click',closeModal)
 
     let currentRatId = []
+    let currentCage = []
     
     //open modal
     $open.on('click', (event) => {
         $('.allRatInfo').remove()
         $('.move').remove()
         currentRatId.length = 0
+        currentCage.length = 0
 
         $modal.show()
 
@@ -596,9 +628,11 @@ $(() => {
         for (let i = 0; i < rats.length; i++) {
 
             if ((rats[i].id) == eventID) {
-
                 //get the array
                  let ratId = i
+                 let currentRatCage = rats[ratId].cage
+
+                 currentCage.push(rats[ratId].cage)
 
                 //to put all info in
                 const $moreInfo = $('<div>').addClass('allRatInfo').appendTo($('#modalText'))
@@ -670,20 +704,92 @@ $(() => {
 
                 $('<p>').addClass('ratCompetitionEntered').text(`Entered: ${rats[i].competitionEntered}`).appendTo($ratCompetition)
 
+                // Food
+                $('<p>').addClass('ratFoodAmount').text(`Food amount: ${getFoodAmount(currentRatCage)}`).appendTo($ratInfo)
+
+                $('<p>').addClass('ratFoodType').text(`Food type: ${getFoodType(currentRatCage)}`).appendTo($ratInfo)
+
+                $foodAmount.appendTo($('.ratFoodAmount'))
+                $foodType.appendTo($('.ratFoodType'))
+
                 if (globalCapacity() === true) {
                     checkCageCapacity()
                 }
             }
-
-            //need to run in it's own cage loop
-            // append to('.ratInfo')
-            //will be easier when player has to click into cage so you can get current cage info
-            // $('<p>').addClass('ratFood').text(`Food amount: ${cageContaier[i].food.amount}`).appendTo($ratInfo)
-
-            // $('<p>').addClass('ratFood').text(`Food type: ${cageContaier[i].food.type}`).appendTo($ratInfo)
         }
     })
 
+    // for modal
+    const getCurrentCage = () => {
+        let cage = ''
+        cages.forEach(element => {
+            if (element.cageName === currentCage[0]) {
+                cage = element
+            }
+        })
+        return cage
+    }
+
+    // food amount for selected cage
+    const getFoodAmount = (selectedCage) => {
+        let cage = selectedCage
+        let foodAmount = ''
+        cages.forEach(element => {
+            // console.log(cage)
+            // console.log(element.cageName)
+            if (cage === element.cageName) {
+                foodAmount = element.foodAmount
+
+            }
+        })
+        return foodAmount
+    }
+
+    // food amount for selected cage
+    const getFoodType = (selectedCage) => {
+        let cage = selectedCage
+        let foodType = ''
+        cages.forEach(element => {
+            // console.log(cage)
+            // console.log(element.cageName)
+            if (cage === element.cageName) {
+                foodType = element.foodType
+
+            }
+        })
+        return foodType
+    }
+
+    // Only works once because I am reappending the element the click event is on, therefore getting rid of the click event
+    // reload page seems like best option for now
+    $('.foodAmount').on('click', event => {
+        JSON.parse(localStorage.getItem('cageArray'))
+        let amount = $('.foodAmount').val()
+        let currentCage = getCurrentCage()
+        if (amount !== '---') {
+            if (currentCage.foodAmount !== amount) {
+                currentCage.changeFoodAmount(amount)
+                localStorage.setItem('cageArray', JSON.stringify(cages))
+                location.reload()
+            }
+        }
+    })
+
+    $('.foodType').on('click', event => {
+        JSON.parse(localStorage.getItem('cageArray'))
+        let type = $('.foodType').val()
+        let currentCage = getCurrentCage()
+        if (type !== '---') {
+            if (currentCage.foodType !== type) {
+                currentCage.changeFoodType(type)
+                localStorage.setItem('cageArray', JSON.stringify(cages))
+                location.reload()
+            }  
+        }
+    })
+
+    // const test = cages.find(foodAmount)
+    // console.log(test)
     // $('#0 div:nth-child(7)').addClass('black')
     // console.log($('.ratBody'))
 

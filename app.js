@@ -98,7 +98,6 @@ $(() => {
 
     // -day/night cycle
     // --aging
-    // -Food
     // -add "genetics" to breeding
 
 
@@ -241,26 +240,47 @@ $(() => {
     //users items - localstorage
     let rats = []
     let cages =[smallCage]
+    let currentDate = {
+        timeOfDay:'evening',
+        day: 'Tuesday',
+        week: 1,
+        month: 'January',
+        year: 1,
+    }
+
+    let nextTimeofDay = 'evening'
+
+    const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+    const months = ['January','Febuary','March','April','May','June','July','August','September','October','November','December']
+    
+    //date is going to be month/week
+    // month is 4 weeks
+    // monday - sunday is one week
+    // when morning day changes
+    // when monday week changes
+    // when week 4 ends reset week to 1 and change month
+    // when month turns to 1 or january change year
 
     // ON START NEW GAME
     // if local storage does not exist create local storage
     if (localStorage.length === 0) {
         localStorage.setItem('ratArray', JSON.stringify(rats))
-
         localStorage.setItem('cageArray', JSON.stringify(cages))
+        localStorage.setItem('currentDate', JSON.stringify(currentDate))
     }
 
     // START OVER
     // Remove Local Storage
     // localStorage.removeItem('ratArray')
     // localStorage.removeItem('cageArray')
+    // localStorage.removeItem('currentDate')
 
     // LOAD
     //local storage startup stuff
     const load = () => {
+        currentDate = (JSON.parse(localStorage.getItem('currentDate')))
         //make sure rats is populated with local storage
         rats = (JSON.parse(localStorage.getItem('ratArray')))
-
         cages = (JSON.parse(localStorage.getItem('cageArray')))
 
         const tempRats = []
@@ -324,7 +344,67 @@ $(() => {
     load()
     // After load()-------------------------------
 
-    // console.log(rats)
+    const setCurrentTimeOfDay = () => {
+        currentDate = (JSON.parse(localStorage.getItem('currentDate')))
+        if (currentDate.timeOfDay === 'morning') {
+            nextTimeofDay = 'morning'
+            $('body').css('background-color', 'lightslategray')
+        } else if (currentDate.timeOfDay === 'evening') {
+            nextTimeofDay = 'evening'
+            $('body').css('background-color', '#ca6e44')
+        } else if(currentDate.timeOfDay === 'night'){
+            nextTimeofDay = 'night'
+            $('body').css('background-color', '#46465b')
+        }
+    }
+
+    const dayNightCycle = () => {
+        if (nextTimeofDay === 'morning') {
+            goNextDay()
+            console.log(currentDate.day)
+            console.log(currentDate.month)
+            $('body').css('background-color', 'lightslategray')
+            currentDate.timeOfDay = 'morning'
+            nextTimeofDay = 'evening'
+        } else if (nextTimeofDay === 'evening') {
+            // $('body').css('background-color', '#ca6e44')
+            currentDate.timeOfDay = 'evening'
+            nextTimeofDay = 'night'
+        } else if(nextTimeofDay === 'night'){
+            $('body').css('background-color', '#46465b')
+            currentDate.timeOfDay = 'night'
+            nextTimeofDay = 'morning'
+        }
+        localStorage.setItem('currentDate', JSON.stringify(currentDate))
+    }
+
+    setCurrentTimeOfDay()
+    // run day night cycle
+    // setInterval(dayNightCycle, 1000)
+
+    const goNextDay = () => {
+        const currentDayIndex = days.indexOf(currentDate.day);
+        if (currentDayIndex === 6) {
+            currentDate.week++
+        }
+        if (currentDate.week === 5 && currentDayIndex === 6) {
+            goNextMonth()
+        }
+        const nextIndex = (currentDayIndex + 1) % days.length;
+        currentDate.day = days[nextIndex];
+        console.log('week: ',currentDate.week)
+    }
+
+    const goNextMonth = () => {
+        currentDate.week = 1
+        const currentMonthIndex = months.indexOf(currentDate.month);
+        if (currentMonthIndex === 11) {
+            currentDate.year++
+        }
+        const nextIndex = (currentMonthIndex + 1) % months.length;
+        currentDate.month = months[nextIndex];
+        console.log('year: ',currentDate.year)
+    }
 
     //create array of 3 random fur colors
     const createShopFurs = () => {
@@ -926,7 +1006,6 @@ $(() => {
             
             //local storage add new rat to cage
             localStorage.setItem('ratArray', JSON.stringify(rats))
-
             localStorage.setItem('cageArray', JSON.stringify(cages))
         } else {
             alert('you do not have enough room')

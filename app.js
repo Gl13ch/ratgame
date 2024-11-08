@@ -5,7 +5,7 @@ $(() => {
     // pass in onsubmit event
     // reset local storage
     class Rat {
-        constructor(id,name,sex,personality,breed,cage,fur, hasRedEyes){
+        constructor(id, name, sex, personality, breed, cage, fur, hasRedEyes){
             this.id = id
             this.name = name
             this.sex = sex
@@ -33,7 +33,8 @@ $(() => {
             this.nibbling = 'untrained'
             this.competitionRank = 1
             this.competitionEntered = ''
-            this.age = '1 month'
+            this.ageMonth = 1
+            this.ageYear = 0
             this.mother = ''
             this.father = ''
         }
@@ -51,6 +52,16 @@ $(() => {
             newCageIndexHeldRats.push(newRat)
             oldCageIndexHeldRats.splice(removeIndex, 1)
         }
+        ageUpMonth(){
+            this.ageMonth++
+        }
+        birthday(){
+            this.ageYear++
+        }
+        resetMonth(){
+            this.ageMonth = 0
+        }
+
     }
 
     class ShopRats {
@@ -351,13 +362,19 @@ $(() => {
             $('body').css('background-color', 'lightslategray')
         } else if (currentDate.timeOfDay === 'evening') {
             nextTimeofDay = 'evening'
-            $('body').css('background-color', '#ca6e44')
+            $('body').css('background-color', '#39365b')
         } else if(currentDate.timeOfDay === 'night'){
             nextTimeofDay = 'night'
             $('body').css('background-color', '#46465b')
         }
+        $('.timeofday').text(`Time of Day: ${currentDate.timeOfDay}`)
+        $('.week').text(`Week: ${currentDate.week}`)
+        $('.day').text(`Day: ${currentDate.day}`)
+        $('.month').text(`Month: ${currentDate.month}`)
     }
 
+    // eventually wouldl like to look into a way to pause the timer when not viewing the in cage view
+    // maybe a class would work, but unsure
     const dayNightCycle = () => {
         if (nextTimeofDay === 'morning') {
             goNextDay()
@@ -367,7 +384,7 @@ $(() => {
             currentDate.timeOfDay = 'morning'
             nextTimeofDay = 'evening'
         } else if (nextTimeofDay === 'evening') {
-            // $('body').css('background-color', '#ca6e44')
+            $('body').css('background-color', '#39365b')
             currentDate.timeOfDay = 'evening'
             nextTimeofDay = 'night'
         } else if(nextTimeofDay === 'night'){
@@ -376,10 +393,12 @@ $(() => {
             nextTimeofDay = 'morning'
         }
         localStorage.setItem('currentDate', JSON.stringify(currentDate))
+        $('.timeofday').text(`Time of Day: ${currentDate.timeOfDay}`)
+        $('.week').text(`Week: ${currentDate.week}`)
     }
 
-    setCurrentTimeOfDay()
     // run day night cycle
+    setCurrentTimeOfDay()
     // setInterval(dayNightCycle, 1000)
 
     const goNextDay = () => {
@@ -392,10 +411,13 @@ $(() => {
         }
         const nextIndex = (currentDayIndex + 1) % days.length;
         currentDate.day = days[nextIndex];
+        $('.day').text(`Day: ${currentDate.day}`)
         console.log('week: ',currentDate.week)
     }
 
     const goNextMonth = () => {
+        ageUpRats()
+        console.log(rats[0])
         currentDate.week = 1
         const currentMonthIndex = months.indexOf(currentDate.month);
         if (currentMonthIndex === 11) {
@@ -403,9 +425,24 @@ $(() => {
         }
         const nextIndex = (currentMonthIndex + 1) % months.length;
         currentDate.month = months[nextIndex];
+        $('.month').text(`Month: ${currentDate.month}`)
         console.log('year: ',currentDate.year)
     }
 
+    const ageUpRats = () => {
+        rats.forEach(element => {
+            element.ageUpMonth()
+            $('.ratAge').text(`${element.ageMonth} month`)
+            if (element.ageMonth === 12) {
+                element.resetMonth()
+                element.birthday()
+                $('.ratAge').text(`${element.ageYear} year`)
+            } else if (element.ageYear !== 0) {
+                $('.ratAge').text(`${element.ageMonth} month, ${element.ageYear} year`)
+            }
+        });
+    }
+    
     //create array of 3 random fur colors
     const createShopFurs = () => {
         const shopFurColors = []
@@ -726,9 +763,9 @@ $(() => {
                 const $ratCompetition =  $('<div>').addClass('ratCompetition').appendTo($moreInfo)
 
                 // rat info
-                $('<p>').addClass('ratAge').text(`name: ${rats[ratId].name}`).appendTo($ratInfo)
+                $('<p>').addClass('ratNameInfo').text(`name: ${rats[ratId].name}`).appendTo($ratInfo)
 
-                $('<p>').addClass('ratAge').text(`age: ${rats[ratId].age}`).appendTo($ratInfo)
+                $('<p>').addClass('ratAge').text(`${rats[ratId].ageMonth} month`).appendTo($ratInfo)
 
                 $('<p>').addClass('ratSex').text(`sex: ${rats[i].sex}`).appendTo($ratInfo)
 

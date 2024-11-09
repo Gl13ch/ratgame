@@ -14,6 +14,7 @@ $(() => {
             this.cage = cage
             this.fur = fur
             this.hasRedEyes = hasRedEyes
+            this.breedObj = []
             this.happiness = 50
             this.affection = 'neutral'
             this.mood = 'neutral'
@@ -63,6 +64,7 @@ $(() => {
         resetMonth(){
             this.ageMonth = 0
         }
+
         // for when the object is recreated with local storage
         setAgeMonth(month){
             this.ageMonth = month
@@ -70,8 +72,33 @@ $(() => {
         setAgeYear(year){
             this.ageYear = year
         }
-
+        setBreed(obj){
+            this.breedObj.push(obj)
+        }
     }
+
+    class Breed {
+        constructor() {
+            this.standard = 0,
+            this.rex = 0,
+            this.tailless = 0,
+            this.hairless = 0,
+            this.satin = 0,
+            this.dumbo = 0,
+            this.bristleCoat = 0
+        }
+    }
+
+    // const testBreed = new Breed()
+    // console.log(testBreed)
+    // const testRat = new Rat('id', 'name', 'sex', 'personality', [], 'cage', 'fur', false)
+    // console.log(testRat)
+    // for (const [key] of Object.entries(testBreed)) {
+    //     // console.log(key, value)
+    //     testBreed[key] = 100
+    // }
+
+    // testRat.setBreed()
 
     class ShopRats {
         constructor(shopId, breed, sex, personality, fur, hasRedEyes) {
@@ -118,6 +145,9 @@ $(() => {
 
     // -add "genetics" to breeding
     // redo breed system so it is percentages
+
+
+    // how annoying is it to do a class within a class
 
 
     //Cages
@@ -667,6 +697,7 @@ $(() => {
                         $(`#${element.shopId}`).hide()
                     } else {
                         ratToBuy.push(element)
+
                         const $wantToBuy = $('<div>').addClass('wantToBuy').appendTo('.tempItems')
                         $(`#${$currentRat.id}`).after($('.wantToBuy'))
                         $('<p>').text('Would you like to buy this rat?').appendTo('.wantToBuy')
@@ -968,6 +999,7 @@ $(() => {
 
     // Only works once because I am reappending the element the click event is on, therefore getting rid of the click event
     // reload page seems like best option for now
+    // need to come back and tweak, it is a little finicky
     $('.foodAmount').on('click', event => {
         JSON.parse(localStorage.getItem('cageArray'))
         let amount = $('.foodAmount').val()
@@ -1069,7 +1101,7 @@ $(() => {
         } else if ($('.shopItems').val() === 'matchmaking'){
             $('.hasSpace').remove()
             if (globalCapacity() !== true) {
-                $('<p>').addClass('hasSpace').text('you do not have any room to hosue a new rat!').appendTo($('.breedrats'))
+                $('<p>').addClass('hasSpace').text('you do not have any room to house a new rat!').appendTo($('.breedrats'))
             }
             generateMatchmaking()
             $('#ifMatchmaking').show()
@@ -1082,10 +1114,21 @@ $(() => {
         }
     })
 
+    const setBreedInput = () => {
+        let breedInput = ratToBuy[0].breed
+        const newBreedObj = new Breed()
+        for (const [key] of Object.entries(newBreedObj)) {
+            if (key === breedInput) {
+                newBreedObj[key] = 100
+            }
+        }
+        return newBreedObj
+    }
+
     //buy a rat
     $('.ratForm').on('submit', event => {      
         if (globalCapacity() === true) {
-            // event.preventDefault()
+            event.preventDefault()
 
             //rat id
             let idCounter = 0
@@ -1142,6 +1185,7 @@ $(() => {
                 rats.push(new Rat(idCounter, nameInput, sexInput, randomPersonality, breedInput, cageInput, furInput, hasRedEyesInput))
                 
                 rats[newRattyIndex].startingCage(cages[cageIndex].cageName, rats[newRattyIndex], cages[cageIndex].heldRats)
+                rats[newRattyIndex].setBreed(setBreedInput())
             }
 
             console.log(rats)

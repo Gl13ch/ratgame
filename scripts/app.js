@@ -1,5 +1,4 @@
 $(() => {
-
     // STEPS TO ADDING NEW VARIABLES TO RAT
     // Pass variable in all 3 places in rat(this.val = val) constructor(val)
     // pass in onsubmit event
@@ -249,7 +248,7 @@ $(() => {
 
     const randomPersonality = personalityArr[randomizeArray(personalityArr)]
 
-    //users items - localstorage
+    //localstorage
     let rats = []
     let cages =[smallCage]
     let currentDate = {

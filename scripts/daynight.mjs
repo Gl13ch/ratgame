@@ -1,14 +1,31 @@
-let currentTimeofDay = 'evening'
+let currentDate = {
+    timeOfDay:'evening',
+    day: 'TUE',
+    week: 1,
+    month: 1,
+    year: 1,
+}
+
+if (localStorage.length === 2) {
+    localStorage.setItem('currentDate', JSON.stringify(currentDate))
+}
+
+// localStorage.removeItem('currentDate')
+
+const load = () => {
+    currentDate = (JSON.parse(localStorage.getItem('currentDate')))
+}
+
+load()
+
+let currentTimeofDay = currentDate.timeOfDay
 let nextTimeofDay = 'night'
 
 const days = ['MON','TUE','WED','THU','FRI','SAT','SUN']
-let day = days[1]
-
-let week = 1
-let month = 1
-let year = 1
+let year = currentDate.year
 
 window.addEventListener("DOMContentLoaded", ()=>{
+
     const $month = document.getElementById("month")
     const $weekNumber = document.getElementById("weekNumber")
     const $day = document.getElementById("day")
@@ -18,79 +35,81 @@ window.addEventListener("DOMContentLoaded", ()=>{
     const $night = document.getElementById("night")
 
     const setCurrentDate = () => {
-        if (currentTimeofDay === 'morning') {
+        currentDate = (JSON.parse(localStorage.getItem('currentDate')))
+        if (currentDate.timeOfDay === 'morning') {
             nextTimeofDay = 'evening'
             $morning.style.visibility = 'visible'
             $evening.style.visibility = 'hidden'
             $night.style.visibility = 'hidden'
-        } else if (currentTimeofDay === 'evening') {
+        } else if (currentDate.timeOfDay === 'evening') {
             nextTimeofDay = 'night'
             $evening.style.visibility = 'visible'
             $morning.style.visibility = 'hidden'
             $night.style.visibility = 'hidden'
-        } else if(currentTimeofDay === 'night'){
+        } else if(currentDate.timeOfDay === 'night'){
             nextTimeofDay = 'morning'
             $night.style.visibility = 'visible'
             $evening.style.visibility = 'hidden'
             $morning.style.visibility = 'hidden'
         }
-        $day.innerHTML = `${day}`
-        $weekNumber.innerHTML = `${week}`
-        $month.innerHTML = `${month}`
-        $yearNumber.innerHTML = `${year}`
+        $day.innerHTML = `${currentDate.day}`
+        $weekNumber.innerHTML = `${currentDate.week}`
+        $month.innerHTML = `${currentDate.month}`
+        $yearNumber.innerHTML = `${currentDate.year}`
     }
 
     const dayNightCycle = () => {
         if (nextTimeofDay === 'morning') {
             goNextDay()
-            currentTimeofDay = 'morning'
+            currentDate.timeOfDay = 'morning'
             nextTimeofDay = 'evening'
             $morning.style.visibility = 'visible'
             $evening.style.visibility = 'hidden'
             $night.style.visibility = 'hidden'
         } else if (nextTimeofDay === 'evening') {
-            currentTimeofDay = 'evening'
+            currentDate.timeOfDay = 'evening'
             nextTimeofDay = 'night'
             $evening.style.visibility = 'visible'
             $morning.style.visibility = 'hidden'
             $night.style.visibility = 'hidden'
         } else if(nextTimeofDay === 'night'){
-            currentTimeofDay = 'night'
+            currentDate.timeOfDay = 'night'
             nextTimeofDay = 'morning'
             $night.style.visibility = 'visible'
             $evening.style.visibility = 'hidden'
             $morning.style.visibility = 'hidden'
         }
+        localStorage.setItem('currentDate', JSON.stringify(currentDate))
     }
     
     setCurrentDate()
     setInterval(dayNightCycle, 180000)
 
     const goNextDay = () => {
-        const currentDayIndex = days.indexOf(day)
+        const currentDayIndex = days.indexOf(currentDate.day)
         if (currentDayIndex === 6) {
-            week++
+            currentDate.week++
         }
-        if (week === 5 && currentDayIndex === 6) {
-            week = 1
+        if (currentDate.week === 5 && currentDayIndex === 6) {
+            currentDate.week = 1
             goNextMonth()
         }
         const nextDayIndex = (currentDayIndex + 1) % days.length
-        day = days[nextDayIndex]
-        $day.innerHTML = `${day}`
-        $weekNumber.innerHTML = `${week}`
+        currentDate.day = days[nextDayIndex]
+        $day.innerHTML = `${currentDate.day}`
+        $weekNumber.innerHTML = `${currentDate.week}`
     }
 
     const goNextMonth = () => {
         // ageUpRats()
-        if (month === 12) {
-            month = 1
-            year++
-            $yearNumber.innerHTML = `${year}`
+        if (currentDate.month === 12) {
+            currentDate.month = 1
+            currentDate.year++
+            $yearNumber.innerHTML = `${currentDate.year}`
         } else {
-            month++
+            currentDate.month++
         } 
-        $month.innerHTML = `${month}`
+        $month.innerHTML = `${currentDate.month}`
     }
 })
 

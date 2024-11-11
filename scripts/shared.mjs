@@ -1,3 +1,4 @@
+console.log('shared.mjs')
 // // randomizeArray(array) returns array[randomIndex]
 // const randomizeArray  = (array) => {
 //     let length  = 0

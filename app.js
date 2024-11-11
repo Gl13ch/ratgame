@@ -349,8 +349,8 @@ $(() => {
 
     let newX = 0
     let newY = 0
-    startX = 0
-    startY = 0
+    let startX = 0
+    let startY = 0
 
     $('.draggable').on('mousedown', event => {
         startX = event.clientX
@@ -370,8 +370,8 @@ $(() => {
             $(`#${id}`).css("top", ($(`#${id}`).offset().top - newY) + 'px')
             $(`#${id}`).css("left", ($(`#${id}`).offset().left - newX) + 'px')
      
-            console.log(newX,newY)
-            console.log(startX,startY)
+            // console.log(newX,newY)
+            // console.log(startX,startY)
          })
          $('.draggable').on('mouseup', event => {
             $('.draggable').off('mousemove')
@@ -874,113 +874,113 @@ $(() => {
     let currentRatId = []
     let currentCage = []
     
-    //open modal
-    // $open.on('click', (event) => {
-    //     $('.allRatInfo').remove()
-    //     $('.move').remove()
-    //     currentRatId.length = 0
-    //     currentCage.length = 0
+    // open modal
+    $open.on('click', (event) => {
+        $('.allRatInfo').remove()
+        $('.move').remove()
+        currentRatId.length = 0
+        currentCage.length = 0
 
-    //     $modal.show()
+        $modal.show()
 
-    //     // let eventID = event.currentTarget
-    //     let eventID = event.currentTarget.getAttribute('id')
+        // let eventID = event.currentTarget
+        let eventID = event.currentTarget.getAttribute('id')
 
-    //     currentRatId.push(eventID)
+        currentRatId.push(eventID)
         
-    //     for (let i = 0; i < rats.length; i++) {
+        for (let i = 0; i < rats.length; i++) {
 
-    //         if ((rats[i].id) == eventID) {
-    //             //get the array
-    //              let ratId = i
-    //              let currentRatCage = rats[ratId].cage
+            if ((rats[i].id) == eventID) {
+                //get the array
+                 let ratId = i
+                 let currentRatCage = rats[ratId].cage
 
-    //              currentCage.push(rats[ratId].cage)
+                 currentCage.push(rats[ratId].cage)
 
-    //             //to put all info in
-    //             const $moreInfo = $('<div>').addClass('allRatInfo').appendTo($('#modalText'))
+                //to put all info in
+                const $moreInfo = $('<div>').addClass('allRatInfo').appendTo($('#modalText'))
 
-    //             const $ratInfo =  $('<div>').addClass('ratInfo').appendTo($moreInfo)
-    //             const $ratTricks =  $('<div>').addClass('ratTricks').appendTo($moreInfo)
-    //             const $ratCondition =  $('<div>').addClass('ratCondition').appendTo($moreInfo)
-    //             const $ratStats =  $('<div>').addClass('ratStats').appendTo($moreInfo)
-    //             const $ratTraining =  $('<div>').addClass('ratTraining').appendTo($moreInfo)
-    //             const $ratBreed =  $('<div>').addClass('ratBreed').appendTo($moreInfo)
-    //             const $ratCompetition =  $('<div>').addClass('ratCompetition').appendTo($moreInfo)
+                const $ratInfo =  $('<div>').addClass('ratInfo').appendTo($moreInfo)
+                const $ratTricks =  $('<div>').addClass('ratTricks').appendTo($moreInfo)
+                const $ratCondition =  $('<div>').addClass('ratCondition').appendTo($moreInfo)
+                const $ratStats =  $('<div>').addClass('ratStats').appendTo($moreInfo)
+                const $ratTraining =  $('<div>').addClass('ratTraining').appendTo($moreInfo)
+                const $ratBreed =  $('<div>').addClass('ratBreed').appendTo($moreInfo)
+                const $ratCompetition =  $('<div>').addClass('ratCompetition').appendTo($moreInfo)
 
-    //             // rat info
-    //             $('<p>').addClass('ratNameInfo').text(`name: ${rats[ratId].name}`).appendTo($ratInfo)
+                // rat info
+                $('<p>').addClass('ratNameInfo').text(`name: ${rats[ratId].name}`).appendTo($ratInfo)
 
-    //             $('<p>').addClass('ratAge').text(`${rats[ratId].ageMonth} month`).appendTo($ratInfo)
+                $('<p>').addClass('ratAge').text(`${rats[ratId].ageMonth} month`).appendTo($ratInfo)
 
-    //             $('<p>').addClass('ratSex').text(`sex: ${rats[i].sex}`).appendTo($ratInfo)
+                $('<p>').addClass('ratSex').text(`sex: ${rats[i].sex}`).appendTo($ratInfo)
 
-    //             $('<p>').addClass('ratPersonality').text(`personality: ${rats[i].personality}`).appendTo($ratInfo)
+                $('<p>').addClass('ratPersonality').text(`personality: ${rats[i].personality}`).appendTo($ratInfo)
 
-    //             $('<p>').addClass('ratMother').text(`Mother: ${rats[i].mother}`).appendTo($ratInfo)
+                $('<p>').addClass('ratMother').text(`Mother: ${rats[i].mother}`).appendTo($ratInfo)
 
-    //             $('<p>').addClass('ratFather').text(`Father: ${rats[i].father}`).appendTo($ratInfo)
+                $('<p>').addClass('ratFather').text(`Father: ${rats[i].father}`).appendTo($ratInfo)
 
-    //             $('<p>').addClass('ratCage').text(`Cage: ${rats[i].cage}`).appendTo($ratInfo)
+                $('<p>').addClass('ratCage').text(`Cage: ${rats[i].cage}`).appendTo($ratInfo)
 
-    //             // rat tricks
-    //             $('<p>').addClass('ratTricks').text(`Tricks: ${rats[i].tricks}`).appendTo($ratTricks)
+                // rat tricks
+                $('<p>').addClass('ratTricks').text(`Tricks: ${rats[i].tricks}`).appendTo($ratTricks)
 
-    //             // rat condition
-    //             $('<p>').addClass('ratAffection').text(`affection: ${rats[i].affection}`).appendTo($ratCondition)
+                // rat condition
+                $('<p>').addClass('ratAffection').text(`affection: ${rats[i].affection}`).appendTo($ratCondition)
 
-    //             $('<p>').addClass('ratMood').text(`mood: ${rats[i].mood}`).appendTo($ratCondition)
+                $('<p>').addClass('ratMood').text(`mood: ${rats[i].mood}`).appendTo($ratCondition)
 
-    //             $('<p>').addClass('ratWeight').text(`weight: ${rats[i].weight}`).appendTo($ratCondition)
+                $('<p>').addClass('ratWeight').text(`weight: ${rats[i].weight}`).appendTo($ratCondition)
 
-    //             $('<p>').addClass('ratHealth').text(`health: ${rats[i].health}`).appendTo($ratCondition)
+                $('<p>').addClass('ratHealth').text(`health: ${rats[i].health}`).appendTo($ratCondition)
 
-    //             // rat stats
-    //             $('<p>').addClass('ratEndurance').text(`Endurance: ${rats[i].endurance}`).appendTo($ratStats)
+                // rat stats
+                $('<p>').addClass('ratEndurance').text(`Endurance: ${rats[i].endurance}`).appendTo($ratStats)
 
-    //             $('<p>').addClass('ratQuickness').text(`Quickness: ${rats[i].quickness}`).appendTo($ratStats)
+                $('<p>').addClass('ratQuickness').text(`Quickness: ${rats[i].quickness}`).appendTo($ratStats)
 
-    //             $('<p>').addClass('ratJump').text(`Jump: ${rats[i].jump}`).appendTo($ratStats)
+                $('<p>').addClass('ratJump').text(`Jump: ${rats[i].jump}`).appendTo($ratStats)
 
-    //             $('<p>').addClass('ratGrooming').text(`Groomin: ${rats[i].grooming}`).appendTo($ratStats)
+                $('<p>').addClass('ratGrooming').text(`Groomin: ${rats[i].grooming}`).appendTo($ratStats)
 
-    //             $('<p>').addClass('ratAppearance').text(`Appearance: ${rats[i].appearance}`).appendTo($ratStats)
+                $('<p>').addClass('ratAppearance').text(`Appearance: ${rats[i].appearance}`).appendTo($ratStats)
 
-    //             $('<p>').addClass('ratCharm').text(`Charm: ${rats[i].charm}`).appendTo($ratStats)
+                $('<p>').addClass('ratCharm').text(`Charm: ${rats[i].charm}`).appendTo($ratStats)
 
-    //             // rat training
-    //             $('<p>').addClass('ratToilet').text(`Toilet: ${rats[i].toilet}`).appendTo($ratTraining)
+                // rat training
+                $('<p>').addClass('ratToilet').text(`Toilet: ${rats[i].toilet}`).appendTo($ratTraining)
 
-    //             $('<p>').addClass('ratBed').text(`Bed: ${rats[i].bed}`).appendTo($ratTraining)
+                $('<p>').addClass('ratBed').text(`Bed: ${rats[i].bed}`).appendTo($ratTraining)
 
-    //             $('<p>').addClass('ratEating').text(`Eating: ${rats[i].eating}`).appendTo($ratTraining)
+                $('<p>').addClass('ratEating').text(`Eating: ${rats[i].eating}`).appendTo($ratTraining)
 
-    //             $('<p>').addClass('ratWheel').text(`Wheel: ${rats[i].wheel}`).appendTo($ratTraining)
+                $('<p>').addClass('ratWheel').text(`Wheel: ${rats[i].wheel}`).appendTo($ratTraining)
 
-    //             $('<p>').addClass('ratNibbling').text(`Nibbling: ${rats[i].nibbling}`).appendTo($ratTraining)
+                $('<p>').addClass('ratNibbling').text(`Nibbling: ${rats[i].nibbling}`).appendTo($ratTraining)
 
-    //             // rat breed
-    //             $('<p>').addClass('ratBreed').text(`breed: ${rats[i].breed}`).appendTo($ratBreed)
+                // rat breed
+                $('<p>').addClass('ratBreed').text(`breed: ${rats[i].breed}`).appendTo($ratBreed)
 
-    //             //rat competition
-    //             $('<p>').addClass('ratCompetitionRank').text(`rank: ${rats[i].competitionRank}`).appendTo($ratCompetition)
+                //rat competition
+                $('<p>').addClass('ratCompetitionRank').text(`rank: ${rats[i].competitionRank}`).appendTo($ratCompetition)
 
-    //             $('<p>').addClass('ratCompetitionEntered').text(`Entered: ${rats[i].competitionEntered}`).appendTo($ratCompetition)
+                $('<p>').addClass('ratCompetitionEntered').text(`Entered: ${rats[i].competitionEntered}`).appendTo($ratCompetition)
 
-    //             // Food
-    //             $('<p>').addClass('ratFoodAmount').text(`Food amount: ${getFoodAmount(currentRatCage)}`).appendTo($ratInfo)
+                // Food
+                $('<p>').addClass('ratFoodAmount').text(`Food amount: ${getFoodAmount(currentRatCage)}`).appendTo($ratInfo)
 
-    //             $('<p>').addClass('ratFoodType').text(`Food type: ${getFoodType(currentRatCage)}`).appendTo($ratInfo)
+                $('<p>').addClass('ratFoodType').text(`Food type: ${getFoodType(currentRatCage)}`).appendTo($ratInfo)
 
-    //             $foodAmount.appendTo($('.ratFoodAmount'))
-    //             $foodType.appendTo($('.ratFoodType'))
+                $foodAmount.appendTo($('.ratFoodAmount'))
+                $foodType.appendTo($('.ratFoodType'))
 
-    //             if (globalCapacity() === true) {
-    //                 checkCageCapacity()
-    //             }
-    //         }
-    //     }
-    // })
+                if (globalCapacity() === true) {
+                    checkCageCapacity()
+                }
+            }
+        }
+    })
 
     // for modal
     const getCurrentCage = () => {

@@ -7,7 +7,6 @@ window.addEventListener("DOMContentLoaded", ()=>{
     })
 
     modal.addEventListener("click", e => {
-        console.log(e.target)
         if (e.target === modal) {
             modal.style.visibility = 'hidden'
         } 

@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
+    <script src="scripts\cage.mjs"></script>
+    <script src="scripts\homepartials\viewcages.mjs"></script>
     <script src="scripts\homepartials\homemodal.mjs"></script>
     <script src="scripts\homepartials\daynight.mjs"></script>
     
@@ -50,8 +52,10 @@
                 <button>Enter Competition</button>
             </div>
         </div>
-        <div class="cageContainer">
-            <div class="smallCage seed"></div>
+        <div id="cages">
+            <button id="previous">PREVIOUS</button>
+            <!-- CAGES GET APPENDED HERE -->
+            <button id="next">NEXT</button>
         </div>
     </div>
 </body>

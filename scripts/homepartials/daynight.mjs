@@ -114,10 +114,6 @@ window.addEventListener("DOMContentLoaded", ()=>{
 })
 
 
-
-
-
-
 // // AGE UP RATS
 // const ageUpRats = () => {
 //     rats.forEach(element => {

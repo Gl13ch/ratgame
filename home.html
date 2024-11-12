@@ -4,11 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="scripts\daynight.mjs"></script>
+
+    <script src="scripts\homepartials\homemodal.mjs"></script>
+    <script src="scripts\homepartials\daynight.mjs"></script>
+    
     <link rel="stylesheet" href="styles\home.css">
 </head>
 <body>
-    <div class="home">
+    <div class="home"></div>
+        <div id="homeBackground">
+            <div class="room">
+                <div id="ceiling" class="face"></div>
+                <div id="wall1" class="face"></div>
+                <div id="wall2" class="face"></div>
+                <div id="floor" class="face"></div>
+            </div>
+        </div>
         <div id="date">
             <div id="dateBackground"></div>
             <p id="month">6</p>
@@ -27,18 +38,20 @@
             <p id="evening" class="timeofday"></p>
             <p id="night" class="timeofday"></p> 
         </div>
-        <p>what would you like to do?</p>
-        <ul>
-            <li><a href="" target="_blank" rel="noopener noreferrer">Shop</a></li>
-            <!-- skip from morning to evening to night -->
-            <li>skip turn</li>
-            <!-- don't have implemented -->
-            <li>enter competition</li>
-            <!-- need to make a save function with local storage -->
-            <li>save</li>
-        </ul>
+        <div id="hamburgerIcon">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div id="homeModal">
+            <div id="homeModalText">
+                <button>Pet Shop</button>
+                <button>Skip Turn</button>
+                <button>Enter Competition</button>
+            </div>
+        </div>
         <div class="cageContainer">
-            <div class="seedCageSmall"></div>
+            <div class="smallCage seed"></div>
         </div>
     </div>
 </body>

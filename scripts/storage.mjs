@@ -1,4 +1,4 @@
-console.log('storage.mjs')
+console.log(JSON.parse(localStorage.getItem('currentDate')))
 // // IMPORTS
 // import { Cage, cageContainer} from "./cage.mjs"
 // import { Rat } from "./rats.mjs"

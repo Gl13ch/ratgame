@@ -1,34 +1,97 @@
 class Cage{
-  constructor(tag, cageName, capacity, cost, heldRats = [],foodAmount = "normal", foodType = "standard"){
-      this.tag = tag
-      this.cageName = cageName
-      this.capacity = capacity
-      this.cost = cost
-      this.heldRats = heldRats
-      this.foodAmount = foodAmount
-      this.foodType = foodType
-  } 
-  changeFoodAmount (amount){
-      this.foodAmount = amount
-  }
-  changeFoodType (type){
-      this.foodType = type
-  }
+    constructor(id, tag, cageName, capacity, heldRats = [],foodAmount = "normal", foodType = "standard"){
+        this.id = id
+        this.tag = tag
+        this.cageName = cageName
+        this.capacity = capacity
+        this.heldRats = heldRats
+        this.foodAmount = foodAmount
+        this.foodType = foodType
+    } 
+    changeFoodAmount (amount){
+        this.foodAmount = amount
+    }
+    changeFoodType (type){
+        this.foodType = type
+    }
 }
 
-const cageContainer = []
+// REINSTANTIATE
+const reinstantiateCages = () => {
+    playerCages = retrieve('playercages')
 
-const smallCage = new Cage('SMALL','small cage', 2,'$100')
-const largeCage = new Cage('LARGE','large cage', 3, '$200')
-const twoStoryCage = new Cage('TWOSTORY','2-story cage', 4,'$300')
-const athleticCage = new Cage('ATHLETIC','sporty cage', 2,'$400')
-const beautyCage = new Cage('BEAUTY','beauty cage', 2,'$400')
+    const temp = []
+    
+    //reinstantiate cages
+    for (let i = 0; i < playerCages.length; i++) {
+        temp.push(new Cage(...Object.values(playerCages[i])))
+    }
+    playerCages.length = 0
+    for (let i = 0; i < temp.length; i++) {
+        playerCages.push(temp[i])
+    }
+}
 
-cageContainer.push(smallCage)
-cageContainer.push(largeCage)
+reinstantiateCages()
+
+// CREATE CAGES
+const createCageID = () => {
+   let cageID = `C${playerCages.length + 1}`
+   return cageID
+}
+
+const createSmallCage = () => {
+    const smallCage = new Cage(createCageID(), 'small', 'Small Cage', 2)
+    return smallCage
+}
+
+const createLargeCage = () => {
+    const largeCage = new Cage(createCageID(),'large','Large Cage', 3)
+    return largeCage
+}
+
+const createTwoStoryCage = () => {
+    const twoStoryCage = new Cage(createCageID(),'twostory','Two Story Cage', 4)
+    return twoStoryCage
+}
+
+const createAthleticCage = () => {
+    const athleticCage = new Cage(createCageID(),'athletic','Athletic Cage', 2)
+}
+
+const createBeautyCage = () => {
+    const beautyCage = new Cage(createCageID(),'beauty','Beauty Cage', 2)
+}
+
+
+
+
+
+playerCages.push(createLargeCage())
+console.log(playerCages)
+save('playercages', playerCages)
+
+
+// playerCages = (JSON.parse(localStorage.getItem('cageArray')))
+
+// localStorage.removeItem('cageArray')
+
+// console.log(playerCages)
+// SEED DATA
+// const cageContainer = []
+// const smallCage = new Cage(1,'SMALL','small cage', 2,'$100')
+// const largeCage = new Cage(2,'LARGE','large cage', 3, '$200')
+// const twoStoryCage = new Cage(3,'TWOSTORY','2-story cage', 4,'$300')
+// const athleticCage = new Cage(4,'ATHLETIC','sporty cage', 2,'$400')
+// const beautyCage = new Cage(5,'BEAUTY','beauty cage', 2,'$400')
+// cageContainer.push(smallCage)
+// cageContainer.push(largeCage)
 // cageContainer.push(twoStoryCage)
 // cageContainer.push(athleticCage)
 // cageContainer.push(beautyCage)
+
+
+
 
 // const globalCapacity = () => {
 //     for (let i = 0; i < cages.length; i++) {

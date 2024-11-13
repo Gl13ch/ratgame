@@ -1,32 +1,67 @@
-console.log(JSON.parse(localStorage.getItem('currentDate')))
-// // IMPORTS
-// import { Cage, cageContainer} from "./cage.mjs"
-// import { Rat } from "./rats.mjs"
+// INITIAL DATA
+let date = {
+    timeOfDay:'evening',
+    day: 'TUE',
+    week: 1,
+    month: 1,
+    year: 1,
+}
+let playerCages = []
+let playerRats = []
 
-// //LOCAL STORAGE VARIABLES
-// let rats = []
-// let cages =[cageContainer[0]]
-// let currentDate = {
-//     timeOfDay:'evening',
-//     day: 'Tuesday',
-//     week: 1,
-//     month: 'January',
-//     year: 1,
-// }
+// CLEAR ALL DATA AND CREATE LOCAL STORAGE WITH INITIAL DATA
+const clear = () => {
+    // CLEAR DATA
+    localStorage.clear()
+    // SET DATA
+    localStorage.setItem('date', JSON.stringify(date))
+    localStorage.setItem('playercages', JSON.stringify(playerCages))
+}
 
-// // NEW GAME
-// if (localStorage.length === 0) {
-//     localStorage.setItem('ratArray', JSON.stringify(rats))
-//     localStorage.setItem('cageArray', JSON.stringify(cages))
-//     localStorage.setItem('currentDate', JSON.stringify(currentDate))
-// }
+// REMOVE SINGLE STORED OBJECT
+const remove = (key) => {
+    localStorage.removeItem(key)
+}
 
-// // START OVER
-// // localStorage.removeItem('ratArray')
-// // localStorage.removeItem('cageArray')
-// // localStorage.removeItem('currentDate')
+// RETRIEVE DATA
+const retrieve = (key = String) => {
+    let data = (JSON.parse(localStorage.getItem(key)))
+    return data
+}
 
-// // localStorage.clear()
+// SAVE DATA
+const save = (key = String, value) => {
+    localStorage.setItem(key, JSON.stringify(value))
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // // LOAD
 // const load = () => {

@@ -1,19 +1,18 @@
 window.addEventListener("DOMContentLoaded", ()=>{
-
     const cages = document.getElementById('cages')
     const $next = document.getElementById("next")
     const $previous = document.getElementById("previous")
 
     // create cages from users owned cages
-    for (let i = 0; i < cageContainer.length; i++) {
+    for (let i = 0; i < playerCages.length; i++) {
         let canvas = document.createElement("div")
-        canvas.className = `cageCanvas ${cageContainer[i].tag}`
+        canvas.className = `cageCanvas ${playerCages[i].tag.toUpperCase()}`
         let cage = document.createElement("div")
-        cage.className = `classPlaceholder${i}`
-        cage.id = `placeholder${i}`
+        cage.className = `${playerCages[i].tag}`
+        cage.id = `${playerCages[i].id}`
         let cageName = document.createElement("h3")
         cageName.className = 'cageName'
-        cageName.textContent = `${cageContainer[i].cageName}`
+        cageName.textContent = `${playerCages[i].cageName}`
 
         cages.insertBefore(canvas, $next)
         canvas.appendChild(cageName)
@@ -21,14 +20,14 @@ window.addEventListener("DOMContentLoaded", ()=>{
     }
 
     // CAROSEL
-    if (cageContainer.length > 1) {
+    if (playerCages.length > 1) {
         $previous.style.display = "block"
         $next.style.display = "block"
 
         const $canvas = document.querySelectorAll('.cageCanvas')
     
         let currentCageIndex = 0
-        let numOfCages = cageContainer.length - 1
+        let numOfCages = playerCages.length - 1
     
         // CAROSEL - next
         $next.addEventListener("click", e => {

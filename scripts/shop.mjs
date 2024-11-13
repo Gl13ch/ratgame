@@ -1,5 +1,5 @@
-console.log('shop.mjs')
-// import { Breed, Rat } from './rats.mjs'
+// console.log(playerCages)
+
 
 // class ShopRats {
 //     constructor(shopId, breed, sex, personality, fur, hasRedEyes) {

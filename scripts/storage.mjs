@@ -18,7 +18,7 @@ const clear = () => {
     localStorage.setItem('playercages', JSON.stringify(playerCages))
 }
 
-// REMOVE SINGLE STORED OBJECT
+// REMOVE SINGLE DATA
 const remove = (key) => {
     localStorage.removeItem(key)
 }
@@ -29,7 +29,7 @@ const retrieve = (key = String) => {
     return data
 }
 
-// SAVE DATA
+// SAVE DATA OR CREATE NEW DATA
 const save = (key = String, value) => {
     localStorage.setItem(key, JSON.stringify(value))
 }

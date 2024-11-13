@@ -3,9 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>RatGameSHOP</title>
+    <script src="scripts/storage.mjs"></script>
+    <script src="scripts/cage.mjs"></script>
+    <script src="scripts/shop.mjs"></script>
+
+    <link rel="stylesheet" href="styles/shop.css">
 </head>
 <body>
-    
+    <div class="shop">
+        <div>
+            <a href="home.html">Home</a>
+        </div>
+        <div id="ifCage">
+            <h3>Buy a Cage</h3>
+            <form id="cageForm">
+                <input type="radio" required="true" name="cage" value="smallCage">
+                <label for="cage">small cage</label>
+                <input type="radio" required="true" name="cage" value="largeCage">
+                <label for="cage">large cage</label>
+                <input type="radio" required="true" name="cage" value="twoStoryCage">
+                <label for="cage">two-story cage</label>
+                <input type="radio" required="true" name="cage" value="athleticCage">
+                <label for="cage">atheletic cage</label>
+                <input type="radio" required="true" name="cage" value="beautyCage">
+                <label for="cage">beauty cage</label>
+                <br>
+                <input type="submit" id="cageSubmit">
+            </form>
+        </div>
+    </div>
 </body>
 </html>

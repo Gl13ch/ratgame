@@ -63,35 +63,49 @@ const createBeautyCage = () => {
     const beautyCage = new Cage(createCageID(),'beauty','Beauty Cage', 2)
 }
 
+// CREATE CAGE
+// PUSH INTO ARRAY
+// SAVE TO LOCAL STORAGE
+
+window.addEventListener('DOMContentLoaded', () =>{
+
+    const submit = document.getElementById('cageSubmit')
+    const cageForm = document.getElementById('cageForm')
+
+    const buyCage = (e) => {
+        e.preventDefault()
+
+        const input = document.querySelector('input[name=cage]:checked').value
+        console.log(input)
+
+        cageForm.reset()
+    
+        // //local storage get rats
+        // JSON.parse(localStorage.getItem('cageArray'))
+    
+        // //push specified cage into userCage
+        // for (let i = 0; i < cageContainer.length; i++) {
+        //     if (cageContainer[i].tag === cageInput) {
+        //         cages.push(cageContainer[i])
+        //     }
+        // }
+    
+        // //local storage add new rat to cage
+        // localStorage.setItem('cageArray', JSON.stringify(cages))
+    }
+
+    cageForm.addEventListener("submit", buyCage)
+})
 
 
 
 
-playerCages.push(createLargeCage())
-console.log(playerCages)
-save('playercages', playerCages)
+// Buy a cage
+// $('.cageForm').on('submit', event => {
+//     // event.preventDefault()
 
-
-// playerCages = (JSON.parse(localStorage.getItem('cageArray')))
-
-// localStorage.removeItem('cageArray')
-
-// console.log(playerCages)
-// SEED DATA
-// const cageContainer = []
-// const smallCage = new Cage(1,'SMALL','small cage', 2,'$100')
-// const largeCage = new Cage(2,'LARGE','large cage', 3, '$200')
-// const twoStoryCage = new Cage(3,'TWOSTORY','2-story cage', 4,'$300')
-// const athleticCage = new Cage(4,'ATHLETIC','sporty cage', 2,'$400')
-// const beautyCage = new Cage(5,'BEAUTY','beauty cage', 2,'$400')
-// cageContainer.push(smallCage)
-// cageContainer.push(largeCage)
-// cageContainer.push(twoStoryCage)
-// cageContainer.push(athleticCage)
-// cageContainer.push(beautyCage)
-
-
-
+    
+// })
 
 // const globalCapacity = () => {
 //     for (let i = 0; i < cages.length; i++) {

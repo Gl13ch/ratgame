@@ -3,6 +3,8 @@ class Rat {
         this.id = id
         this.name = name
         this.sex = sex
+        // Can maybe just make personality random right here and not have to even push it, just set it for reinstantiate
+        // e.g. this.personality = random(personalityArr)
         this.personality = personality
         this.breed = breed
         this.cage = cage

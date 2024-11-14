@@ -16,22 +16,24 @@ class Cage{
     }
 }
 
+// CLEAR LOCAL STORAGE
+// clear()
+
 // REINSTANTIATE
 const reinstantiateCages = () => {
     playerCages = retrieve('playercages')
-
-    const temp = []
-    
-    //reinstantiate cages
-    for (let i = 0; i < playerCages.length; i++) {
-        temp.push(new Cage(...Object.values(playerCages[i])))
-    }
-    playerCages.length = 0
-    for (let i = 0; i < temp.length; i++) {
-        playerCages.push(temp[i])
+    if (playerCages.length !== 0) {
+        //reinstantiate cages
+        const temp = []
+        for (let i = 0; i < playerCages.length; i++) {
+            temp.push(new Cage(...Object.values(playerCages[i])))
+        }
+        playerCages.length = 0
+        for (let i = 0; i < temp.length; i++) {
+            playerCages.push(temp[i])
+        }
     }
 }
-
 reinstantiateCages()
 
 // CREATE CAGES
@@ -40,72 +42,40 @@ const createCageID = () => {
    return cageID
 }
 
-const createSmallCage = () => {
-    const smallCage = new Cage(createCageID(), 'small', 'Small Cage', 2)
-    return smallCage
-}
-
-const createLargeCage = () => {
-    const largeCage = new Cage(createCageID(),'large','Large Cage', 3)
-    return largeCage
-}
-
-const createTwoStoryCage = () => {
-    const twoStoryCage = new Cage(createCageID(),'twostory','Two Story Cage', 4)
-    return twoStoryCage
-}
-
-const createAthleticCage = () => {
-    const athleticCage = new Cage(createCageID(),'athletic','Athletic Cage', 2)
-}
-
-const createBeautyCage = () => {
-    const beautyCage = new Cage(createCageID(),'beauty','Beauty Cage', 2)
-}
-
-// CREATE CAGE
-// PUSH INTO ARRAY
-// SAVE TO LOCAL STORAGE
-
-window.addEventListener('DOMContentLoaded', () =>{
-
-    const submit = document.getElementById('cageSubmit')
-    const cageForm = document.getElementById('cageForm')
-
-    const buyCage = (e) => {
-        e.preventDefault()
-
-        const input = document.querySelector('input[name=cage]:checked').value
-        console.log(input)
-
-        cageForm.reset()
-    
-        // //local storage get rats
-        // JSON.parse(localStorage.getItem('cageArray'))
-    
-        // //push specified cage into userCage
-        // for (let i = 0; i < cageContainer.length; i++) {
-        //     if (cageContainer[i].tag === cageInput) {
-        //         cages.push(cageContainer[i])
-        //     }
-        // }
-    
-        // //local storage add new rat to cage
-        // localStorage.setItem('cageArray', JSON.stringify(cages))
+const createCages = {
+    small: () => {
+        c = new Cage(createCageID(), 'small', 'Small Cage', 2)
+        return c
+    },
+    large: () => {
+        c = new Cage(createCageID(),'large','Large Cage', 3)
+        return c
+    },
+    twostory: () => {
+        c = new Cage(createCageID(),'twostory','Two Story Cage', 4)
+        return c
+    },
+    athletic: () => {
+        c = new Cage(createCageID(),'athletic','Athletic Cage', 2)
+        return c
+    },
+    beauty: () => {
+        c = new Cage(createCageID(),'beauty','Beauty Cage', 2)
+        return c
     }
+}
 
-    cageForm.addEventListener("submit", buyCage)
-})
+const initialCage = () => {
+    if (playerCages.length === 0) {
+        playerCages.push(createCages['small']())
+        save('playercages', playerCages)
+    }
+}
+initialCage()
 
 
 
 
-// Buy a cage
-// $('.cageForm').on('submit', event => {
-//     // event.preventDefault()
-
-    
-// })
 
 // const globalCapacity = () => {
 //     for (let i = 0; i < cages.length; i++) {

@@ -1,3 +1,27 @@
+// BUY NEW CAGE
+window.addEventListener('DOMContentLoaded', () =>{
+
+    const cageForm = document.getElementById('cageForm')
+
+    const buyCage = (e) => {
+        e.preventDefault()
+    
+        const input = document.querySelector('input[name=cage]:checked').value
+    
+        cageForm.reset()
+    
+        playerCages.push(createCages[input]())
+        
+        save('playercages', playerCages)
+    }
+
+    cageForm.addEventListener("submit", buyCage)
+
+})
+
+
+
+
 // console.log(playerCages)
 
 

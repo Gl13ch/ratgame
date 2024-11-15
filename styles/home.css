@@ -383,6 +383,11 @@ div.BEAUTY > div::after{
     bottom: -50px;
 }
 
+.heldRats {
+    position: absolute;
+    bottom: -75px;
+}
+
 #next, #previous{
     position: relative;
     top: 50px;

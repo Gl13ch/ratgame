@@ -3,19 +3,27 @@ window.addEventListener("DOMContentLoaded", ()=>{
     const $next = document.getElementById("next")
     const $previous = document.getElementById("previous")
 
-    // create cages from users owned cages
+    // create cages from playerCages
     for (let i = 0; i < playerCages.length; i++) {
         let canvas = document.createElement("div")
         canvas.className = `cageCanvas ${playerCages[i].tag.toUpperCase()}`
+        // canvas.id = `${playerCages[i].id}`
+
         let cage = document.createElement("div")
-        cage.className = `${playerCages[i].tag}`
+        cage.className = `cage ${playerCages[i].tag}`
         cage.id = `${playerCages[i].id}`
+
         let cageName = document.createElement("h3")
         cageName.className = 'cageName'
         cageName.textContent = `${playerCages[i].cageName}`
 
+        let heldRats = document.createElement("h3")
+        heldRats.className = 'heldRats'
+        heldRats.textContent = `${playerCages[i].heldRats}`
+
         cages.insertBefore(canvas, $next)
         canvas.appendChild(cageName)
+        canvas.appendChild(heldRats)
         canvas.appendChild(cage)
     }
 
@@ -53,6 +61,14 @@ window.addEventListener("DOMContentLoaded", ()=>{
     } else {
         $previous.style.display = "none"
         $next.style.display = "none"
-    }
+    }   
 })
+
+
+
+
+
+
+
+
 

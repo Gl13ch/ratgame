@@ -1,3 +1,5 @@
+// could probably do sub class for mixed breeds. all the same traits except would have extra features (i.e hasRexFur, hasBristleCoatFur, hasTail, hasHairlessFur, hasDumboEars, hasSatinFur)
+
 class Rat {
     constructor(id, name, sex, personality, breed, cage, fur, hasRedEyes){
         this.id = id
@@ -92,11 +94,9 @@ class Rat {
 
 // const furColors = ['beige', 'black', 'blue', 'blueBeige', 'champagne', 'chocolate', 'cocoa', 'lilac', 'mink', 'platinum', 'powderBlue', 'russianBlue', 'russianDove', 'skyBlue', 'white']
 
-const sexArr = ['Male', 'Female']
+// const sexArr = ['Male', 'Female']
 
 
-
-export {};
 
 
 

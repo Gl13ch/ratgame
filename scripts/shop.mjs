@@ -1,8 +1,7 @@
-// BUY NEW CAGE
 window.addEventListener('DOMContentLoaded', () =>{
 
+    // BUY NEW CAGE
     const cageForm = document.getElementById('cageForm')
-
     const buyCage = (e) => {
         e.preventDefault()
     
@@ -14,9 +13,10 @@ window.addEventListener('DOMContentLoaded', () =>{
         
         save('playercages', playerCages)
     }
-
     cageForm.addEventListener("submit", buyCage)
 
+
+    // BUY NEW RAT
 })
 
 

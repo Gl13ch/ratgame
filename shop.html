@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RatGameSHOP</title>
+    
     <script src="scripts/storage.mjs"></script>
-    <script src="scripts/cage.mjs"></script>
+    <script src="scripts/cages.mjs"></script>
     <script src="scripts/shop.mjs"></script>
 
     <link rel="stylesheet" href="styles/shop.css">
@@ -30,6 +31,31 @@
                 <label for="cage">Beauty Cage</label>
                 <br>
                 <input type="submit" id="cageSubmit">
+            </form>
+        </div>
+        <div id="ifRats">
+            <h3>Buy a Rat</h3>
+            <form>
+                <!-- breed -->
+                <input class="shopBreed" type="radio" required="true" name="breed" value="standard">
+                <label for="breed">Standard</label>
+                <input type="radio" required="true" name="breed" value="rex">
+                <label for="breed">Rex</label>
+                <input type="radio" required="true" name="breed" value="tailless">
+                <label for="breed">Tailless</label>
+                <input type="radio" required="true" name="breed" value="hairless">
+                <label for="breed">Hairless</label>
+                <input type="radio" required="true" name="breed" value="satin">
+                <label for="breed">Satin</label>
+                <input type="radio" required="true" name="breed" value="dumbo">
+                <label for="breed">Dumbo</label>
+                <input type="radio" required="true" name="breed" value="bristleCoat">
+                <label for="breed">Bristle Coat</label>
+                <br>
+                <!-- name -->
+                <input class="shopName" type="text" required="true" id="name" placeholder="Give rat a name"><br>
+                <!-- submit -->
+                <input class="shopSubmit" type="submit" id="ratSubmit">
             </form>
         </div>
     </div>

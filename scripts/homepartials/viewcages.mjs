@@ -7,7 +7,6 @@ window.addEventListener("DOMContentLoaded", ()=>{
     for (let i = 0; i < playerCages.length; i++) {
         let canvas = document.createElement("div")
         canvas.className = `cageCanvas ${playerCages[i].tag.toUpperCase()}`
-        // canvas.id = `${playerCages[i].id}`
 
         let cage = document.createElement("div")
         cage.className = `cage ${playerCages[i].tag}`
@@ -19,7 +18,9 @@ window.addEventListener("DOMContentLoaded", ()=>{
 
         let heldRats = document.createElement("h3")
         heldRats.className = 'heldRats'
-        heldRats.textContent = `${playerCages[i].heldRats}`
+        for (let j = 0; j < playerCages[i].heldRats.length; j++) {
+            heldRats.textContent += `${playerCages[i].heldRats[j].ratName} `
+        }
 
         cages.insertBefore(canvas, $next)
         canvas.appendChild(cageName)

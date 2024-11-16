@@ -1,3 +1,5 @@
+// Day night should only progress inside cage. Will need to get data here for the graphic but only run the interval in cage.mjs
+
 date = retrieve('date')
 
 let currentTimeofDay = date.timeOfDay

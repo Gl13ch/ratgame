@@ -6,6 +6,7 @@
     <title>RatGameSHOP</title>
     
     <script src="scripts/storage.mjs"></script>
+    <script src="scripts/rats.mjs"></script>
     <script src="scripts/cages.mjs"></script>
     <script src="scripts/shop.mjs"></script>
 
@@ -35,9 +36,14 @@
         </div>
         <div id="ifRats">
             <h3>Buy a Rat</h3>
-            <form>
+            <form id="ratForm">
+                <!-- sex -->
+                <input type="radio" required="true" name="sex" value="male">
+                <label for="sex">Male</label>
+                <input type="radio" required="true" name="sex" value="female">
+                <label for="sex">Female</label><br>
                 <!-- breed -->
-                <input class="shopBreed" type="radio" required="true" name="breed" value="standard">
+                <input type="radio" required="true" name="breed" value="standard">
                 <label for="breed">Standard</label>
                 <input type="radio" required="true" name="breed" value="rex">
                 <label for="breed">Rex</label>
@@ -52,10 +58,11 @@
                 <input type="radio" required="true" name="breed" value="bristleCoat">
                 <label for="breed">Bristle Coat</label>
                 <br>
+                <!-- CAGES GET APPENDED HERE -->
                 <!-- name -->
                 <input class="shopName" type="text" required="true" id="name" placeholder="Give rat a name"><br>
                 <!-- submit -->
-                <input class="shopSubmit" type="submit" id="ratSubmit">
+                <input class="shopSubmit" type="submit" disabled="true" id="ratSubmit">
             </form>
         </div>
     </div>

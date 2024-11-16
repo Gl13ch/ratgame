@@ -1,81 +1,122 @@
-// could probably do sub class for mixed breeds. all the same traits except would have extra features (i.e hasRexFur, hasBristleCoatFur, hasTail, hasHairlessFur, hasDumboEars, hasSatinFur)
-
 class Rat {
-    constructor(id, name, sex, personality, breed, cage, fur, hasRedEyes){
+    constructor(id, ratName, sex, breed, cage){
         this.id = id
-        this.name = name
+        this.ratName = ratName
         this.sex = sex
-        // Can maybe just make personality random right here and not have to even push it, just set it for reinstantiate
-        // e.g. this.personality = random(personalityArr)
-        this.personality = personality
         this.breed = breed
         this.cage = cage
-        this.fur = fur
-        this.hasRedEyes = hasRedEyes
-        this.breedObj = []
-        this.happiness = 50
-        this.affection = 'neutral'
-        this.mood = 'neutral'
-        this.weight = 'normal'
-        this.health = 'normal'
-        this.tricks = []
-        this.endurance = 10
-        this.quickness = 10
-        this.jump = 10
-        this.grooming = 10
-        this.appearance = 10
-        this.charm = 10
-        this.toilet = 'untrained'
-        this.bed = 'untrained'
-        this.eating = 'untrained'
-        this.wheel = 'untrained'
-        this.nibbling = 'untrained'
-        this.competitionRank = 1
-        this.competitionEntered = ''
-        this.ageMonth = 1
-        this.ageYear = 0
-        this.mother = ''
-        this.father = ''
+        this.personality = randomIndex(personalityArr)
     }
-    makeBaby (babyId, babyName, babySex, babyPersonality, babyBreed, babyCage, babyFur, babyHasRedEyes, babyMother, babyFather){
-        const baby = new Rat(babyId, babyName, babySex, babyPersonality, babyBreed, babyCage, babyFur, babyHasRedEyes)
-        console.log(baby)
-        baby.mother = babyMother
-        baby.father = babyFather
-        return baby
-    }
-    startingCage(cageIndex, newRat, newCageIndexHeldRats){
-        this.cage = cageIndex
-        newCageIndexHeldRats.push(newRat)
-    }
-    moveCage(cageIndex, newRat, newCageIndexHeldRats, oldCageIndexHeldRats, removeIndex){
-        this.cage = cageIndex
-        newCageIndexHeldRats.push(newRat)
-        oldCageIndexHeldRats.splice(removeIndex, 1)
-    }
-    ageUpMonth(){
-        this.ageMonth++
-    }
-    birthday(){
-        this.ageYear++
-    }
-    resetMonth(){
-        this.ageMonth = 0
-    }
-    // for when the object is recreated with local storage
-    setAgeMonth(month){
-        this.ageMonth = month
-    }
-    setAgeYear(year){
-        this.ageYear = year
-    }
-    setBreed(obj){
-        this.breedObj.push(obj)
+    setPersonality(p){
+        this.personality = p
     }
 }
 
-// console.log(testRatty)
+const personalityArr = ['agile','anxious','attentive','bold', 'cautious','communicative','confident','curious','determined','docile','dominant','easy going','easy to handle','enthusiastic','friendly','cheerful','irritable','lively','shy','solitary','tame','tempermental','trusting']
 
+// returns 'array[randomindex]'
+const randomIndex  = (array) => {
+    let length  = 0
+    for (let i = 0; i < array.length; i++) {
+        length = i + 1  
+    }
+    let index = Math.floor(Math.random() * length)
+    return array[index]
+}
+
+//REINSTANTIATE RATS
+const reinstantiateRats = () => {
+    playerRats = retrieve('playerrats')
+    if (playerRats.length !== 0) {
+        const temp = []
+        for (let i = 0; i < playerRats.length; i++) {
+            temp.push(new Rat(...Object.values(playerRats[i])))
+            temp[i].setPersonality(playerRats[i].personality)
+        }
+        playerRats.length = 0
+        for (let i = 0; i < temp.length; i++) {
+            playerRats.push(temp[i])
+        }
+    }
+}
+reinstantiateRats()
+
+
+// could probably do sub class for mixed breeds. all the same traits except would have extra features (i.e hasRexFur, hasBristleCoatFur, hasTail, hasHairlessFur, hasDumboEars, hasSatinFur)
+
+// class Rat {
+//     constructor(id, name, sex, personality, breed, cage, fur, hasRedEyes){
+//         this.id = id
+//         this.name = name
+//         this.sex = sex
+//         // Can maybe just make personality random right here and not have to even push it, just set it for reinstantiate
+//         // e.g. this.personality = random(personalityArr)
+//         this.personality = personality
+//         this.breed = breed
+//         this.cage = cage
+//         this.fur = fur
+//         this.hasRedEyes = hasRedEyes
+//         this.breedObj = []
+//         this.happiness = 50
+//         this.affection = 'neutral'
+//         this.mood = 'neutral'
+//         this.weight = 'normal'
+//         this.health = 'normal'
+//         this.tricks = []
+//         this.endurance = 10
+//         this.quickness = 10
+//         this.jump = 10
+//         this.grooming = 10
+//         this.appearance = 10
+//         this.charm = 10
+//         this.toilet = 'untrained'
+//         this.bed = 'untrained'
+//         this.eating = 'untrained'
+//         this.wheel = 'untrained'
+//         this.nibbling = 'untrained'
+//         this.competitionRank = 1
+//         this.competitionEntered = ''
+//         this.ageMonth = 1
+//         this.ageYear = 0
+//         this.mother = ''
+//         this.father = ''
+//     }
+//     makeBaby (babyId, babyName, babySex, babyPersonality, babyBreed, babyCage, babyFur, babyHasRedEyes, babyMother, babyFather){
+//         const baby = new Rat(babyId, babyName, babySex, babyPersonality, babyBreed, babyCage, babyFur, babyHasRedEyes)
+//         console.log(baby)
+//         baby.mother = babyMother
+//         baby.father = babyFather
+//         return baby
+//     }
+//     startingCage(cageIndex, newRat, newCageIndexHeldRats){
+//         this.cage = cageIndex
+//         newCageIndexHeldRats.push(newRat)
+//     }
+//     moveCage(cageIndex, newRat, newCageIndexHeldRats, oldCageIndexHeldRats, removeIndex){
+//         this.cage = cageIndex
+//         newCageIndexHeldRats.push(newRat)
+//         oldCageIndexHeldRats.splice(removeIndex, 1)
+//     }
+//     ageUpMonth(){
+//         this.ageMonth++
+//     }
+//     birthday(){
+//         this.ageYear++
+//     }
+//     resetMonth(){
+//         this.ageMonth = 0
+//     }
+//     // for when the object is recreated with local storage
+//     setAgeMonth(month){
+//         this.ageMonth = month
+//     }
+//     setAgeYear(year){
+//         this.ageYear = year
+//     }
+//     setBreed(obj){
+//         this.breedObj.push(obj)
+//     }
+// }
 
 // // for breeding "genetics"
 // class Breed {
@@ -95,10 +136,6 @@ class Rat {
 // const furColors = ['beige', 'black', 'blue', 'blueBeige', 'champagne', 'chocolate', 'cocoa', 'lilac', 'mink', 'platinum', 'powderBlue', 'russianBlue', 'russianDove', 'skyBlue', 'white']
 
 // const sexArr = ['Male', 'Female']
-
-
-
-
 
 // const personalityArr = ['agile','anxious','attentive','bold', 'cautious','communicative','confident','curious','determined','docile','dominant','easy going','easy to handle','enthusiastic','friendly','cheerful','irritable','lively','shy','solitary','tame','tempermental','trusting']
 

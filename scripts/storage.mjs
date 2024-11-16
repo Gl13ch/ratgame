@@ -16,7 +16,9 @@ const clear = () => {
     // SET DATA
     localStorage.setItem('date', JSON.stringify(date))
     localStorage.setItem('playercages', JSON.stringify(playerCages))
+    localStorage.setItem('playerrats', JSON.stringify(playerRats))
 }
+// clear()
 
 // REMOVE SINGLE DATA
 const remove = (key) => {

@@ -74,10 +74,8 @@ const startingCage = () => {
 startingCage()
 
 window.onload = () => {
-    // CLICK ON CAGE - BRING TO INSIDE CAGE
+    // CLICK ON CAGE - BRING INSIDE CAGE
     const canvas = document.querySelectorAll('.cageCanvas')
-
-
     for (let i = 0; i < canvas.length; i++) {
         canvas[i].addEventListener("click", e => {
             if (e.target.id === playerCages[i].id) {
@@ -85,129 +83,107 @@ window.onload = () => {
                 selectedCage.push(playerCages[i])
                 sessionStorage.setItem('currentCage', JSON.stringify(selectedCage))
 
-                console.log(selectedCage)
                 location.href="cage.html"
             }
         })
     }
-
-
-    // canvas.forEach(element => {
-    //     element.addEventListener("click", e => {
-    //         if (e.target.id !== '') {
-    //             location.href="cage.html"
-    //             // console.log('ran')
-    //             // BRING TO CAGE.HTML
-    //             // DECIDE WHAT CAGE TO SHOW
-    //         }
-    //     })
-    // })
 }
 
+// RETURNS TRUE IF SPACE AVAILABLE IN ANY CAGE
+const globalCapacity = () => {
+    for (let i = 0; i < playerCages.length; i++) {
+        if (!(playerCages[i].capacity <= playerCages[i].heldRats.length)) {
+            return true
+        } 
+    }
+}
 
-
-
-// window.addEventListener("DOMContentLoaded", () => {
-//     const canvas = document.querySelectorAll('.cageCanvas')
-
-//     console.log(canvas)
-// })
-
-    
-    // let selectedCage = []
-
-    // for (let i = 0; i < canvas.length; i++) {
-    //     canvas[i].addEventListener("click", e => {
-    //         if (e.target.id === playerCages[i].id) {
-    //             selectedCage = playerCages[i]
-    //             // location.href="cage.html"
-    //         }
-    //     })
-    // }
-
-// const globalCapacity = () => {
-//     for (let i = 0; i < cages.length; i++) {
-//         if (!(cages[i].capacity <= cages[i].heldRats.length)) {
-//             return true
-//         } 
-//     }
-// }
+// RETURN THE CAGES THAT HAVE AVAILABLITY
+const getAvailableCages = () => {
+    let availableCages = []
+    for (let i = 0; i < playerCages.length; i++) {
+        if (!(playerCages[i].capacity <= playerCages[i].heldRats.length)) {
+            availableCages.push(playerCages[i])
+        } 
+    }
+    return availableCages
+}
 
 // let onlyAvailableCage = []
 //     let ifRatInCage = []
 
-//     // can maybe split this into two functions check for rat at home and check for shop
-//     const checkCageCapacity = () => {
-//         const $moveText = $('<p>').addClass('move').text('Would you like to move your rat to another cage?')
+    // can maybe split this into two functions check for rat at home and check for shop
+    const checkCageCapacity = () => {
+        const $moveText = $('<p>').addClass('move').text('Would you like to move your rat to another cage?')
 
-//         //resets on function call
-//         onlyAvailableCage.length = 0
-//         ifRatInCage.length = 0
+        //resets on function call
+        onlyAvailableCage.length = 0
+        ifRatInCage.length = 0
 
-//         //resets values
-//         $('input[name="shopCage"]').remove()
-//         $('label[for="shopCage"]').remove()
-//         $('input[name="ratInfoCage"]').remove()
-//         $('label[for="ratInfoCage"]').remove()
-//         $('#moveSubmit').hide()
+        //resets values
+        $('input[name="shopCage"]').remove()
+        $('label[for="shopCage"]').remove()
+        $('input[name="ratInfoCage"]').remove()
+        $('label[for="ratInfoCage"]').remove()
+        $('#moveSubmit').hide()
 
-//         //if capacity is available push into array
-//         for (let i = 0; i < cages.length; i++) {
-//             if (cages[i].capacity <= cages[i].heldRats.length) {
-//                 // console.log("skipped")
-//             } else {
-//                 // console.log('pushed to temp array')
-//                 onlyAvailableCage.push(cages[i])
-//             }
-//         }
+        //if capacity is available push into array
+        for (let i = 0; i < cages.length; i++) {
+            if (cages[i].capacity <= cages[i].heldRats.length) {
+                // console.log("skipped")
+            } else {
+                // console.log('pushed to temp array')
+                onlyAvailableCage.push(cages[i])
+            }
+        }
 
-//         //if rat is in cage put that cage into array to be checked against
-//         for (let i = 0; i < cages.length; i++) {
-//             cages[i].heldRats.forEach(element => {
-//                 if (element.id !== Number(currentRatId[0])) {
-//                     // console.log('skip')
-//                 } else {
-//                     // console.log('push')
-//                     ifRatInCage.push(cages[i])
-//                 }
-//             });
-//         }
+        //if rat is in cage put that cage into array to be checked against
+        for (let i = 0; i < cages.length; i++) {
+            cages[i].heldRats.forEach(element => {
+                if (element.id !== Number(currentRatId[0])) {
+                    // console.log('skip')
+                } else {
+                    // console.log('push')
+                    ifRatInCage.push(cages[i])
+                }
+            });
+        }
 
-//         for (let j = 0; j < onlyAvailableCage.length; j++) {
+        for (let j = 0; j < onlyAvailableCage.length; j++) {
 
-//         if (ifRatInCage.length > 0) {
-//             if (ifRatInCage[0].tag === onlyAvailableCage[j].tag) {
+        if (ifRatInCage.length > 0) {
+            if (ifRatInCage[0].tag === onlyAvailableCage[j].tag) {
                 
-//             } else {
-//                 //users cages
-//                 const $ratInfoCageRadio = $(`<input type="radio" name="ratInfoCage" required="true" value='${onlyAvailableCage[j].cageName}'>`)
-//                 const $ratInfoCageLabel = $(`<label for="ratInfoCage">${onlyAvailableCage[j].cageName}</label>`)
+            } else {
+                //users cages
+                const $ratInfoCageRadio = $(`<input type="radio" name="ratInfoCage" required="true" value='${onlyAvailableCage[j].cageName}'>`)
+                const $ratInfoCageLabel = $(`<label for="ratInfoCage">${onlyAvailableCage[j].cageName}</label>`)
 
-//                 const $inRatInfo = $('.moveRat').prepend($ratInfoCageRadio,$ratInfoCageLabel)
+                const $inRatInfo = $('.moveRat').prepend($ratInfoCageRadio,$ratInfoCageLabel)
 
-//                 $moveText.prependTo($('#modalText'))
-//                 $('#moveSubmit').show()
-//             }
-//             }
-//         }
+                $moveText.prependTo($('#modalText'))
+                $('#moveSubmit').show()
+            }
+            }
+        }
 
-//         //if there is only one cage in the array no need to display
-//         if (onlyAvailableCage.length > 1) {
-//             // console.log('2 or more cages')
-//             let availableCageRatId = []
+        //if there is only one cage in the array no need to display
+        if (onlyAvailableCage.length > 1) {
+            // console.log('2 or more cages')
+            let availableCageRatId = []
 
-//             //loop through available cages with capacity to display them to user
-//             for (let j = 0; j < onlyAvailableCage.length; j++) {
+            //loop through available cages with capacity to display them to user
+            for (let j = 0; j < onlyAvailableCage.length; j++) {
 
-//                 //shop
-//                 const $shopCageRadio = $(`<input type="radio" name="shopCage" required="true" value='${onlyAvailableCage[j].cageName}'>`)
-//                 const $shopCageLabel = $(`<label for="shopCage">${onlyAvailableCage[j].cageName}</label>`)
+                //shop
+                const $shopCageRadio = $(`<input type="radio" name="shopCage" required="true" value='${onlyAvailableCage[j].cageName}'>`)
+                const $shopCageLabel = $(`<label for="shopCage">${onlyAvailableCage[j].cageName}</label>`)
                 
-//                 //shop can show all
-//                 const $inShop = $('#ratSubmit').before($shopCageRadio,$shopCageLabel)      
-//             }
-//         }
-//     }
+                //shop can show all
+                const $inShop = $('#ratSubmit').before($shopCageRadio,$shopCageLabel)      
+            }
+        }
+    }
 
 
 //     // Buy a cage

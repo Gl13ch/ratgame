@@ -36,6 +36,23 @@ const save = (key = String, value) => {
     localStorage.setItem(key, JSON.stringify(value))
 }
 
+// SESSION STORAGE----------------------
+// REMOVE SINGLE DATA
+const sessionRemove = (key) => {
+    sessionStorage.removeItem(key)
+}
+
+// RETRIEVE DATA
+const sessionRetrieve = (key = String) => {
+    let data = (JSON.parse(sessionStorage.getItem(key)))
+    return data
+}
+
+// SAVE DATA OR CREATE NEW DATA
+const sessionSave = (key = String, value) => {
+    sessionStorage.setItem(key, JSON.stringify(value))
+}
+
 
 
 

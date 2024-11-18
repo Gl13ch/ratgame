@@ -1,8 +1,9 @@
 /* CSS RATS */
+
 /* container */
-.ratProperties{
+/* .ratProperties{
     display: none;
-}
+} */
 
 /* Canvas */
 .canvas{
@@ -91,11 +92,6 @@
     left: 94px;
     transform: rotate(-220deg) scaleX(-1);
   }
-
-  /* Hairless Ears */
-  .hairlessEar {
-    background: #b9949a;
-  }
   
   /* Dumbo Rat Ears */
   .dumboEar {
@@ -126,6 +122,11 @@
   .dumboRightEar {
     left: 99px;
     transform: rotate(-195deg) scaleX(-1);
+  }
+
+  /* Hairless Ears */
+  .hairlessEar {
+    background: #b9949a;
   }
 
   /* Bristle Coat Fur */
@@ -477,6 +478,6 @@
   box-shadow: inset 0px 2px 0px 0px #edecf1;
 }
 
-.rexFur-red{
+/* .rexFur-red{
   box-shadow: inset 0px 2px 0px 0px #cc6053;
-}
+} */

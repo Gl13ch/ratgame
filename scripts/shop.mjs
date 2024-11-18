@@ -1,6 +1,6 @@
 // BUY NEW CAGE
 const buyCage = (e) => {
-    e.preventDefault()
+    // e.preventDefault()
 
     const cageInput = document.querySelector('input[name=cage]:checked').value
 

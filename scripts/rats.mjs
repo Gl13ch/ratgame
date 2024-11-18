@@ -14,7 +14,7 @@ class Rat {
 
 const personalityArr = ['agile','anxious','attentive','bold', 'cautious','communicative','confident','curious','determined','docile','dominant','easy going','easy to handle','enthusiastic','friendly','cheerful','irritable','lively','shy','solitary','tame','tempermental','trusting']
 
-// returns 'array[randomindex]'
+// RETURNS 'array[randomindex]'
 const randomIndex  = (array) => {
     let length  = 0
     for (let i = 0; i < array.length; i++) {
@@ -42,7 +42,7 @@ const reinstantiateRats = () => {
 reinstantiateRats()
 
 
-// could probably do sub class for mixed breeds. all the same traits except would have extra features (i.e hasRexFur, hasBristleCoatFur, hasTail, hasHairlessFur, hasDumboEars, hasSatinFur)
+// could probably do sub class (super?) for mixed breeds. all the same traits except would have extra features (i.e hasRexFur, hasBristleCoatFur, hasTail, hasHairlessFur, hasDumboEars, hasSatinFur)
 
 // class Rat {
 //     constructor(id, name, sex, personality, breed, cage, fur, hasRedEyes){

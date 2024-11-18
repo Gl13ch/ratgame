@@ -2,7 +2,6 @@
 
 date = retrieve('date')
 
-let currentTimeofDay = date.timeOfDay
 let nextTimeofDay = 'night'
 
 const days = ['MON','TUE','WED','THU','FRI','SAT','SUN']
@@ -68,6 +67,7 @@ window.addEventListener("DOMContentLoaded", ()=>{
     
     setCurrentDate()
     setInterval(dayNightCycle, 180000)
+    
 
     const goNextDay = () => {
         const currentDayIndex = days.indexOf(date.day)

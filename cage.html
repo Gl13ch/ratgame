@@ -6,14 +6,24 @@
     <title>ratGameCAGE</title>
 
     <script src="scripts/storage.mjs"></script>
-    <script src="scripts/rats.mjs"></script>
     <script src="scripts/cages.mjs"></script>
     <script src="scripts/cage.mjs"></script>
 
     <link rel="stylesheet" href="styles/cage.css">
+    <link rel="stylesheet" href="styles/rats.css">
 </head>
 <body>
-    <a href="home.html">Back</a>
-    <div id="testcage"></div>
+    <div class="cage">
+        <a href="home.html">Back</a>
+        <div id="cageFloor" class="small">
+            <div id="wheel"></div>
+            <div id="bed"></div>
+            <div id="potty"></div>
+            <div id="food"></div>
+            <div id="drink"></div>
+            <!-- RATS GET APPENDED HERE? -->
+            <div id="ratContainer"></div>
+        </div>
+    </div>
 </body>
 </html>

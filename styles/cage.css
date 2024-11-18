@@ -2,16 +2,6 @@ body{
     background-color: slategray;
 }
 
-/* <div id="insideCage">
-            <div id="cageFloor small">
-                <div id="wheel"></div>
-                <div id="bed"></div>
-                <div id="potty"></div>
-                <div id="food"></div>
-                <div id="drink"></div>
-                <!-- RATS GET APPENDED HERE? -->
-                <div class="ratProperties"> */
-
 .cage{
     position: fixed;
     display: flex;

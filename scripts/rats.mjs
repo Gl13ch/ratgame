@@ -38,8 +38,9 @@ const reinstantiateRats = () => {
             playerRats.push(temp[i])
         }
     }
+    return playerRats
 }
-reinstantiateRats()
+// reinstantiateRats()
 
 
 // could probably do sub class (super?) for mixed breeds. all the same traits except would have extra features (i.e hasRexFur, hasBristleCoatFur, hasTail, hasHairlessFur, hasDumboEars, hasSatinFur)

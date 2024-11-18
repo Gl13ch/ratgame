@@ -1,3 +1,33 @@
+class ShopRats {
+    constructor(shopId, breed, sex, personality, fur, hasRedEyes) {
+        this.shopId = shopId
+        this.breed = breed
+        this.sex = sex
+        this.personality = personality
+        this.fur = fur
+        this.hasRedEyes = hasRedEyes
+
+        if (this.breed === 'rex') {
+            this.hasRexFur = true
+        }
+        if (this.breed === 'tailless') {
+            this.isTailless = true
+        }
+        if (this.breed === 'satin') {
+            this.isSatin = true
+        }
+        if (this.breed === 'hairless') {
+            this.isHairless = true
+        }
+        if (this.breed === 'dumbo') {
+            this.hasDumboEars = true
+        }
+        if (this.breed === 'bristleCoat') {
+            this.hasBristleFur = true
+        }
+    }
+}
+
 // BUY NEW CAGE
 const buyCage = (e) => {
     // e.preventDefault()
@@ -80,7 +110,22 @@ const buyRat = (e) => {
     save('playerrats', playerRats)
 }
 
+
+const testLoad = () => {
+    const testShopRat = new ShopRats('id','satin','sex','personality','blue',true)
+    console.log(testShopRat)  
+
+    const test3 = new RatBody({
+        parent: document.getElementById("shopRatsContainer"),
+        furColor: testShopRat.fur,
+        isSatin: testShopRat.isSatin,
+        hasRedEyes: testShopRat.hasRedEyes,
+    })
+}
+
 window.addEventListener('DOMContentLoaded', () =>{
+    testLoad()
+
     // BUY NEW CAGE
     const cageForm = document.getElementById('cageForm')
     cageForm.addEventListener("submit", buyCage)
@@ -93,8 +138,6 @@ window.addEventListener('DOMContentLoaded', () =>{
     }
 
     const ratForm = document.getElementById('ratForm')
-
-    
 
     ratForm.addEventListener("submit", buyRat)
 })
@@ -175,16 +218,7 @@ window.addEventListener('DOMContentLoaded', () =>{
 
 
 
-// class ShopRats {
-//     constructor(shopId, breed, sex, personality, fur, hasRedEyes) {
-//         this.shopId = shopId
-//         this.breed = breed
-//         this.sex = sex
-//         this.personality = personality
-//         this.fur = fur
-//         this.hasRedEyes = hasRedEyes
-//     }
-// }
+
 
 // // SHOP RATS
 //     //create array of 3 random fur colors

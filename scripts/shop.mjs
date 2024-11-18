@@ -110,21 +110,198 @@ const buyRat = (e) => {
     save('playerrats', playerRats)
 }
 
+// const testLoad = () => {
+//     const testShopRat = new ShopRats('id','satin','sex','personality','blue',true)
+//     // console.log(testShopRat)  
 
-const testLoad = () => {
-    const testShopRat = new ShopRats('id','satin','sex','personality','blue',true)
-    console.log(testShopRat)  
+//     const test3 = new RatBody({
+//         parent: document.getElementById("shopRatsContainer"),
+//         furColor: testShopRat.fur,
+//         isSatin: testShopRat.isSatin,
+//         hasRedEyes: testShopRat.hasRedEyes,
+//     })
+// }
 
-    const test3 = new RatBody({
-        parent: document.getElementById("shopRatsContainer"),
-        furColor: testShopRat.fur,
-        isSatin: testShopRat.isSatin,
-        hasRedEyes: testShopRat.hasRedEyes,
-    })
+const buyNewRatty = () => {
+    if (globalCapacity() === true) {
+        event.preventDefault()
+    
+        //rat id
+        let idCounter = 0
+        if (rats.length !== 0) {
+            idCounter = rats[rats.length - 1].id + 1
+        }
+    
+        let nameInput = $('#name').val()
+    
+        let sexInput = ratToBuy[0].sex
+    
+        let breedInput = ratToBuy[0].breed
+    
+        let furInput = ratToBuy[0].fur
+    
+        let hasRedEyesInput = ratToBuy[0].hasRedEyes
+    
+        const $cageInput = $('input[name="shopCage"]')
+        let cageInput = $('input[name="shopCage"]:checked').val()
+    
+        //clears after submit
+        $('#name').val('')
+        // $sexInput.prop('checked', false)
+        // $breedInput.prop('checked', false)
+        $cageInput.prop('checked', false)
+    
+        // Cage logic
+        if (onlyAvailableCage.length === 1){
+            cageInput = onlyAvailableCage[0].cageName
+        }
+    
+        let cageIndex = 0
+        for (let i = 0; i < cages.length; i++) {
+            if (cageInput === cages[i].cageName) {
+                cageIndex = i
+            }
+        }
+    
+        let newRattyIndex = 0
+    
+        if (rats.length > 0) {
+            newRattyIndex = rats.length
+        }      
+    
+        //local storage get rats
+        JSON.parse(localStorage.getItem('ratArray'))
+        JSON.parse(localStorage.getItem('cageArray'))
+    
+        if (nameInput === 'gwenk'){
+            rats.push(new Rat(nameInput, 'male', 'stinky', 'rex',cageInput))
+    
+            rats[newRattyIndex].startingCage(cages[cageIndex].cageName, rats[newRattyIndex], cages[cageIndex].heldRats)
+        } else {
+            rats.push(new Rat(idCounter, nameInput, sexInput, randomPersonality, breedInput, cageInput, furInput, hasRedEyesInput))
+            
+            rats[newRattyIndex].startingCage(cages[cageIndex].cageName, rats[newRattyIndex], cages[cageIndex].heldRats)
+            rats[newRattyIndex].setBreed(setBreedInput())
+        }
+    
+        console.log(rats)
+        
+        //local storage add new rat to cage
+        localStorage.setItem('ratArray', JSON.stringify(rats))
+        localStorage.setItem('cageArray', JSON.stringify(cages))
+    } else {
+        alert('you do not have enough room')
+    }
 }
 
+
+//returns an array of 3 random fur colors
+const createShopFurs = () => {
+    const shopFurColors = []
+    for (let i = 0; i < 3; i++) {
+    const randomFur = randomIndex(furColors)
+    shopFurColors.push(randomFur)
+    }
+    return shopFurColors
+}
+
+// returns an array of 3 random sex options
+const createAvailableSexes = () => {
+    const shopSexes = []
+    for (let i = 0; i < 3; i++) {
+        const randomSex = randomIndex(sexArr)
+        shopSexes.push(randomSex)
+    }
+    return shopSexes
+}
+
+// returns false if there are dupes
+// returns the array if all are unique
+const checkForDupes = (array) => {
+    const uniqueFur = new Set(array)
+    if (uniqueFur.size !== array.length) {
+        createShopFurs()
+        return false
+    } else {
+        return array
+    }
+}
+
+// returns false if they are all the same
+// returns the array if they are not all the same
+const allSame = (array) => {
+    if (array.every(val => val === array[0])) {
+        createAvailableSexes()
+        return false
+    } else {
+        return array
+    }
+}
+
+// random number between 0-20
+const redEyesChance = () => {
+    const random = Math.floor(Math.random() * 20)
+    if (random === 1) {
+        // console.log('has red eyes')
+        return true
+    }else{
+        // console.log('has black eyes')
+        return false
+    }
+}
+
+const generateShopRats = () => {
+
+    let breedInput = document.querySelector('input[name=breed]:checked').value
+    
+    let shopRats = []
+    let currentBreed = breedInput
+    let shopFurColors = []
+    let shopSexesAvailable = []
+    let shopRatIds = ['a','b','c']
+    
+    do {
+        shopFurColors = checkForDupes(createShopFurs())
+    } while (shopFurColors === false);
+
+    do {
+        shopSexesAvailable = allSame(createAvailableSexes())
+    } while (shopSexesAvailable === false);
+
+    for (let i = 0; i < 3; i++) {
+        const randomPersonality = randomIndex(personalityArr)
+
+        shopRats.push(new ShopRats(shopRatIds[i], currentBreed, shopSexesAvailable[i], randomPersonality, shopFurColors[i], redEyesChance()))
+    }
+
+    // CSS RATS HERE
+    // shopRats.forEach(element => {
+    //     let $shopRats = $('<div>').attr('id', element.shopId).addClass(`${element.breed} canvas shopRats`).css('cursor','pointer').appendTo($('.shopRatsContainer'))
+
+    //     $(`#${element.breed.toUpperCase()}`).children().clone().prependTo($shopRats)
+
+    //     if (element.breed != 'hairless') {
+    //         let $body = $(`#${element.shopId}`).children('.ratBody').addClass(`${element.fur}`)
+    //         let $ear = $(`#${element.shopId}`).children('.ear').addClass(`${element.fur}`)
+    //         let $fur = $(`#${element.shopId}`).children('.fur').addClass(`${element.fur}`)
+
+    //         let $rexFur = $(`#${element.shopId}`).children('.rexFur').addClass(`rexFur-${element.fur}`).css('background', 'transparent')
+    //     }
+    //     if (element.hasRedEyes === true) { 
+    //         let $eyes = $(`#${element.shopId}`).children('.eyes').addClass(`red`)
+    //     }
+    // })
+
+    return shopRats
+} 
+
 window.addEventListener('DOMContentLoaded', () =>{
-    testLoad()
+
+    const breed = document.querySelectorAll('input[name="breed"]')
+
+    breed.forEach(breed => {
+        breed.addEventListener('change', generateShopRats)
+    })
 
     // BUY NEW CAGE
     const cageForm = document.getElementById('cageForm')
@@ -141,179 +318,6 @@ window.addEventListener('DOMContentLoaded', () =>{
 
     ratForm.addEventListener("submit", buyRat)
 })
-
-
-
-
-// if (globalCapacity() === true) {
-//     event.preventDefault()
-
-//     //rat id
-//     let idCounter = 0
-//     if (rats.length !== 0) {
-//         idCounter = rats[rats.length - 1].id + 1
-//     }
-
-//     let nameInput = $('#name').val()
-
-//     let sexInput = ratToBuy[0].sex
-
-//     let breedInput = ratToBuy[0].breed
-
-//     let furInput = ratToBuy[0].fur
-
-//     let hasRedEyesInput = ratToBuy[0].hasRedEyes
-
-//     const $cageInput = $('input[name="shopCage"]')
-//     let cageInput = $('input[name="shopCage"]:checked').val()
-
-//     //clears after submit
-//     $('#name').val('')
-//     // $sexInput.prop('checked', false)
-//     // $breedInput.prop('checked', false)
-//     $cageInput.prop('checked', false)
-
-//     // Cage logic
-//     if (onlyAvailableCage.length === 1){
-//         cageInput = onlyAvailableCage[0].cageName
-//     }
-
-//     let cageIndex = 0
-//     for (let i = 0; i < cages.length; i++) {
-//         if (cageInput === cages[i].cageName) {
-//             cageIndex = i
-//         }
-//     }
-
-//     let newRattyIndex = 0
-
-//     if (rats.length > 0) {
-//         newRattyIndex = rats.length
-//     }      
-
-//     //local storage get rats
-//     JSON.parse(localStorage.getItem('ratArray'))
-//     JSON.parse(localStorage.getItem('cageArray'))
-
-//     if (nameInput === 'gwenk'){
-//         rats.push(new Rat(nameInput, 'male', 'stinky', 'rex',cageInput))
-
-//         rats[newRattyIndex].startingCage(cages[cageIndex].cageName, rats[newRattyIndex], cages[cageIndex].heldRats)
-//     } else {
-//         rats.push(new Rat(idCounter, nameInput, sexInput, randomPersonality, breedInput, cageInput, furInput, hasRedEyesInput))
-        
-//         rats[newRattyIndex].startingCage(cages[cageIndex].cageName, rats[newRattyIndex], cages[cageIndex].heldRats)
-//         rats[newRattyIndex].setBreed(setBreedInput())
-//     }
-
-//     console.log(rats)
-    
-//     //local storage add new rat to cage
-//     localStorage.setItem('ratArray', JSON.stringify(rats))
-//     localStorage.setItem('cageArray', JSON.stringify(cages))
-// } else {
-//     alert('you do not have enough room')
-// }
-    
-
-
-
-
-
-// // SHOP RATS
-//     //create array of 3 random fur colors
-//     const createShopFurs = () => {
-//         const shopFurColors = []
-//         for (let i = 0; i < 3; i++) {
-//         const randomFur = furColors[randomizeArray(furColors)]
-//         shopFurColors.push(randomFur)
-//         }
-//         return shopFurColors
-//     }
-
-//     // create array of 3 random sexes
-//     const createAvailableSexes = () => {
-//         const shopSexes = []
-//         for (let i = 0; i < 3; i++) {
-//             const randomSex = sexArr[randomizeArray(sexArr)]
-//             shopSexes.push(randomSex)
-//         }
-//         return shopSexes
-//     }
-
-//     // check if array(shopFurColors) has any dupes, if it does rerun array(shopFurColors)
-//     const checkForDupes = (array) => {
-//         const uniqueFur = new Set(array)
-//         if (uniqueFur.size !== array.length) {
-//             createShopFurs()
-//             return false
-//         } else {
-//             return array
-//         }
-//     }
-
-//     // check if all the values in the array(shopSexes) are the same, if all values are the same reroll
-//     const allSame = (array) => {
-//         if (array.every(val => val === array[0])) {
-//             createAvailableSexes()
-//             return false
-//         } else {
-//             return array
-//         }
-//     }
-
-//     // random number between 0-20
-//     const redEyesChance = () => {
-//         const random = Math.floor(Math.random() * 20)
-//         if (random === 1) {
-//             // console.log('has red eyes')
-//             return true
-//         }else{
-//             // console.log('has black eyes')
-//             return false
-//         }
-//     }
-
-//     const generateShopRats = () => {
-//         let shopRats = []
-//         let currentBreed = $(event.target).val()
-//         let shopFurColors = []
-//         let shopSexesAvailable = []
-//         let shopRatIds = ['a','b','c']
-        
-//         do {
-//             shopFurColors = checkForDupes(createShopFurs())
-//         } while (shopFurColors === false);
-
-//         do {
-//             shopSexesAvailable = allSame(createAvailableSexes())
-//         } while (shopSexesAvailable === false);
-
-//         for (let i = 0; i < 3; i++) {
-//             const randomPersonality = personalityArr[randomizeArray(personalityArr)]
-
-//             shopRats.push(new ShopRats(shopRatIds[i], currentBreed, shopSexesAvailable[i], randomPersonality, shopFurColors[i], redEyesChance()))
-//         }
-//         // console.log(shopRats)
-
-//         shopRats.forEach(element => {
-//             let $shopRats = $('<div>').attr('id', element.shopId).addClass(`${element.breed} canvas shopRats`).css('cursor','pointer').appendTo($('.shopRatsContainer'))
-
-//             $(`#${element.breed.toUpperCase()}`).children().clone().prependTo($shopRats)
-
-//             if (element.breed != 'hairless') {
-//                 let $body = $(`#${element.shopId}`).children('.ratBody').addClass(`${element.fur}`)
-//                 let $ear = $(`#${element.shopId}`).children('.ear').addClass(`${element.fur}`)
-//                 let $fur = $(`#${element.shopId}`).children('.fur').addClass(`${element.fur}`)
-    
-//                 let $rexFur = $(`#${element.shopId}`).children('.rexFur').addClass(`rexFur-${element.fur}`).css('background', 'transparent')
-//             }
-//             if (element.hasRedEyes === true) { 
-//                 let $eyes = $(`#${element.shopId}`).children('.eyes').addClass(`red`)
-//             }
-//         })
-//         return shopRats
-//     } 
 
 //     let currentShopRats = ''
     

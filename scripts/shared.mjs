@@ -1,14 +1,17 @@
-console.log('shared.mjs')
-// // randomizeArray(array) returns array[randomIndex]
-// const randomizeArray  = (array) => {
-//     let length  = 0
-//     for (let i = 0; i < array.length; i++) {
-//         length = i + 1  
-//     }
-//     let randomIndex = Math.floor(Math.random() * length)
+// PERSONALITIES
+const personalityArr = ['agile','anxious','attentive','bold', 'cautious','communicative','confident','curious','determined','docile','dominant','easy going','easy to handle','enthusiastic','friendly','cheerful','irritable','lively','shy','solitary','tame','tempermental','trusting']
 
-//     return array[randomIndex]
-// }
+const furColors = ['beige', 'black', 'blue', 'blueBeige', 'champagne', 'chocolate', 'cocoa', 'lilac', 'mink', 'platinum', 'powderBlue', 'russianBlue', 'russianDove', 'skyBlue', 'white']
 
+//user input
+const sexArr = ['Male', 'Female']
 
-// export {randomizeArray}
+// RETURNS 'array[randomindex]'
+const randomIndex  = (array) => {
+    let length  = 0
+    for (let i = 0; i < array.length; i++) {
+        length = i + 1  
+    }
+    let index = Math.floor(Math.random() * length)
+    return array[index]
+}

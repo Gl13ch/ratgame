@@ -12,17 +12,8 @@ class Rat {
     }
 }
 
-const personalityArr = ['agile','anxious','attentive','bold', 'cautious','communicative','confident','curious','determined','docile','dominant','easy going','easy to handle','enthusiastic','friendly','cheerful','irritable','lively','shy','solitary','tame','tempermental','trusting']
-
-// RETURNS 'array[randomindex]'
-const randomIndex  = (array) => {
-    let length  = 0
-    for (let i = 0; i < array.length; i++) {
-        length = i + 1  
-    }
-    let index = Math.floor(Math.random() * length)
-    return array[index]
-}
+// const test = new Rat('id','name','sex','breed','cage')
+// console.log(test.personality)
 
 //REINSTANTIATE RATS
 const reinstantiateRats = () => {
@@ -40,7 +31,7 @@ const reinstantiateRats = () => {
     }
     return playerRats
 }
-// reinstantiateRats()
+reinstantiateRats()
 
 
 // could probably do sub class (super?) for mixed breeds. all the same traits except would have extra features (i.e hasRexFur, hasBristleCoatFur, hasTail, hasHairlessFur, hasDumboEars, hasSatinFur)

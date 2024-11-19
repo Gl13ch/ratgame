@@ -1,6 +1,8 @@
 /* CSS RATS */
 /* Canvas */
 .canvas{
+    visibility: hidden;
+    
     position: relative;
     display: block;
     width: 145px;

@@ -14,3 +14,7 @@ body{
     gap: 20px;
     margin-top: 2%;
 }
+
+#wantToBuy, #ratSubmit, #name{
+    display: none;
+}

@@ -7,6 +7,7 @@ class Rat {
         this.cage = cage
         this.personality = randomIndex(personalityArr)
     }
+    // FOR LOCAL STORAGE
     setPersonality(p){
         this.personality = p
     }

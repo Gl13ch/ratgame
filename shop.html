@@ -41,10 +41,10 @@
             <h3>Buy a Rat</h3>
             <form id="ratForm">
                 <!-- sex -->
-                <input type="radio" required="true" name="sex" value="male">
+                <!-- <input type="radio" required="true" name="sex" value="male">
                 <label for="sex">Male</label>
                 <input type="radio" required="true" name="sex" value="female">
-                <label for="sex">Female</label><br>
+                <label for="sex">Female</label><br> -->
                 <!-- breed -->
                 <input type="radio" required="true" name="breed" value="standard">
                 <label for="breed">Standard</label>
@@ -67,7 +67,13 @@
                 <!-- submit -->
                 <input class="shopSubmit" type="submit" disabled="true" id="ratSubmit">
             </form>
-            <div id="shopRatsContainer"></div>
+            <div id="shopRatsContainer">
+                <div id="wantToBuy">
+                    <p>Would you like to buy this Rat?</p>
+                    <button id="yesToBuy" value="yes">Yes</button>
+                    <button id="noToBuy" value="no">No</button>
+                </div>
+            </div>
         </div>
     </div>
 </body>

@@ -1,12 +1,17 @@
 class RatBody {
-    constructor(options = {}){
+    constructor(id, options = {}){
         // CANVAS
         this.canvas = document.createElement("div")
-        this.canvas.className = "canvas draggable"
+        this.canvas.className = "canvas "
         this.canvas.style.cursor = "pointer"
+        this.canvas.id = id
         
         if (options.parent) {
             options.parent.appendChild(this.canvas)
+        }
+
+        if(options.draggable === true){
+            this.canvas.className += 'draggable'
         }
 
         // EARS
@@ -206,6 +211,8 @@ class RatBody {
 //     hasDumboEars: true,
 //     isHairless: true
 // })
+
+// console.log(test1)
 
 // const test2 = new RatBody({
 //     parent: document.getElementById("shopRatsContainer"),

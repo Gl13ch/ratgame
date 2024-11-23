@@ -25,6 +25,12 @@ const remove = (key) => {
     localStorage.removeItem(key)
 }
 
+// RESET CAGES AND RATS
+// remove('playercages')
+// remove('playerrats')
+// localStorage.setItem('playercages', JSON.stringify(playerCages))
+// localStorage.setItem('playerrats', JSON.stringify(playerRats))
+
 // RETRIEVE DATA
 const retrieve = (key = String) => {
     let data = (JSON.parse(localStorage.getItem(key)))

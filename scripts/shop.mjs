@@ -74,6 +74,7 @@ const createCageOptions = () => {
 }
 
 // BUT NEW RAT
+let ratToBuy = []
 const buyRat = (e) => {
     // e.preventDefault()
 
@@ -110,18 +111,7 @@ const buyRat = (e) => {
     save('playerrats', playerRats)
 }
 
-// const testLoad = () => {
-//     const testShopRat = new ShopRats('id','satin','sex','personality','blue',true)
-//     // console.log(testShopRat)  
-
-//     const test3 = new RatBody({
-//         parent: document.getElementById("shopRatsContainer"),
-//         furColor: testShopRat.fur,
-//         isSatin: testShopRat.isSatin,
-//         hasRedEyes: testShopRat.hasRedEyes,
-//     })
-// }
-
+// JQUERY CODE
 const buyNewRatty = () => {
     if (globalCapacity() === true) {
         event.preventDefault()
@@ -195,7 +185,7 @@ const buyNewRatty = () => {
 }
 
 
-//returns an array of 3 random fur colors
+//RETURNS AN ARRAY OF 3 RANDOM FUR COLORS
 const createShopFurs = () => {
     const shopFurColors = []
     for (let i = 0; i < 3; i++) {
@@ -205,7 +195,7 @@ const createShopFurs = () => {
     return shopFurColors
 }
 
-// returns an array of 3 random sex options
+// RETURNS AN ARRAY OF 3 RANDOM SEX OPTIONS
 const createAvailableSexes = () => {
     const shopSexes = []
     for (let i = 0; i < 3; i++) {
@@ -215,8 +205,8 @@ const createAvailableSexes = () => {
     return shopSexes
 }
 
-// returns false if there are dupes
-// returns the array if all are unique
+// RETURNS FALSE IF THERE ARE DUPES
+// RETURNS THE ARRAY IF ALL ARE UNIQUE
 const checkForDupes = (array) => {
     const uniqueFur = new Set(array)
     if (uniqueFur.size !== array.length) {
@@ -227,8 +217,8 @@ const checkForDupes = (array) => {
     }
 }
 
-// returns false if they are all the same
-// returns the array if they are not all the same
+// RETURNS FALSE IF THEY ARE ALL THE SAME
+// RETURNS THE ARRAY IF THEY ARE NOT ALL THE SAME
 const allSame = (array) => {
     if (array.every(val => val === array[0])) {
         createAvailableSexes()
@@ -238,21 +228,19 @@ const allSame = (array) => {
     }
 }
 
-// random number between 0-20
+// RANDOM NUMBER BETWEEN 0-20
 const redEyesChance = () => {
     const random = Math.floor(Math.random() * 20)
     if (random === 1) {
-        // console.log('has red eyes')
         return true
     }else{
-        // console.log('has black eyes')
         return false
     }
 }
 
+// RETURNS ARRAY OF THREE RATS OF THE BREED CHOOSEN
 const generateShopRats = () => {
-
-    let breedInput = document.querySelector('input[name=breed]:checked').value
+    const breedInput = document.querySelector('input[name=breed]:checked').value
     
     let shopRats = []
     let currentBreed = breedInput
@@ -274,121 +262,131 @@ const generateShopRats = () => {
         shopRats.push(new ShopRats(shopRatIds[i], currentBreed, shopSexesAvailable[i], randomPersonality, shopFurColors[i], redEyesChance()))
     }
 
-    // CSS RATS HERE
-    // shopRats.forEach(element => {
-    //     let $shopRats = $('<div>').attr('id', element.shopId).addClass(`${element.breed} canvas shopRats`).css('cursor','pointer').appendTo($('.shopRatsContainer'))
+    // CREATE CSS RATS
+    shopRats.forEach(element => {
+        // clear previous rats
+        const $shopRats = document.getElementById(`${element.shopId}`)
+        if ($shopRats) {
+            $shopRats.remove()
+        }
+        
+        const cssRat = new RatBody(element.shopId,
+            {
+            parent: document.getElementById("shopRatsContainer"),
+            furColor: element.fur,
+            hasRedEyes: element.hasRedEyes,
+            hasRexFur: element.hasRexFur,
+            isTailless: element.isTailless,
+            isSatin: element.isSatin,
+            isHairless: element.isHairless,
+            hasDumboEars: element.hasDumboEars,
+            hasBristleFur: element.hasBristleFur
+        })
+    })
 
-    //     $(`#${element.breed.toUpperCase()}`).children().clone().prependTo($shopRats)
+    // CREATE EVENT LISTENERS
+    createEventListeners(shopRats)    
 
-    //     if (element.breed != 'hairless') {
-    //         let $body = $(`#${element.shopId}`).children('.ratBody').addClass(`${element.fur}`)
-    //         let $ear = $(`#${element.shopId}`).children('.ear').addClass(`${element.fur}`)
-    //         let $fur = $(`#${element.shopId}`).children('.fur').addClass(`${element.fur}`)
-
-    //         let $rexFur = $(`#${element.shopId}`).children('.rexFur').addClass(`rexFur-${element.fur}`).css('background', 'transparent')
-    //     }
-    //     if (element.hasRedEyes === true) { 
-    //         let $eyes = $(`#${element.shopId}`).children('.eyes').addClass(`red`)
-    //     }
-    // })
-
+    // console.log(shopRats)
     return shopRats
 } 
 
-window.addEventListener('DOMContentLoaded', () =>{
+const createEventListeners = (shopRats) => {
+    const $shopRats = document.querySelectorAll('.canvas')
+    $shopRats.forEach(element => {
+        // CREATE MOUSE OVER EVENT TO SEE SEX OF RAT
+        element.addEventListener('mouseenter', event => {
+            const currentRat = event.currentTarget
+            // console.log(currentRat)
+            for (let i = 0; i < shopRats.length; i++) {
+                if (shopRats[i].shopId === currentRat.id) {
+                    const sex = document.createElement('p')
+                    sex.className = 'ratSexes'
+                    sex.innerHTML = `${shopRats[i].sex}`
+                    currentRat.append(sex)
+                }
+            }
+        })
+        element.addEventListener('mouseleave', event => { 
+           document.querySelector('.ratSexes').remove()
+         })
 
-    const breed = document.querySelectorAll('input[name="breed"]')
+        // CREATE ON CLICK OF RAT
+        element.addEventListener('click', event => {
+            ratToBuy = []
+            const currentRat = event.currentTarget
 
-    breed.forEach(breed => {
-        breed.addEventListener('change', generateShopRats)
+            shopRats.forEach(element => {
+                if (currentRat.id !== element.shopId) {
+                    document.getElementById(`${element.shopId}`).style.display = 'none'
+                } else {
+                    ratToBuy.push(element)
+
+                    document.getElementById('wantToBuy').style.display = 'block'
+
+                    // ifAlreadyClicked = false
+                }
+            })
+        })
     })
+}
+
+window.addEventListener('DOMContentLoaded', () =>{
 
     // BUY NEW CAGE
     const cageForm = document.getElementById('cageForm')
     cageForm.addEventListener("submit", buyCage)
 
-    // BUY NEW RAT
+    // GENERATES CSS SHOP RATS 
+    const breed = document.querySelectorAll('input[name="breed"]')
+    breed.forEach(breed => {
+        breed.addEventListener('change', generateShopRats)
+    })
+
+    // DISABLE SUBMIT BUTTON IF NO ROOM
     const ratSubmit = document.getElementById('ratSubmit')
     if (globalCapacity() === true) {
         ratSubmit.disabled = false
         createCageOptions()
     }
 
-    const ratForm = document.getElementById('ratForm')
+    // SHOW BUY RAT FORM
+    const yesBuy = document.getElementById('yesToBuy')
+    const noBuy = document.getElementById('noToBuy')
+    const ratName = document.getElementById('name')
+    yesBuy.addEventListener('click', ()=>{
+        document.getElementById('wantToBuy').style.display = 'none'
+        ratSubmit.style.display = 'block'
+        ratName.style.display = 'block'
+        // move on to submit
+    })
+    noBuy.addEventListener('click', ()=>{
+      console.log('test')  
+    })
 
+    // BUY NEW RAT
+    const ratForm = document.getElementById('ratForm')
     ratForm.addEventListener("submit", buyRat)
 })
 
-//     let currentShopRats = ''
-    
-//     //on choosing breed - generate shop rats
-//     $('input[name="breed"]').on('change', event => {
-//         // reset values
-//         $('#a').remove()
-//         $('#b').remove()
-//         $('#c').remove()
-//         $('.wantToBuy').remove()
 
-//         currentShopRats = generateShopRats()
-        
-//         // mouseenter works wierd with delegating, but works fine nested.
-//         $('.shopRats').on("mouseenter", event => {
-//             const currentRat = event.currentTarget
-//             for (let i = 0; i < currentShopRats.length; i++) {
-//                 if (currentShopRats[i].shopId == currentRat.id) {
-//                     $('<p>').addClass('ratSexes').text(`${currentShopRats[i].sex}`).appendTo(currentRat)
-//                 }
-//             }
-//         }).on("mouseleave", () =>{
-//             $('.ratSexes').remove()
-//         });
-//     })
+    // $('.shopRatsContainer').on('click',".yesButton", event => {
+    //     $('.wantToBuy').remove()
+    //     console.log(ratToBuy)
 
-//     const ratToBuy = []
-//     let ifAlreadyClicked = true
-//     $('.shopRatsContainer').on("click",".shopRats", event => {
-//         if (ifAlreadyClicked === true) {
-//             if (globalCapacity() === true) {
-//                 // remove values
-//                 $('.wantToBuy').remove()
+    //     $('.shopName').show()
+    //     $('.shopSubmit').show()
 
-//                 const $currentRat = event.currentTarget
-//                 // console.log($currentRat)
-//                 currentShopRats.forEach(element => {
-//                     if ($currentRat.id !== element.shopId) {
-//                         $(`#${element.shopId}`).hide()
-//                     } else {
-//                         ratToBuy.push(element)
+    //     // move onto submit
+    // })
 
-//                         const $wantToBuy = $('<div>').addClass('wantToBuy').appendTo('.tempItems')
-//                         $(`#${$currentRat.id}`).after($('.wantToBuy'))
-//                         $('<p>').text('Would you like to buy this rat?').appendTo('.wantToBuy')
-//                         $('<button>').addClass('yesButton').val('yes').text('Yes').appendTo($('.wantToBuy'))
-//                         $('<button>').addClass('noButton').val('no').text('No').appendTo($('.wantToBuy'))
-//                         ifAlreadyClicked = false
-//                     }
-//                 })
-//             }
-//         }
-//     })
-
-//     $('.shopRatsContainer').on('click',".yesButton", event => {
-//         $('.wantToBuy').remove()
-//         console.log(ratToBuy)
-
-//         $('.shopName').show()
-//         $('.shopSubmit').show()
-
-//         // move onto submit
-//     })
-
-//     $('.shopRatsContainer').on('click',".noButton", event => {
-//         // $('.shopRatsContainer').on("click",".shopRats")
-//         $('.wantToBuy').remove()
-//         $('.shopRats').show()
-//         ratToBuy.length = 0
-//         ifAlreadyClicked = true
-//     })
+    // $('.shopRatsContainer').on('click',".noButton", event => {
+    //     // $('.shopRatsContainer').on("click",".shopRats")
+    //     $('.wantToBuy').remove()
+    //     $('.shopRats').show()
+    //     ratToBuy.length = 0
+    //     ifAlreadyClicked = true
+    // })
 
 //     //show shop items depending on what player wants to look at 
 //     $('.shopItems').on('click', event => {

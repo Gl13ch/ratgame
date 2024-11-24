@@ -1,9 +1,8 @@
 class ShopRats {
-    constructor(shopId, breed, sex, personality, fur, hasRedEyes) {
+    constructor(shopId, breed, sex, fur, hasRedEyes) {
         this.shopId = shopId
         this.breed = breed
         this.sex = sex
-        this.personality = personality
         this.fur = fur
         this.hasRedEyes = hasRedEyes
 
@@ -85,9 +84,13 @@ const buyRat = (e) => {
     
     let nameInput = document.getElementById('name').value
 
-    let sexInput = document.querySelector('input[name=sex]:checked').value
+    let sexInput = ratToBuy[0].sex
     
-    let breedInput = document.querySelector('input[name=breed]:checked').value
+    let breedInput = ratToBuy[0].breed
+
+    let furInput = ratToBuy[0].fur
+
+    let hasRedEyes = ratToBuy[0].hasRedEyes
 
     let cageInput = ''
     if (getAvailableCages().length === 1) {
@@ -98,7 +101,8 @@ const buyRat = (e) => {
 
     ratForm.reset()
     
-    const newRatty = new Rat(idCounter, nameInput, sexInput, breedInput, cageInput)
+    const newRatty = new Rat(idCounter, nameInput, sexInput, breedInput, cageInput, furInput, hasRedEyes)
+
     playerRats.push(newRatty)
 
     playerCages.forEach(element => {
@@ -110,80 +114,6 @@ const buyRat = (e) => {
     save('playercages', playerCages)
     save('playerrats', playerRats)
 }
-
-// JQUERY CODE
-const buyNewRatty = () => {
-    if (globalCapacity() === true) {
-        event.preventDefault()
-    
-        //rat id
-        let idCounter = 0
-        if (rats.length !== 0) {
-            idCounter = rats[rats.length - 1].id + 1
-        }
-    
-        let nameInput = $('#name').val()
-    
-        let sexInput = ratToBuy[0].sex
-    
-        let breedInput = ratToBuy[0].breed
-    
-        let furInput = ratToBuy[0].fur
-    
-        let hasRedEyesInput = ratToBuy[0].hasRedEyes
-    
-        const $cageInput = $('input[name="shopCage"]')
-        let cageInput = $('input[name="shopCage"]:checked').val()
-    
-        //clears after submit
-        $('#name').val('')
-        // $sexInput.prop('checked', false)
-        // $breedInput.prop('checked', false)
-        $cageInput.prop('checked', false)
-    
-        // Cage logic
-        if (onlyAvailableCage.length === 1){
-            cageInput = onlyAvailableCage[0].cageName
-        }
-    
-        let cageIndex = 0
-        for (let i = 0; i < cages.length; i++) {
-            if (cageInput === cages[i].cageName) {
-                cageIndex = i
-            }
-        }
-    
-        let newRattyIndex = 0
-    
-        if (rats.length > 0) {
-            newRattyIndex = rats.length
-        }      
-    
-        //local storage get rats
-        JSON.parse(localStorage.getItem('ratArray'))
-        JSON.parse(localStorage.getItem('cageArray'))
-    
-        if (nameInput === 'gwenk'){
-            rats.push(new Rat(nameInput, 'male', 'stinky', 'rex',cageInput))
-    
-            rats[newRattyIndex].startingCage(cages[cageIndex].cageName, rats[newRattyIndex], cages[cageIndex].heldRats)
-        } else {
-            rats.push(new Rat(idCounter, nameInput, sexInput, randomPersonality, breedInput, cageInput, furInput, hasRedEyesInput))
-            
-            rats[newRattyIndex].startingCage(cages[cageIndex].cageName, rats[newRattyIndex], cages[cageIndex].heldRats)
-            rats[newRattyIndex].setBreed(setBreedInput())
-        }
-    
-        console.log(rats)
-        
-        //local storage add new rat to cage
-        localStorage.setItem('ratArray', JSON.stringify(rats))
-        localStorage.setItem('cageArray', JSON.stringify(cages))
-    } else {
-        alert('you do not have enough room')
-    }
-}
-
 
 //RETURNS AN ARRAY OF 3 RANDOM FUR COLORS
 const createShopFurs = () => {
@@ -259,7 +189,7 @@ const generateShopRats = () => {
     for (let i = 0; i < 3; i++) {
         const randomPersonality = randomIndex(personalityArr)
 
-        shopRats.push(new ShopRats(shopRatIds[i], currentBreed, shopSexesAvailable[i], randomPersonality, shopFurColors[i], redEyesChance()))
+        shopRats.push(new ShopRats(shopRatIds[i], currentBreed, shopSexesAvailable[i], shopFurColors[i], redEyesChance()))
     }
 
     // CREATE CSS RATS
@@ -329,6 +259,18 @@ const createEventListeners = (shopRats) => {
             })
         })
     })
+
+    document.getElementById('noToBuy').addEventListener('click', ()=>{
+        document.getElementById('wantToBuy').style.display = 'none'
+    
+        ratToBuy.length = 0  
+    
+        shopRats.forEach(element => {
+            document.getElementById(`${element.shopId}`).style.display = 'block'
+        })
+
+        // ifAlreadyClicked = true
+    })
 }
 
 window.addEventListener('DOMContentLoaded', () =>{
@@ -352,41 +294,22 @@ window.addEventListener('DOMContentLoaded', () =>{
 
     // SHOW BUY RAT FORM
     const yesBuy = document.getElementById('yesToBuy')
-    const noBuy = document.getElementById('noToBuy')
     const ratName = document.getElementById('name')
     yesBuy.addEventListener('click', ()=>{
+        console.log(ratToBuy)
         document.getElementById('wantToBuy').style.display = 'none'
         ratSubmit.style.display = 'block'
         ratName.style.display = 'block'
         // move on to submit
     })
-    noBuy.addEventListener('click', ()=>{
-      console.log('test')  
-    })
+    
 
     // BUY NEW RAT
     const ratForm = document.getElementById('ratForm')
     ratForm.addEventListener("submit", buyRat)
 })
 
-
-    // $('.shopRatsContainer').on('click',".yesButton", event => {
-    //     $('.wantToBuy').remove()
-    //     console.log(ratToBuy)
-
-    //     $('.shopName').show()
-    //     $('.shopSubmit').show()
-
-    //     // move onto submit
-    // })
-
-    // $('.shopRatsContainer').on('click',".noButton", event => {
-    //     // $('.shopRatsContainer').on("click",".shopRats")
-    //     $('.wantToBuy').remove()
-    //     $('.shopRats').show()
-    //     ratToBuy.length = 0
-    //     ifAlreadyClicked = true
-    // })
+    
 
 //     //show shop items depending on what player wants to look at 
 //     $('.shopItems').on('click', event => {

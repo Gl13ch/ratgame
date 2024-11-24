@@ -1,20 +1,39 @@
 class Rat {
-    constructor(id, ratName, sex, breed, cage){
+    constructor(id, ratName, sex, breed, cage, fur, hasRedEyes){
         this.id = id
         this.ratName = ratName
         this.sex = sex
         this.breed = breed
         this.cage = cage
+        this.fur = fur
+        this.hasRedEyes = hasRedEyes
+        
         this.personality = randomIndex(personalityArr)
+
+        if (this.breed === 'rex') {
+            this.hasRexFur = true
+        }
+        if (this.breed === 'tailless') {
+            this.isTailless = true
+        }
+        if (this.breed === 'satin') {
+            this.isSatin = true
+        }
+        if (this.breed === 'hairless') {
+            this.isHairless = true
+        }
+        if (this.breed === 'dumbo') {
+            this.hasDumboEars = true
+        }
+        if (this.breed === 'bristleCoat') {
+            this.hasBristleFur = true
+        }
     }
     // FOR LOCAL STORAGE
     setPersonality(p){
         this.personality = p
     }
 }
-
-// const test = new Rat('id','name','sex','breed','cage')
-// console.log(test.personality)
 
 //REINSTANTIATE RATS
 const reinstantiateRats = () => {
@@ -34,21 +53,8 @@ const reinstantiateRats = () => {
 }
 reinstantiateRats()
 
-
-// could probably do sub class (super?) for mixed breeds. all the same traits except would have extra features (i.e hasRexFur, hasBristleCoatFur, hasTail, hasHairlessFur, hasDumboEars, hasSatinFur)
-
-// class Rat {
-//     constructor(id, name, sex, personality, breed, cage, fur, hasRedEyes){
-//         this.id = id
-//         this.name = name
-//         this.sex = sex
-//         // Can maybe just make personality random right here and not have to even push it, just set it for reinstantiate
-//         // e.g. this.personality = random(personalityArr)
-//         this.personality = personality
-//         this.breed = breed
-//         this.cage = cage
-//         this.fur = fur
-//         this.hasRedEyes = hasRedEyes
+// class JqueryRat {
+//     constructor(){
 //         this.breedObj = []
 //         this.happiness = 50
 //         this.affection = 'neutral'
@@ -124,14 +130,6 @@ reinstantiateRats()
 //     }
 // }
 
-// // VARIABLES
-
-// const furColors = ['beige', 'black', 'blue', 'blueBeige', 'champagne', 'chocolate', 'cocoa', 'lilac', 'mink', 'platinum', 'powderBlue', 'russianBlue', 'russianDove', 'skyBlue', 'white']
-
-// const sexArr = ['Male', 'Female']
-
-// const personalityArr = ['agile','anxious','attentive','bold', 'cautious','communicative','confident','curious','determined','docile','dominant','easy going','easy to handle','enthusiastic','friendly','cheerful','irritable','lively','shy','solitary','tame','tempermental','trusting']
-
 // const moodArr = ['happy','sad','angry','content', 'thrilled', 'whatever', 'stressed']
 
 // const foodTypeArr = ['cheap','normal','expensive']
@@ -145,8 +143,7 @@ reinstantiateRats()
 
 // const trainedLevel = ['untrained', 'barely trained', 'decently trained', 'trained', 'perfectly trained']
 
-// const breedsArr = ['standard', 'rex', 'tailless', 'hairless','satin','dumbo','bristle coat']
-
+// Maze?
 // const competitions = ['eating contest','poleclimb', '10m dash', '100m dash', 'monkey bars', 'beauty contest', 'talent show']
 
 // const activites = ['wheel','bed','potty','food','water']
@@ -155,38 +152,6 @@ reinstantiateRats()
 
 // const foodAmount = ['few','normal','many']
 // const foodType = ['cheap','standard','expensive']
-
-// // DRAG AND DROP
-// // let newX = 0
-// // let newY = 0
-// // let startX = 0
-// // let startY = 0
-
-// // $('.draggable').on('mousedown', event => {
-// //     startX = event.clientX
-// //     startY = event.clientY
-
-// //     let id = event.currentTarget.id
-
-// //     // current mouse position
-// //     // console.log(startX,startY)
-// //     $('.draggable').on('mousemove', event => {
-// //         newX = startX - event.clientX
-// //         newY = startY - event.clientY
-    
-// //         startX = event.clientX
-// //         startY = event.clientY
-    
-// //         $(`#${id}`).css("top", ($(`#${id}`).offset().top - newY) + 'px')
-// //         $(`#${id}`).css("left", ($(`#${id}`).offset().left - newX) + 'px')
-    
-// //         // console.log(newX,newY)
-// //         // console.log(startX,startY)
-// //         })
-// //     $('.draggable').on('mouseup', event => {
-// //         $('.draggable').off('mousemove')
-// //     })
-// // })
 
 // // BREEDING
 // const getRandomFromTwo = (item1, item2) => {

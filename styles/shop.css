@@ -2,11 +2,11 @@ body{
     background: rgb(91, 87, 95);
 }
 
-.shop{
+/* .shop{
     display: flex;
     justify-content: center;
 
-}
+} */
 
 #shopRatsContainer{
     display: flex;

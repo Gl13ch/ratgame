@@ -92,7 +92,7 @@ body{
     height: 200px;
     border-radius: 100%;
     left: 50%;
-    top: -150px;
+    top: -120px;
 }
 
 #bed{
@@ -127,6 +127,7 @@ body{
 }
 
 #drink{
+    z-index: 3;
     background-color: rgb(255, 165, 0);
     position: absolute;
     width: 50px;
@@ -137,6 +138,7 @@ body{
 }
 
 .spout{
+    z-index: 2;
     position: absolute;
     height: 60px;
     width: 8px;

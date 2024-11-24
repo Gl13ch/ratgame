@@ -36,13 +36,14 @@ const getCurrentRats = () => {
 
 const loadRats = () => {
     let currentRats = getCurrentRats()
-    console.log(currentRats)
 
     currentRats.forEach(element => {
         const cssRat = new RatBody(element.id,
             {
             parent: document.getElementById("ratContainer"),
             draggable: true,
+            positionLeft: randPos(40, 550),
+            positionTop: randPos(0, 248),
             furColor: element.fur,
             hasRedEyes: element.hasRedEyes,
             hasRexFur: element.hasRexFur,
@@ -55,72 +56,26 @@ const loadRats = () => {
     })
 }
 
-
-// DRAG AND DROP
-// starting mouse postion
-// let startMousePos = {x: 0, y: 0}
-// let newMousePos = {x: 0, y: 0}
-
-// const mouseDown = (event) => {
-//     const currentRat = document.getElementById('1')
-    
-//     startMousePos.x = event.clientX
-//     startMousePos.y = event.clientY
-
-//     currentRat.addEventListener('mousemove', mouseMove)
-//     currentRat.addEventListener('mouseup', () => {
-//         currentRat.removeEventListener('mousemove', mouseMove)
-//     })
-// }
-
-
-// const mouseMove = (event) => {
-//     const currentRat = document.getElementById('1')
-
-//     let mouseMoveDir = {
-//         x: startMousePos.x - event.clientX,
-//         y: startMousePos.y - event.clientY
-//     }
-
-//     startMousePos.x = event.clientX
-//     startMousePos.y = event.clientY
-
-//     currentRat.style.left = (currentRat.offsetLeft - mouseMoveDir.x) + 'px'
-//     currentRat.style.top = (currentRat.offsetTop - mouseMoveDir.y) + 'px'
-// }
-
-// const setOffSet = (x, y) => {
-//     const currentRat = document.getElementById('1')
-
-//     const left = currentRat.offsetLeft - x
-//     const top = currentRat.offsetTop - y
-
-//     if (condition) {
-        
-//     }
-
-//     return {
-//         x: left < 0 ? 0 : left,
-//         y: top < 0 ? 0 : top
-//     }
-// }
-
-
-
+const randPos = (min, max) => {
+    const rand = Math.floor(Math.random() * (max - min) + min)
+    return `${rand}px`
+}
 
 window.addEventListener('DOMContentLoaded', () => {
+    const ratContainer = document.getElementById('ratContainer')
+
     loadCage()
     loadRats()
 
     const dragRats = document.querySelectorAll('.draggable')
-    const ratContainer = document.getElementById('ratContainer')
-
-
+    
     // mouse position
     let newX = 0
     let newY = 0
     let startX = 0
     let startY = 0
+
+    // Can make fake bounds to follow
 
     dragRats.forEach(element => {
         let currentDiv = document.getElementById(`${element.id}`)
@@ -134,35 +89,41 @@ window.addEventListener('DOMContentLoaded', () => {
             let left = currentDiv.offsetLeft - newX
             let top = currentDiv.offsetTop - newY
 
-            const leftBounds = window.innerHeight - ratContainer.getBoundingClientRect().left
-
-            const topBounds = window.innerHeight - ratContainer.getBoundingClientRect().top
-
-            const bottomBounds = window.innerHeight - ratContainer.getBoundingClientRect().bottom
+            let right = window.innerHeight - element.getBoundingClientRect().right
 
             const rightBounds = window.innerHeight - ratContainer.getBoundingClientRect().right
-            // console.log(left)
-            console.log(top)
-            // const bottom = window.innerHeight - element.getBoundingClientRect().bottom
+
+            const bottom = window.innerHeight - element.getBoundingClientRect().bottom
             
             if (left < 0) {
+                currentDiv.style.zIndex = 0
                 currentDiv.removeEventListener('mousemove', mouseMove)
-                left = 0
+                left = 1
             }
 
-            if (top === topBounds){
+            if (top < -80){
+                currentDiv.style.zIndex = 0
                 currentDiv.removeEventListener('mousemove', mouseMove)
-                top = topBounds
+                top = -80
             }
 
-            // if (top > 700){
-            //     console.log('ran')
-            //     currentDiv.removeEventListener('mousemove', mouseMove)
-            //     top = 700
-            // }
+            if (bottom < -10){
+                currentDiv.style.zIndex = 0
+                currentDiv.removeEventListener('mousemove', mouseMove)
+                top = 249
+            }
+
+            if (right < rightBounds){
+                console.log(right)
+                console.log(rightBounds)
+                currentDiv.style.zIndex = 0
+                currentDiv.removeEventListener('mousemove', mouseMove)
+                left = 589
+            }
 
             currentDiv.style.left = left + 'px'
             currentDiv.style.top = top + 'px'
+            currentDiv.style.zIndex = 20
         }
 
         element.addEventListener('mousedown', event => {
@@ -172,10 +133,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
             currentDiv.addEventListener('mousemove', mouseMove)
             currentDiv.addEventListener('mouseup', () => {
+                currentDiv.style.zIndex = 0
                 currentDiv.removeEventListener('mousemove', mouseMove)
             })
         })
-    
     })
 
 })

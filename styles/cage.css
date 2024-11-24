@@ -40,8 +40,8 @@ body{
         90deg,
         rgb(52, 52, 52),
         rgb(52, 52, 52) 4px,
-        transparent 4px,
-        transparent 25px
+        transparent 5px,
+        transparent 23px
     );
     border-top: 4px solid rgb(52, 52, 52);
     bottom: 30px;
@@ -77,8 +77,12 @@ body{
 
 #ratContainer{
     position: absolute;
-    width: 100%;
+    display: flex;
+    justify-content: center;
+    /* background: black; */
+    width: 95%;
     height: 100%;
+    left: 45px
 }
 
 #wheel{

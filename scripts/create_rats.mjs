@@ -14,6 +14,14 @@ class RatBody {
             this.canvas.className += 'draggable'
         }
 
+        if (options.positionLeft) {
+            this.canvas.style.left = options.positionLeft
+        }
+
+        if (options.positionTop) {
+            this.canvas.style.top = options.positionTop
+        }
+
         // EARS
         if(options.hasDumboEars === true){
             // dumboLeftEar dumboEar

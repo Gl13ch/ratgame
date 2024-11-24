@@ -9,6 +9,12 @@ let date = {
 let playerCages = []
 let playerRats = []
 
+if (localStorage.length === 0) {
+    localStorage.setItem('date', JSON.stringify(date))
+    localStorage.setItem('playercages', JSON.stringify(playerCages))
+    localStorage.setItem('playerrats', JSON.stringify(playerRats))
+}
+
 // CLEAR ALL DATA AND CREATE LOCAL STORAGE WITH INITIAL DATA
 const clear = () => {
     // CLEAR DATA

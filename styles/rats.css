@@ -1,6 +1,6 @@
 /* Canvas */
 .canvas{
-    position: absolute;
+    position: relative;
     display: block;
     width: 145px;
     height:135px;
@@ -475,6 +475,6 @@
   box-shadow: inset 0px 2px 0px 0px #cc6053;
 } */
 
-/* .draggable{
-  position: fixed;
-} */
+.draggable{
+  position: absolute;
+}

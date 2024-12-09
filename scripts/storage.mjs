@@ -1,3 +1,5 @@
+let isNewGame = false
+
 // INITIAL DATA
 let date = {
     timeOfDay:'evening',
@@ -8,15 +10,23 @@ let date = {
 }
 let playerCages = []
 let playerRats = []
+let playerName = ''
 
-if (localStorage.length === 0) {
-    localStorage.setItem('date', JSON.stringify(date))
-    localStorage.setItem('playercages', JSON.stringify(playerCages))
-    localStorage.setItem('playerrats', JSON.stringify(playerRats))
+const createInitialData = () => {
+    // if (localStorage.length === 0) {
+        localStorage.setItem('date', JSON.stringify(date))
+        localStorage.setItem('playercages', JSON.stringify(playerCages))
+        localStorage.setItem('playerrats', JSON.stringify(playerRats))
+    // }
+}
+
+// CLEAR
+const clearData = () => {
+    localStorage.clear()
 }
 
 // CLEAR ALL DATA AND CREATE LOCAL STORAGE WITH INITIAL DATA
-const clear = () => {
+const createFreshData = () => {
     // CLEAR DATA
     localStorage.clear()
     // SET DATA
@@ -24,7 +34,7 @@ const clear = () => {
     localStorage.setItem('playercages', JSON.stringify(playerCages))
     localStorage.setItem('playerrats', JSON.stringify(playerRats))
 }
-// clear()
+// createFreshData()
 
 // REMOVE SINGLE DATA
 const remove = (key) => {
@@ -48,7 +58,17 @@ const save = (key = String, value) => {
     localStorage.setItem(key, JSON.stringify(value))
 }
 
+const saveAll = () => {
+    localStorage.setItem('date', JSON.stringify(date))
+    localStorage.setItem('playercages', JSON.stringify(playerCages))
+    localStorage.setItem('playerrats', JSON.stringify(playerRats))
+}
+
 // SESSION STORAGE----------------------
+const clearSession = () => {
+    sessionStorage.clear()
+}
+
 // REMOVE SINGLE DATA
 const sessionRemove = (key) => {
     sessionStorage.removeItem(key)
@@ -64,67 +84,3 @@ const sessionRetrieve = (key = String) => {
 const sessionSave = (key = String, value) => {
     sessionStorage.setItem(key, JSON.stringify(value))
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // LOAD
-// const load = () => {
-//     //make sure elements are populated with local storage
-//     currentDate = (JSON.parse(localStorage.getItem('currentDate')))
-//     rats = (JSON.parse(localStorage.getItem('ratArray')))
-//     cages = (JSON.parse(localStorage.getItem('cageArray')))
-
-//     const tempRats = []
-//     const tempCages = []
-
-//     // reinstantiate rats
-//     for (let i = 0; i < rats.length; i++) {
-//         tempRats.push(new Rat(...Object.values(rats[i])))
-//         tempRats[i].setAgeMonth(rats[i].ageMonth)
-//         tempRats[i].setAgeYear(rats[i].ageYear)
-//     }
-//     rats.length = 0
-//     for (let i = 0; i < tempRats.length; i++) {
-//         rats.push(tempRats[i])
-//     }
-    
-//     //reinstantiate cages
-//     for (let i = 0; i < cages.length; i++) {
-//         tempCages.push(new Cage(...Object.values(cages[i])))
-//     }
-//     cages.length = 0
-//     for (let i = 0; i < tempCages.length; i++) {
-//         cages.push(tempCages[i])
-//     }
-
-//     showCages()
-// }
-
-// load()

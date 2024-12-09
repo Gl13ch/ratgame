@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="styles/rats.css">
 </head>
 <body>
-    <div class="shop">
+    <div id="shop">
         <div>
             <a href="home.html">Home</a>
         </div>
@@ -75,6 +75,23 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div id="first_shop">
+        <div id="firstWantToBuy">
+            <p>Would you like to buy this Rat?</p>
+            <button id="firstYesToBuy" value="yes">Yes</button>
+            <button id="firstNoToBuy" value="no">No</button>
+        </div>
+        <form id="firstRatForm">
+            <!-- name -->
+            <input class="shopName" type="text" required="true" id="firstRatName" placeholder="Give rat a name"><br>
+            <!-- submit -->
+            <input class="shopSubmit" type="submit" id="firstRatSubmit">
+        </form>
+    </div>
+    <div id="closed">
+        <p>Closed</p>
+        <a href="home.html">Home</a>
     </div>
 </body>
 </html>

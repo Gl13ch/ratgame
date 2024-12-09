@@ -16,7 +16,7 @@ class Cage{
     }
 }
 
-// CLEAR LOCAL STORAGE
+// CLEAR ALL LOCAL STORAGE
 // clear()
 
 // REINSTANTIATE
@@ -34,7 +34,9 @@ const reinstantiateCages = () => {
         }
     }
 }
+
 reinstantiateCages()
+
 
 // CAGE ID
 const createCageID = () => {
@@ -113,84 +115,3 @@ const getAvailableCages = () => {
     return availableCages
 }
 
-// CHECK IF CURRENT SELECTED RAT IS IN CURRENT SELECTED CAGE
-
-
-
-
-
-// let onlyAvailableCage = []
-// let ifRatInCage = []
-
-    // can maybe split this into two functions check for rat at home and check for shop
-    // const checkCageCapacity = () => {
-    //     const $moveText = $('<p>').addClass('move').text('Would you like to move your rat to another cage?')
-
-    //     //resets on function call
-    //     onlyAvailableCage.length = 0
-    //     ifRatInCage.length = 0
-
-    //     //resets values
-    //     $('input[name="shopCage"]').remove()
-    //     $('label[for="shopCage"]').remove()
-    //     $('input[name="ratInfoCage"]').remove()
-    //     $('label[for="ratInfoCage"]').remove()
-    //     $('#moveSubmit').hide()
-
-    //     //if capacity is available push into array
-    //     for (let i = 0; i < cages.length; i++) {
-    //         if (cages[i].capacity <= cages[i].heldRats.length) {
-    //             // console.log("skipped")
-    //         } else {
-    //             // console.log('pushed to temp array')
-    //             onlyAvailableCage.push(cages[i])
-    //         }
-    //     }
-
-    //     //if rat is in cage put that cage into array to be checked against
-    //     for (let i = 0; i < cages.length; i++) {
-    //         cages[i].heldRats.forEach(element => {
-    //             if (element.id !== Number(currentRatId[0])) {
-    //                 // console.log('skip')
-    //             } else {
-    //                 // console.log('push')
-    //                 ifRatInCage.push(cages[i])
-    //             }
-    //         });
-    //     }
-
-    //     for (let j = 0; j < onlyAvailableCage.length; j++) {
-
-    //     if (ifRatInCage.length > 0) {
-    //         if (ifRatInCage[0].tag === onlyAvailableCage[j].tag) {
-                
-    //         } else {
-    //             //users cages
-    //             const $ratInfoCageRadio = $(`<input type="radio" name="ratInfoCage" required="true" value='${onlyAvailableCage[j].cageName}'>`)
-    //             const $ratInfoCageLabel = $(`<label for="ratInfoCage">${onlyAvailableCage[j].cageName}</label>`)
-
-    //             const $inRatInfo = $('.moveRat').prepend($ratInfoCageRadio,$ratInfoCageLabel)
-
-    //             $moveText.prependTo($('#modalText'))
-    //             $('#moveSubmit').show()
-    //         }
-    //         }
-    //     }
-
-    //     //if there is only one cage in the array no need to display
-    //     if (onlyAvailableCage.length > 1) {
-    //         // console.log('2 or more cages')
-    //         let availableCageRatId = []
-
-    //         //loop through available cages with capacity to display them to user
-    //         for (let j = 0; j < onlyAvailableCage.length; j++) {
-
-    //             //shop
-    //             const $shopCageRadio = $(`<input type="radio" name="shopCage" required="true" value='${onlyAvailableCage[j].cageName}'>`)
-    //             const $shopCageLabel = $(`<label for="shopCage">${onlyAvailableCage[j].cageName}</label>`)
-                
-    //             //shop can show all
-    //             const $inShop = $('#ratSubmit').before($shopCageRadio,$shopCageLabel)      
-    //         }
-    //     }
-    // }

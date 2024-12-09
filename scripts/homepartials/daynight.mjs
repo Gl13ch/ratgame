@@ -40,34 +40,32 @@ window.addEventListener("DOMContentLoaded", ()=>{
         $month.innerHTML = `${date.month}`
         $yearNumber.innerHTML = `${date.year}`
     }
+    setCurrentDate()
 
-    const dayNightCycle = () => {
-        if (nextTimeofDay === 'morning') {
+    const skip_turn = document.getElementById('skip_turn')
+
+    const skip = () => {
+        if (date.timeOfDay === 'morning') {
+            date.timeOfDay = 'evening'
+            $morning.style.visibility = 'hidden'
+            $evening.style.visibility = 'visible'
+            $night.style.visibility = 'hidden'
+        } else if (date.timeOfDay === 'evening') {
+            date.timeOfDay = 'night'
+            $evening.style.visibility = 'hidden'
+            $morning.style.visibility = 'hidden'
+            $night.style.visibility = 'visible'
+        } else if(date.timeOfDay === 'night'){
             goNextDay()
             date.timeOfDay = 'morning'
-            nextTimeofDay = 'evening'
+            $night.style.visibility = 'hidden'
+            $evening.style.visibility = 'hidden'
             $morning.style.visibility = 'visible'
-            $evening.style.visibility = 'hidden'
-            $night.style.visibility = 'hidden'
-        } else if (nextTimeofDay === 'evening') {
-            date.timeOfDay = 'evening'
-            nextTimeofDay = 'night'
-            $evening.style.visibility = 'visible'
-            $morning.style.visibility = 'hidden'
-            $night.style.visibility = 'hidden'
-        } else if(nextTimeofDay === 'night'){
-            date.timeOfDay = 'night'
-            nextTimeofDay = 'morning'
-            $night.style.visibility = 'visible'
-            $evening.style.visibility = 'hidden'
-            $morning.style.visibility = 'hidden'
         }
-        save('date',date)
+        save('date', date)
     }
-    
-    setCurrentDate()
-    setInterval(dayNightCycle, 180000)
-    
+
+    skip_turn.addEventListener('click', skip)
 
     const goNextDay = () => {
         const currentDayIndex = days.indexOf(date.day)

@@ -219,7 +219,7 @@ const generateShopRats = () => {
 
     // console.log(shopRats)
     return shopRats
-} 
+}
 
 const createEventListeners = (shopRats) => {
     const $shopRats = document.querySelectorAll('.canvas')
@@ -273,8 +273,182 @@ const createEventListeners = (shopRats) => {
     })
 }
 
-window.addEventListener('DOMContentLoaded', () =>{
+// FIRST RAT
+let firstRatToBuy = []
+const buyFirstRat = (e) => {
+    e.preventDefault()
 
+    let idCounter = 1
+    if (playerRats.length !== 0) {
+        idCounter = playerRats[playerRats.length - 1].id + 1
+    }
+    
+    let nameInput = document.getElementById('firstRatName').value
+
+    let sexInput = firstRatToBuy[0].sex
+    
+    let breedInput = firstRatToBuy[0].breed
+
+    let furInput = firstRatToBuy[0].fur
+
+    let hasRedEyes = firstRatToBuy[0].hasRedEyes
+
+    firstRatForm.reset()
+    
+    console.log(getAvailableCages())
+
+    const newRatty = new Rat(idCounter, nameInput, sexInput, breedInput, 'Small Cage', furInput, hasRedEyes)
+
+    playerRats.push(newRatty)
+
+    playerCages[0].heldRats.push(newRatty)
+    
+    save('playercages', playerCages)
+    save('playerrats', playerRats)
+
+
+    location.href = "home.html"
+}
+
+const generateFirstRats = () => {
+    let shopRats = []
+    let currentBreed = 'standard'
+    let shopFurColors = []
+    let shopSexesAvailable = []
+    let shopRatIds = ['a','b','c']
+    
+    do {
+        shopFurColors = checkForDupes(createShopFurs())
+    } while (shopFurColors === false);
+
+    do {
+        shopSexesAvailable = allSame(createAvailableSexes())
+    } while (shopSexesAvailable === false);
+
+    for (let i = 0; i < 3; i++) {
+        const randomPersonality = randomIndex(personalityArr)
+
+        shopRats.push(new ShopRats(shopRatIds[i], currentBreed, shopSexesAvailable[i], shopFurColors[i], redEyesChance()))
+    }
+
+    // CREATE CSS RATS
+    shopRats.forEach(element => {
+        // clear previous rats
+        const $shopRats = document.getElementById(`${element.shopId}`)
+        if ($shopRats) {
+            $shopRats.remove()
+        }
+        
+        // create css rat
+        const cssRat = new RatBody(element.shopId,
+            {
+            parent: document.getElementById("first_shop"),
+            furColor: element.fur,
+            hasRedEyes: element.hasRedEyes
+        })
+    })
+
+    // CREATE EVENT LISTENERS
+    createFirstEventListeners(shopRats)   
+
+    // console.log(shopRats)
+    // return shopRats
+}
+
+const createFirstEventListeners = (shopRats) => {
+    const $shopRats = document.querySelectorAll('.canvas')
+    $shopRats.forEach(element => {
+        // CREATE MOUSE OVER EVENT TO SEE SEX OF RAT
+        element.addEventListener('mouseenter', event => {
+            const currentRat = event.currentTarget
+            // console.log(currentRat)
+            for (let i = 0; i < shopRats.length; i++) {
+                if (shopRats[i].shopId === currentRat.id) {
+                    const sex = document.createElement('p')
+                    sex.className = 'ratSexes'
+                    sex.innerHTML = `${shopRats[i].sex}`
+                    currentRat.append(sex)
+                }
+            }
+        })
+        element.addEventListener('mouseleave', event => { 
+           document.querySelector('.ratSexes').remove()
+         })
+
+        // CREATE ON CLICK OF RAT
+        element.addEventListener('click', event => {
+            firstRatToBuy = []
+            const currentRat = event.currentTarget
+
+            shopRats.forEach(element => {
+                if (currentRat.id !== element.shopId) {
+                    document.getElementById(`${element.shopId}`).style.display = 'none'
+                } else {
+                    firstRatToBuy.push(element)
+
+                    document.getElementById('firstWantToBuy').style.display = 'block'
+
+                    // ifAlreadyClicked = false
+                }
+            })
+        })
+    })
+
+    document.getElementById('firstNoToBuy').addEventListener('click', ()=>{
+        document.getElementById('firstWantToBuy').style.display = 'none'
+    
+        firstRatToBuy.length = 0  
+    
+        shopRats.forEach(element => {
+            document.getElementById(`${element.shopId}`).style.display = 'block'
+        })
+
+        // ifAlreadyClicked = true
+    })
+}
+
+const askName = () => {
+    do {
+        playerName = prompt("What is your name?")
+    } while (playerName === '' || playerName === null){
+        console.log(playerName)
+        generateFirstRats()
+        save('playername', playerName)
+    }
+}
+
+window.addEventListener('DOMContentLoaded', () =>{
+    const shop = document.getElementById('shop')
+    const first_shop = document.getElementById('first_shop')
+    const closed = document.getElementById('closed')
+    
+    console.log(retrieve('playername'))
+
+    if (retrieve('playername') === '' || retrieve('playername') === null) {
+        first_shop.style.display = 'block'
+        askName()
+    }else if(retrieve('date').timeOfDay === 'night'){
+        closed.style.display = 'block'
+    } else {
+        shop.style.display = 'block'
+    }
+
+    // FIRST SHOP
+    const firstYesBuy = document.getElementById('firstYesToBuy')
+    const firstRatName = document.getElementById('firstRatName')
+    firstYesBuy.addEventListener('click', ()=>{
+        console.log(firstRatToBuy)
+        document.getElementById('firstWantToBuy').style.display = 'none'
+        document.getElementById('firstRatForm').style.display = 'block'
+        // move on to submit
+    })
+
+    // BUY FIRST RAT
+    const firstRatForm = document.getElementById('firstRatForm')
+    firstRatForm.addEventListener("submit", buyFirstRat)
+
+
+    // SHOP
     // BUY NEW CAGE
     const cageForm = document.getElementById('cageForm')
     cageForm.addEventListener("submit", buyCage)
@@ -302,54 +476,8 @@ window.addEventListener('DOMContentLoaded', () =>{
         ratName.style.display = 'block'
         // move on to submit
     })
-    
 
     // BUY NEW RAT
     const ratForm = document.getElementById('ratForm')
     ratForm.addEventListener("submit", buyRat)
 })
-
-    
-
-//     //show shop items depending on what player wants to look at 
-//     $('.shopItems').on('click', event => {
-//         if ($('.shopItems').val() === 'rat'){
-//             disableSubmit()
-//             $('.hasSpace').remove()
-//             checkCageCapacity()
-//             if (globalCapacity() !== true) {
-//                 $('<p>').addClass('hasSpace').text('you do not have any room to buy a new rat!').appendTo($('.buyarat'))
-//             }
-//             $('#ifMatchmaking').hide()
-//             $('#ifCage').hide()
-//             $('#ifRat').show()
-//         } else if ($('.shopItems').val() === 'cage'){
-//             $('#ifMatchmaking').hide()
-//             $('#ifRat').hide()
-//             $('#ifCage').show()
-//         } else if ($('.shopItems').val() === 'matchmaking'){
-//             $('.hasSpace').remove()
-//             if (globalCapacity() !== true) {
-//                 $('<p>').addClass('hasSpace').text('you do not have any room to house a new rat!').appendTo($('.breedrats'))
-//             }
-//             generateMatchmaking()
-//             $('#ifMatchmaking').show()
-//             $('#ifRat').hide()
-//             $('#ifCage').hide()
-//         } else {
-//             $('#ifMatchmaking').hide()
-//             $('#ifRat').hide()
-//             $('#ifCage').hide()
-//         }
-//     })
-
-//     const setBreedInput = () => {
-//         let breedInput = ratToBuy[0].breed
-//         const newBreedObj = new Breed()
-//         for (const [key] of Object.entries(newBreedObj)) {
-//             if (key === breedInput) {
-//                 newBreedObj[key] = 100
-//             }
-//         }
-//         return newBreedObj
-//     }

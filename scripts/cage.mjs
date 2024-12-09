@@ -66,8 +66,9 @@ const randPos = (min, max) => {
 const items = ['bed', 'wheel', 'drink', 'food', 'potty', 'idle']
 
 const getActivity = () => {
+    // these numbers only work for a small cage, will change when the cages are different sizes
     const item =  randomIndex(items)
-    console.log(item)
+    // console.log(item)
     if (item === 'bed') {
         const x = 136
         const y = -17
@@ -112,6 +113,81 @@ const getActivity = () => {
     }
 }
 
+// DAY NIGHT CYCLE
+
+date = retrieve('date')
+
+let nextTimeofDay = 'night'
+
+const days = ['MON','TUE','WED','THU','FRI','SAT','SUN']
+
+const setCurrentDate = () => {
+    date = retrieve('date')
+    if (date.timeOfDay === 'morning') {
+        nextTimeofDay = 'evening'
+    } else if (date.timeOfDay === 'evening') {
+        nextTimeofDay = 'night'
+    } else if(date.timeOfDay === 'night'){
+        nextTimeofDay = 'morning'
+    }
+}
+setCurrentDate()
+
+const dayNightCycle = () => {
+    if (nextTimeofDay === 'morning') {
+        goNextDay()
+        date.timeOfDay = 'morning'
+        nextTimeofDay = 'evening'
+    } else if (nextTimeofDay === 'evening') {
+        date.timeOfDay = 'evening'
+        nextTimeofDay = 'night'
+    } else if(nextTimeofDay === 'night'){
+        date.timeOfDay = 'night'
+        nextTimeofDay = 'morning'
+    }
+    location.href = "home.html"
+    save('date',date)
+}
+
+let count = sessionRetrieve('count') || 0
+
+const counter = () => {
+    count++
+    if (count >= 180) {
+        count = 0
+        dayNightCycle()
+    }
+    sessionSave('count', count)
+}
+
+// let cycle = setInterval(dayNightCycle, 180000)
+let cycle = setInterval(counter, 1000)
+
+const goNextDay = () => {
+    const currentDayIndex = days.indexOf(date.day)
+    if (currentDayIndex === 6) {
+        date.week++
+    }
+    if (date.week === 5 && currentDayIndex === 6) {
+        date.week = 1
+        goNextMonth()
+    }
+    const nextDayIndex = (currentDayIndex + 1) % days.length
+    date.day = days[nextDayIndex]
+}
+
+const goNextMonth = () => {
+    // ageUpRats()
+    if (date.month === 12) {
+        date.month = 1
+        date.year++
+    } else {
+        date.month++
+    } 
+}
+
+
+// Rat animation
 window.addEventListener('DOMContentLoaded', () => {
     const ratContainer = document.getElementById('ratContainer')
 
@@ -158,28 +234,54 @@ window.addEventListener('DOMContentLoaded', () => {
             }
 
             if (xfinished === true && yfinsihed === true) {
-                console.log('cleared')
+                // console.log('cleared')
                 clearInterval(start);
             }
         }
         
     }
+
+
+    // don't remember what this was, not sure it works
+    // maybe was another attempt
+
+    // let start
+    // const animate = (timestamp) => {
+    //     if (start === undefined) {
+    //         start = timestamp;
+    //     }
+    //     const elapsed = timestamp - start;
+
+    //     const shift = Math.min(0.1 * elapsed, 200);
+
+    //     dragRats[0].style.transform = `translateX(${shift}px)`
+
+    //     if (shift < 200) {
+    //         requestAnimationFrame(animate)
+    //     }  
+    // }
+
+    // requestAnimationFrame(animate)
+
+
     // Works, need to look at again see if I can make more than one animaton work at the same time. Might just be a timing thing. Only works if the intervals have different timings
 
-    // setInterval(draw, 2000, dragRats[0], randPos(1,10))
+    // one way to have multiple animations going is to probably start drawing all the rats at the same time, not setting intervals for each one, instead maybe handle the rat position in the rat itself
+    setInterval(draw, 6000, dragRats[0], randPos(1,10))
     // setInterval(draw, 3000, dragRats[1], randPos(1,10))
 
     // setInterval(draw, 5000, dragRats[0], randPos(1,5))
     // setInterval(draw, 8000, dragRats[1], randPos(1,5))
     
+
+    // DRAGGABLE
     // mouse position
     let newX = 0
     let newY = 0
     let startX = 0
     let startY = 0
 
-    // Can make fake bounds to follow
-
+    // Can make fake (mouse?) bounds to follow
     dragRats.forEach(element => {
         let currentDiv = document.getElementById(`${element.id}`)
         const mouseMove = (event) => {

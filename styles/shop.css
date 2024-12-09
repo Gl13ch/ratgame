@@ -2,11 +2,13 @@ body{
     background: rgb(91, 87, 95);
 }
 
-/* .shop{
-    display: flex;
-    justify-content: center;
+#shop{
+    display: none;
+}
 
-} */
+#first_shop{
+    display: none;
+}
 
 #shopRatsContainer{
     display: flex;
@@ -15,6 +17,6 @@ body{
     margin-top: 2%;
 }
 
-#wantToBuy, #ratSubmit, #name{
+#firstWantToBuy, #wantToBuy, #ratSubmit, #name, #firstRatForm, #closed{
     display: none;
 }
